@@ -13,7 +13,6 @@ lang="en-GB" xml:lang="en-GB">
 
 </head>
 <body>
-<h1>Hey</h1>
 
 <div class="row" id="marquee-row">
         <div class="marquee">
@@ -31,12 +30,13 @@ lang="en-GB" xml:lang="en-GB">
       marquee.setAttribute('class', 'marquee');
       var text = document.createElement("p");
       text.innerHTML = "Yo";
-      text.style.top = "80px";
+      var randomPadding = Math.floor(Math.random() * 101);
+      text.style.top = randomPadding.toString() + "%";
       marquee.appendChild(text);
       var row = document.getElementById("marquee-row");
       row.appendChild(marquee);
     }
-    setInterval(myFunction, 1000);
+    setInterval(myFunction, 1303);
 </script>
 </body>
 </html>
