@@ -2,10 +2,59 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 lang="en-GB" xml:lang="en-GB">
 <head>
-<meta charset="UTF-8"/>
-<title>Put Title Here</title>
+    <meta charset="UTF-8"/>
+    <title>Grape</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"
+    rel="stylesheet" media="all"/>
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        .duo-option:hover{
+            background-color: #421C52;
+            color: white;
+        }
+        .duo-option{
+            font-size:5vw;
+        }
+        .bg-grape{
+            background-color:#421C52!important
+        }
+        .text-grape{color:#421C52!important}
+    </style>
+
+
 </head>
 <body>
-<h1>Put Heading Here</h1>
+
+    <div class="d-flex flex-column bg-grape text-white" style="height:90vh">
+        <div class="container p-5 text-center mx-auto my-auto">
+            <h1 class="display-1">🍇</h1>
+        </div>
+        <div class="container text-center">
+            <a href="#slide-anchor" style="text-decoration:inherit; color:inherit"><h1>▼</h1></a>
+        </div>
+    </div>
+
+    <div class="row text-grape mb-5 no-gutters" style="height:100vh" id="slide-anchor">
+        <div class="col-6">
+            <a href="placeholder.com" class="sliding-link" style="color:inherit">
+                <div class="d-flex justify-content-center duo-option" style="height:100%" >
+                    <p class="my-auto">info</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-6">
+            <a href="/dashboard" style="color:inherit">
+                <div class="d-flex justify-content-center duo-option" style="height:100%">
+                    <p class="my-auto">dashboard</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
 </body>
+
 </html>
