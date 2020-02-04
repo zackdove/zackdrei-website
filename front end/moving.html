@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+lang="en-GB" xml:lang="en-GB">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Grape</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"
+    rel="stylesheet" media="all"/>
+
+    <link rel="stylesheet" href="style.css"/>
+
+
+</head>
+<body>
+<h1>Hey</h1>
+
+<div class="row" id="marquee-row">
+        <div class="marquee">
+        <p><b>HI THERE!</b></p>
+    </div>
+    <div class="marquee">
+        <p><b>wagwan!</b></p>
+    </div>
+</div>
+
+
+<script>
+    function myFunction() {
+      var marquee = document.createElement("div");
+      marquee.setAttribute('class', 'marquee');
+      var text = document.createElement("p");
+      text.innerHTML = "Yo";
+      text.style.top = "80px";
+      marquee.appendChild(text);
+      var row = document.getElementById("marquee-row");
+      row.appendChild(marquee);
+    }
+    setInterval(myFunction, 1000);
+</script>
+</body>
+</html>
