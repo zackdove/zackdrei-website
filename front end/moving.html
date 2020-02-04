@@ -15,12 +15,7 @@ lang="en-GB" xml:lang="en-GB">
 <body>
 
 <div class="row" id="marquee-row">
-        <div class="marquee">
-        <p><b>HI THERE!</b></p>
-    </div>
-    <div class="marquee">
-        <p><b>wagwan!</b></p>
-    </div>
+
 </div>
 
 
@@ -30,7 +25,7 @@ lang="en-GB" xml:lang="en-GB">
       marquee.setAttribute('class', 'marquee');
       var text = document.createElement("p");
       text.innerHTML = "Yo";
-      var randomPadding = Math.floor(Math.random() * 101);
+      var randomPadding = Math.floor(Math.random() * 91);
       text.style.top = randomPadding.toString() + "%";
       marquee.appendChild(text);
       var row = document.getElementById("marquee-row");
