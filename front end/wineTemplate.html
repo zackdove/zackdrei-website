@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+lang="en-GB" xml:lang="en-GB">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Grape</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"
+    rel="stylesheet" media="all"/>
+
+    <link rel="stylesheet" href="style.css"/>
+
+
+</head>
+<body>
+
+<div class="container-fluid pt-1">
+        <div class="card text-white bg-grape mx-auto mt-5" style="max-width:30rem">
+            <div class="card-header">
+                <h3>
+                    Wine
+                    <button th:onclick="'javascript:window.close();'" type="button" class="close btn-grape" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </h3>
+            </div>
+            <div class="card-body bg-white">
+                <div class="table-responsive">
+                    <table class="table table-borderless">
+                        <tr>
+                            <th>ID:</th>
+                            <td><span/></td>
+                        </tr>
+                        <tr>
+                            <th>Country</th>
+                            <td><span/></td>
+                        </tr>
+                        <tr>
+                            <th>Grape:</th>
+                            <td><a>
+                                <span /></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Vintage:</th>
+                            <td><a>
+                                <span/></a></td>
+                        </tr>
+                        <tr>
+                            <th>Colour:</th>
+                            <td><a >
+                                <span /></a></td>
+                        </tr>
+                        <tr>
+                            <th>Producer:</th>
+                            <td><a><span
+                                    /></a></td>
+                        </tr>
+                        <tr>
+                            <th>Notes:</th>
+                            <td><a >
+                                <span/></a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+</div>
+</body>
+</html>
