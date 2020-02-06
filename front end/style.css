@@ -39,3 +39,11 @@ position:absolute;
 0%   { transform: translate(0, 0); }
 100% { transform: translate(-100%, 0); }
 }
+
+text {
+    letter-spacing: 2vw;
+    font-size: 4vw;
+    fill: white;
+
+
+}
