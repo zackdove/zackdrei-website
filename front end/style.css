@@ -1,6 +1,11 @@
 html {
     scroll-behavior: smooth;
 }
+
+* {
+ font-family: "Courier New";
+}
+
 .duo-option:hover{
     background-color: #421C52;
     color: white;
@@ -41,9 +46,37 @@ position:absolute;
 }
 
 text {
-    letter-spacing: 2vw;
-    font-size: 4vw;
+    letter-spacing: 0.6vw;
+    font-size: 15px;
     fill: white;
+}
 
+.bounce {
+  animation: bounce 2s;
+  animation-iteration-count: infinite;
+  animation-delay: 1s;
+  align-items: center;
+}
 
+@keyframes bounce {
+    0%,
+    25%,
+    50%,
+    75%,
+    100% {
+        transform: translateY(0);
+        }
+    40% {
+        transform: translateY(-20px);
+    }
+    60% {
+        transform: translateY(-12px);
+    }
+}
+
+.arrowContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto auto 1rem auto;
 }
