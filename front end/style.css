@@ -29,7 +29,7 @@ html {
 .marquee {
 line-height: 50px;
 background-color: Pink;
-color: Red;
+color: #421C52;
 white-space: nowrap;
 overflow: hidden;
 box-sizing: border-box;
@@ -37,7 +37,7 @@ box-sizing: border-box;
 .marquee p {
 display: inline-block;
 padding-left: 100%;
-animation: marquee 10s linear infinite;
+animation: marquee 10s linear 2;
 position:absolute;
 }
 @keyframes marquee {
@@ -46,7 +46,7 @@ position:absolute;
 }
 
 text {
-    letter-spacing: 0.6vw;
+    letter-spacing: 1vh;
     font-size: 15px;
     fill: white;
 }
@@ -79,4 +79,31 @@ text {
   flex-direction: column;
   align-items: center;
   margin: auto auto 1rem auto;
+}
+
+.aboutColumn {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    /* We want overflow */
+    flex-wrap: nowrap;
+    overflow: auto;
+    align-items: center;
+    height: 100vh;
+    width: 50vw;
+    margin-left: 25vw;
+    margin-right: 25vw;
+    background-color: #ffffff;
+    box-shadow: 0 0 5vh 5vh #ffffff;
+}
+
+.aboutItem{
+    margin-top: 5vh;
+}
+
+iframe {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    border-style: none;
 }
