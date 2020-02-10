@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   width="100px"
+   height="100px"
+   viewBox="0 0 210 187"
+   version="1.1"
+   id="svg8">
+  <defs
+     id="defs2">
+    <linearGradient
+       id="linearGradient1084">
+      <stop
+         style="stop-color:#2cdd2b;stop-opacity:1"
+         offset="0"
+         id="stop1080" />
+      <stop
+         style="stop-color:#2c522b;stop-opacity:1"
+         offset="1"
+         id="stop1082" />
+    </linearGradient>
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="127.16011"
+       x2="29.964233"
+       y1="127.16011"
+       x1="20.728699"
+       id="linearGradient1078-7"
+       xlink:href="#linearGradient1084"
+       gradientTransform="matrix(4.8822979,0,0,4.174067,-93.219885,-492.27109)" />
+  </defs>
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1">
+    <circle
+       r="27.236593"
+       cy="153.81744"
+       cx="178.49118"
+       id="path10-71"
+       style="fill:#cb007d;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:3.63155;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <circle
+       r="27.236593"
+       style="fill:#cb007d;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:3.63155;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path10"
+       cx="68.285149"
+       cy="43.221363" />
+    <circle
+       r="27.236593"
+       cy="54.231873"
+       cx="105.79366"
+       id="path10-9"
+       style="fill:#cb007d;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:3.63155;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <circle
+       r="27.236593"
+       cy="124.93766"
+       cx="90.85585"
+       id="path10-8"
+       style="fill:#cb007d;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:3.63155;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <circle
+       r="27.236593"
+       cy="81.120003"
+       cx="143.63615"
+       id="path10-3"
+       style="fill:#cb007d;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:3.63155;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <circle
+       r="27.236593"
+       cy="155.80916"
+       cx="143.6362"
+       id="path10-7"
+       style="fill:#cb007d;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:3.63155;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <circle
+       r="27.236593"
+       cy="116.9708"
+       cx="162.55746"
+       id="path10-76"
+       style="fill:#cb007d;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:3.63155;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <circle
+       r="27.236593"
+       cy="135.89206"
+       cx="129.6942"
+       id="path10-94"
+       style="fill:#cb007d;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:3.63155;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <circle
+       r="27.236593"
+       cy="151.82573"
+       cx="77.909729"
+       id="path10-37"
+       style="fill:#cb007d;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:3.63155;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <circle
+       r="27.236593"
+       cy="145.85059"
+       cx="99.818542"
+       id="path10-5"
+       style="fill:#cb007d;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:3.63155;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <circle
+       r="27.236593"
+       cy="103.02879"
+       cx="118.73978"
+       id="path10-6"
+       style="fill:#cb007d;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:3.63155;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <circle
+       r="27.236593"
+       cy="90.082687"
+       cx="31.104494"
+       id="path10-00"
+       style="fill:#cb007d;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:3.63155;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <circle
+       r="27.236593"
+       cy="133.90036"
+       cx="35.087917"
+       id="path10-73"
+       style="fill:#cb007d;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:3.63155;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <circle
+       r="27.236593"
+       cy="102.92152"
+       cx="47.361591"
+       id="path10-07"
+       style="fill:#cb007d;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:3.63155;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <circle
+       r="27.236593"
+       cy="125.08165"
+       cx="88.942139"
+       id="path10-4"
+       style="fill:#cb007d;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:3.63155;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       style="fill:url(#linearGradient1078-7);fill-opacity:1;stroke:#000000;stroke-width:1.19441px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 39.468878,72.093732 C 22.404559,54.091732 7.8491308,35.099728 8.6621656,10.043515 L 22.238006,5.133059 c -1.619967,26.690945 13.582456,45.292508 29.76242,63.83584 z"
+       id="path983-7-4-3-3" />
+    <circle
+       r="27.236593"
+       cy="58.549286"
+       cx="64.671715"
+       id="path10-33"
+       style="fill:#cb007d;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:3.63155;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+  </g>
+  <circle
+     r="27.236593"
+     cy="90.082664"
+     cx="84.880714"
+     id="path10-0"
+     style="fill:#cb007d;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:3.63155;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+</svg>
