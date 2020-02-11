@@ -107,3 +107,8 @@ iframe {
     height: 100vh;
     border-style: none;
 }
+
+#aboutCurveText{
+    fill: #000000;
+    font-size: 30px;
+}
