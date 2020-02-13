@@ -113,17 +113,24 @@ text {
     height: 60vh;
     margin-top: 20vh;
     margin-bottom: 20vh;
-    background-color: #ffffff;
+    background-color: #ffffff; 
     align-items: center;
+    color: #421C52;
 }
 
 .menuButton{
     width: 100%;
     text-align: center;
+    color: inherit;
+    font-size: 3vh;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
 }
 
 .menuButton:hover{
     background-color: #eeeeee;
+    color: inherit;
+    text-decoration: none;
 }
 
 iframe {
@@ -131,6 +138,10 @@ iframe {
     width: 100vw;
     height: 100vh;
     border-style: none;
+}
+
+.underline{
+    text-decoration: underline;
 }
 
 #aboutCurveText{
