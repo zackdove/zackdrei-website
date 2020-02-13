@@ -97,8 +97,33 @@ text {
     box-shadow: 0 0 5vh 5vh #ffffff;
 }
 
+}
+
 .aboutItem{
     margin-top: 5vh;
+}
+
+.menuColumn{
+    display:flex;
+    flex-direction: column;
+    position:absolute;
+    width: 40vw;
+    margin-left: 30vw;
+    margin-right: 30vw;
+    height: 60vh;
+    margin-top: 20vh;
+    margin-bottom: 20vh;
+    background-color: #ffffff;
+    align-items: center;
+}
+
+.menuButton{
+    width: 100%;
+    text-align: center;
+}
+
+.menuButton:hover{
+    background-color: #eeeeee;
 }
 
 iframe {
@@ -111,4 +136,9 @@ iframe {
 #aboutCurveText{
     fill: #000000;
     font-size: 30px;
+}
+
+.parentWidth{
+    width: 100%;
+    /* max-width: 100%; */
 }

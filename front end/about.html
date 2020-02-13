@@ -5,7 +5,6 @@ lang="en-GB" xml:lang="en-GB">
     <meta charset="UTF-8"/>
     <title>Grape</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"
     rel="stylesheet" media="all"/>
 
     <link rel="stylesheet" href="style.css"/>
@@ -29,21 +28,33 @@ lang="en-GB" xml:lang="en-GB">
             <h1>about</h1>
         </div>
         <div class="aboutItem">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce purus nulla, vulputate vel turpis quis, sagittis scelerisque eros. Cras in dapibus nunc. Duis aliquam egestas nisi, eget posuere ligula suscipit eget. Aliquam scelerisque magna mi, eget viverra nibh placerat eget. Aenean egestas ligula eget ultricies congue. Phasellus facilisis, mi quis laoreet aliquam, libero nunc suscipit nisi, eget pretium sem quam eu purus. Nullam ultrices nisi massa, vitae vestibulum ante dapibus sit amet. Etiam pretium posuere diam eget mollis. Etiam non orci dui. Nulla gravida purus non nisl consequat, eu auctor sapien mattis. Nunc eu tristique felis. Suspendisse sed velit lacinia, gravida magna et, varius augue.Etiam scelerisque vehicula dui nec mattis. Nulla tellus nunc, tempus vulputate nisl sodales, lobortis egestas purus. Nulla sed semper enim. Vestibulum condimentum, nisi ac ullamcorper eleifend, augue nisi rhoncus ligula, ut dapibus dolor lacus a metus. Donec magna mi, sodales non suscipit sed, venenatis lobortis nisl. Integer sodales consequat ligula, a sodales sem ultrices et. Etiam id ornare leo. Fusce quis libero vel tellus molestie faucibus nec id nunc. Etiam vel euismod lectus, eget venenatis nunc. Cras vitae lacinia lectus. Aenean nec lorem vel nisi aliquet imperdiet a at mauris. Vestibulum in sollicitudin dolor. Donec tempor dui eget ex placerat, eget iaculis ligula eleifend. Nulla eleifend, diam vel posuere posuere, ipsum eros porta sapien,
-            </p>
+            <h4>The origins of <it>grape</it> can be traced back to when Andrei and I first met at a tasting in Naples. We both realised that we could see a gap in the market for a personal wine tracking website.
+            </h4>
+        </div>
+        <div class="aboutItem parentWidth">
+            <img src="images/drinking.jpg" class="parentWidth"></img>
         </div>
         <div class="aboutItem">
-            <svg id="mySVG">
-                <path fill="none" stroke="red" stroke-width="3" id="triangle" d="M150 0 L75 200 L225 200 Z" />
-                Sorry, your browser does not support inline SVG.
-            </svg>
-            <p>hey</p>
-            <svg width="100%" height="160px" viewBox="0 0 1098.72 89.55">
-                <path id="curve" stroke="blue" stroke-width="3" fill="transparent" d="M0.17,0.23c0,0,105.85,77.7,276.46,73.2s243.8-61.37,408.77-54.05c172.09,7.64,213.4,92.34,413.28,64.19"></path>
+            <h4>We travelled the world to conduct market research with critics, distributors, vineyard owners and consumers.
+            </h4>
+        </div>
+        <div class="aboutItem parentWidth">
+            <img src="images/vineyard.jpg" class="parentWidth"></img>
+        </div>
+        <div class="aboutItem parentWidth">
+            <svg width="100%" height="100%" viewBox="0 0 1098.72 89.55">
+                <path id="curve" stroke="blue" stroke-width="0" fill="transparent" d="M0.17,0.23c0,0,105.85,77.7,276.46,73.2s243.8-61.37,408.77-54.05c172.09,7.64,213.4,92.34,413.28,64.19"></path>
                 <text id="aboutCurveText" width="100%" style="transform:translate3d(0,0,0);">
-                    <textPath id="aboutCurveTextPath" style="transform:translate3d(0,0,0);" alignment-baseline="top" xlink:href="#curve">*These pictures aren't actually Andrei and I...shhh...</textPath>
+                    <textPath id="aboutCurveTextPath" style="transform:translate3d(0,0,0);" alignment-baseline="top" xlink:href="#curve" >These pictures aren't actually Andrei and I...shhh...</textPath>
                 </text>
             </svg>
+        </div>
+        <div class="aboutItem">
+            <h4>Finally, we settled down to code the website using the skills that we learnt at University.
+            </h4>
+        </div>
+        <div class="aboutItem parentWidth">
+            <img src="images/coding.jpg" class="parentWidth"></img>
         </div>
         <div class="aboutItem">
             <p>
@@ -55,24 +66,19 @@ lang="en-GB" xml:lang="en-GB">
 
 
     <script>
-    // Get the id of the <path> element and the length of <path>
-    var triangle = document.getElementById("triangle");
-    var length = triangle.getTotalLength();
-    // The start position of the drawing
-    triangle.style.strokeDasharray = length;
-    // Hide the triangle by offsetting dash. Remove this line to show the triangle before scroll draw
-    triangle.style.strokeDashoffset = length;
+    // Get the id of the <path> element
+    var curve = document.getElementById("curve");
     // Find scroll percentage on scroll (using cross-browser properties), and offset dash same amount as percentage scrolled
     // window.addEventListener("scroll", myFunction);
     function myFunction() {
         var column = document.getElementById("column");
-        var triangleRect = triangle.getBoundingClientRect();
+        var curveRect = curve.getBoundingClientRect();
         var columnRect = column.getBoundingClientRect();
-        var triangleTopPercent = 1-(triangleRect.top / columnRect.bottom);
+        var curveTopPercent = 1-(curveRect.top / columnRect.bottom);
         // console.log(triangleTopPercent);
         var start = 0.6;
         var end = 0.8;
-        var scrollpercent = (triangleTopPercent/(end-start))+(start/(start-end));
+        var scrollpercent = (curveTopPercent/(end-start))+(start/(start-end));
         if (scrollpercent <= 0) {
             scrollpercent = 0;
         } else if (scrollpercent >= 1) {
@@ -81,7 +87,7 @@ lang="en-GB" xml:lang="en-GB">
         console.log(scrollpercent);
         var draw = length * scrollpercent;
         // Reverse the drawing (when scrolling upwards)
-        triangle.style.strokeDashoffset = length - draw;
+        // triangle.style.strokeDashoffset = length - draw;
         var textPath = document.getElementById("aboutCurveTextPath");
         textPath.setAttribute("startOffset", (-scrollpercent * 2800) + 1200)
     }
