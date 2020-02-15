@@ -97,7 +97,6 @@ text {
     box-shadow: 0 0 5vh 5vh #ffffff;
 }
 
-}
 
 .aboutItem{
     margin-top: 5vh;
@@ -113,7 +112,7 @@ text {
     height: 60vh;
     margin-top: 20vh;
     margin-bottom: 20vh;
-    background-color: #ffffff; 
+    background-color: #ffffff;
     align-items: center;
     color: #421C52;
 }
