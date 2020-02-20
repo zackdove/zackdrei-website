@@ -5,6 +5,7 @@ lang="en-GB" xml:lang="en-GB">
     <meta charset="UTF-8"/>
     <title>Grape</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"
     rel="stylesheet" media="all"/>
 
     <link rel="stylesheet" href="style.css"/>
@@ -13,35 +14,65 @@ lang="en-GB" xml:lang="en-GB">
 </head>
 <body>
 
-    <div class="d-flex flex-column bg-grape text-white" style="height:90vh">
+    <div class="d-flex flex-column bg-grape text-white" style="height:100vh">
 
         <div class="container p-1 text-center mx-auto my-auto">
-            <h4>welcome</h4>
-            <h1 class="display-1">🍇</h1>
-            <h4>to grape</h4>
+            <p>
+            <svg width="40vh" height="20vh" viewBox="0 0 200 100">
+                <path id="top" d="M 20 80 Q 100 30 180 80" stroke="blue" stroke-width="0" fill="none" />
+                <text>
+                    <textPath startOffset="50%" text-anchor="middle" xlink:href="#top">
+                      welcome
+                    </textPath>
+                  </text>
+            </svg>
+            </p>
+            <p>
+            <object data="images/logo.svg" type="image/svg+xml">
+                Wine Logo
+            </object>
+            </p>
+            <p>
+            <svg width="40vh" height="20vh" viewBox="0 0 200 100">
+                <path id="bottom" d="M 20 20 Q 100 70 180 20" stroke="blue" stroke-width="0" fill="none" />
+                <text>
+                    <textPath startOffset="50%" text-anchor="middle" xlink:href="#bottom">
+                      to grape
+                    </textPath>
+                  </text>
+            </svg>
+        </p>
         </div>
         <div class="container text-center">
-            <a href="#slide-anchor" style="text-decoration:inherit; color:inherit"><h1>▼</h1></a>
+            <a href="#slide-anchor" style="text-decoration:inherit; color:inherit">
+                <div class="arrowContainer">
+                <svg class="bounce" width="50" height="50" viewBox="0 0 100 110" fill ="none">
+                    <path stroke="white" d="M 50 0 L 50 100 M 25 75 L 50 100 L 75 75" stroke-width="3"/>
+                </svg>
+            </div>
+            </a>
         </div>
     </div>
 
-    <div class="row text-grape mb-5 no-gutters" style="height:100vh" id="slide-anchor">
+    <div class="row text-grape no-gutters" style="height:100vh" id="slide-anchor">
         <div class="col-6">
-            <a href="placeholder.com" class="sliding-link" style="color:inherit">
+            <a href="about.html" class="sliding-link" style="color:inherit">
                 <div class="d-flex justify-content-center duo-option" style="height:100%" >
-                    <p class="my-auto">info</p>
+                    <p class="my-auto">about</p>
                 </div>
             </a>
         </div>
         <div class="col-6">
-            <a href="/dashboard" style="color:inherit">
+            <a href="login.html" style="color:inherit">
                 <div class="d-flex justify-content-center duo-option" style="height:100%">
-                    <p class="my-auto">dashboard</p>
+                    <p class="my-auto">login</p>
                 </div>
             </a>
         </div>
     </div>
 
 </body>
+
+
 
 </html>
