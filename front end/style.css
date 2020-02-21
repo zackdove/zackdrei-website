@@ -6,6 +6,10 @@ html {
  font-family: "Courier New";
 }
 
+body {
+    margin:0!important;
+}
+
 .duo-option:hover{
     background-color: #421C52;
     color: white;
@@ -14,9 +18,12 @@ html {
     font-size:5vw;
 }
 .bg-grape{
-    background-color:#421C52!important
+    background-color:#421C52!important;
+    color:#FFFFFF;
 }
 .text-grape{color:#421C52!important}
+
+.text-white{color:#FFFFFF}
 
 .btn-grape{color:#fff;background-color:#421C52;border-color:#421C52}
 
@@ -25,6 +32,7 @@ html {
 .inner{
     position:absolute;
 }
+
 
 .marquee {
 line-height: 50px;
@@ -46,7 +54,7 @@ position:absolute;
 }
 
 text {
-    letter-spacing: 1vh;
+    letter-spacing: 0.8em;
     font-size: 15px;
     fill: white;
 }
@@ -75,10 +83,15 @@ text {
 }
 
 .arrowContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: auto auto 1rem auto;
+  position: absolute;
+  bottom: 2vh;
+  width:100vw;
+  height: 6.5vh;
+  text-align:center;
+}
+
+.noLinkStyle{
+    text-decoration:inherit; color:inherit;
 }
 
 .aboutColumn {
@@ -137,6 +150,27 @@ iframe {
     width: 100vw;
     height: 100vh;
     border-style: none;
+    overflow: hidden;
+}
+
+
+.fullScreen {
+    width: 100vw;
+    height: 100vh;
+}
+
+.halfColumn{
+    width: 50vw;
+    height:100vh;
+    float:left;
+    position:relative;
+}
+
+/* Clear floats after the columns */
+.row5:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 
 .underline{
@@ -151,4 +185,14 @@ iframe {
 .parentWidth{
     width: 100%;
     /* max-width: 100%; */
+}
+
+.centerX{
+    text-align:center;
+}
+
+.centerY{
+    position: relative;
+    top: 50%;
+    transform: translateY(-150%);
 }
