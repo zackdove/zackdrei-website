@@ -33,6 +33,18 @@ body {
     position:absolute;
 }
 
+h1, h2, h3, h4, h5{
+    font-weight: normal;
+}
+
+h1{
+    font-size: 4rem;
+}
+
+h4{
+    font-size: 1.5rem;
+}
+
 
 .marquee {
 line-height: 50px;
@@ -108,11 +120,12 @@ text {
     margin-right: 25vw;
     background-color: #ffffff;
     box-shadow: 0 0 5vh 5vh #ffffff;
+    text-align:center;
 }
 
 
 .aboutItem{
-    margin-top: 5vh;
+    margin-top: 3vh;
 }
 
 .menuColumn{

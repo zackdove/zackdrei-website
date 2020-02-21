@@ -4,8 +4,6 @@ lang="en-GB" xml:lang="en-GB">
 <head>
     <meta charset="UTF-8"/>
     <title>Grape</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    rel="stylesheet" media="all"/>
 
     <link rel="stylesheet" href="style.css"/>
 
@@ -45,7 +43,7 @@ lang="en-GB" xml:lang="en-GB">
             <svg width="100%" height="100%" viewBox="0 0 1098.72 89.55">
                 <path id="curve" stroke="blue" stroke-width="0" fill="transparent" d="M0.17,0.23c-70,0,105.85,77.7,276.46,73.2s243.8-61.37,408.77-54.05c172.09,7.64,213.4,92.34,413.28,64.19"></path>
                 <text id="aboutCurveText" width="100%" style="transform:translate3d(0,0,0);">
-                    <textPath id="aboutCurveTextPath" style="transform:translate3d(0,0,0);" alignment-baseline="top" xlink:href="#curve" >These pictures aren't actually Andrei and I...shhh...</textPath>
+                    <textPath id="aboutCurveTextPath" style="transform:translate3d(0,0,0);" alignment-baseline="top" xlink:href="#curve" >These pictures aren't actually Andrei and I ...shhh...</textPath>
                 </text>
             </svg>
         </div>
@@ -77,8 +75,8 @@ lang="en-GB" xml:lang="en-GB">
         var columnRect = column.getBoundingClientRect();
         var curveTopPercent = 1-(curveRect.top / columnRect.bottom);
         // console.log(triangleTopPercent);
-        var start = 0.6;
-        var end = 0.8;
+        var start = 0.5;
+        var end = 0.9;
         var scrollpercent = (curveTopPercent/(end-start))+(start/(start-end));
         if (scrollpercent <= 0) {
             scrollpercent = 0;
@@ -90,7 +88,7 @@ lang="en-GB" xml:lang="en-GB">
         // Reverse the drawing (when scrolling upwards)
         // triangle.style.strokeDashoffset = length - draw;
         var textPath = document.getElementById("aboutCurveTextPath");
-        textPath.setAttribute("startOffset", (-scrollpercent * 2800) + 1200)
+        textPath.setAttribute("startOffset", (-draw * 4000) + 1200)
     }
 </script>
 
