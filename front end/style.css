@@ -209,3 +209,7 @@ iframe {
     top: 50%;
     transform: translateY(-150%);
 }
+
+.psmall{
+    font-size:1vh;
+}
