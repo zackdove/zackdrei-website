@@ -34,8 +34,8 @@ var mysql = require('mysql');
 var connection = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "password",
-  database: "wines"
+  password: "ilovewine",
+  database: "grape"
 });
 
 connection.connect(function(err){
@@ -57,7 +57,7 @@ async function start() {
         paths = new Set();
         paths.add("/");
         let service = http.createServer(handle);
-        service.listen(port, "localhost");
+        service.listen(port);
         let address = "http://localhost";
         if (port != 80) address = address + ":" + port;
         console.log("Server running at", address);
