@@ -213,3 +213,20 @@ iframe {
 .psmall{
     font-size:1vh;
 }
+
+.fullFlexContainer{
+    display: flex;
+    flex-direction: right;
+}
+
+.col25{
+    flex: 0 0 25vw;
+}
+
+.col75{
+    flex: 0 0 75vw;
+}
+
+.pad5{
+    padding: 1vw 1vw 1vw 1vw;
+}
