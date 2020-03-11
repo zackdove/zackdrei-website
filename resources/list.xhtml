@@ -5,7 +5,6 @@ lang="en-GB" xml:lang="en-GB">
     <meta charset="UTF-8"/>
     <title>Grape</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"
     rel="stylesheet" media="all"/>
 
     <link rel="stylesheet" href="style.css"/>
@@ -23,36 +22,36 @@ lang="en-GB" xml:lang="en-GB">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">Country</span>
                     </div>
-                    <input type="text" class="form-control" aria-label="Country" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control" aria-label="Country" aria-describedby="basic-addon1"/>
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">Grape</span>
                     </div>
-                    <input  type="text" class="form-control"  aria-label="Grape" aria-describedby="basic-addon1">
+                    <input  type="text" class="form-control"  aria-label="Grape" aria-describedby="basic-addon1"/>
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">Vintage</span>
                     </div>
-                    <input  type="text" class="form-control" aria-label="Vintage" aria-describedby="basic-addon1">
+                    <input  type="text" class="form-control" aria-label="Vintage" aria-describedby="basic-addon1"/>
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">Colour</span>
                     </div>
-                    <input type="text" class="form-control" aria-label="Colour" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control" aria-label="Colour" aria-describedby="basic-addon1"/>
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">Producer</span>
                     </div>
-                    <input type="text" class="form-control" aria-label="Producer" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control" aria-label="Producer" aria-describedby="basic-addon1"/>
                 </div>
 
                 <input type="submit" class="btn btn-grape btn-block text-white" value="Submit" />
                 <a href="/events" class="btn btn-grape btn-block text-white">Clear</a>
-                <button type="button" class="btn btn-grape btn-block text-white" th:onclick="'javascript:updateEventListFragment();'">Refresh
+                <button type="button" class="btn btn-grape btn-block text-white" onclick="'javascript:updateEventListFragment();'">Refresh
                 </button>
             </form>
         </div>
