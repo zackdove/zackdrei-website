@@ -69,19 +69,22 @@ async function start() {
         let address = "https://grapewebtech.me";
         if (port != 80) address = address + ":" + port;
         console.log("Server running at", address);
+
+        //Redirect HTTP to HTTPS
+        const http = require('http');
+        const hostname = 'grapewebtech.me';
+        const httpServer = http.createServer((request, result) => {
+            result.statusCode = 301;
+            result.setHeader =('Location', `https://${hostname}${request.url}`);
+            result.send();
+        });
+        httpServer.listen(80);
+
     }
     catch (err) { console.log(err); process.exit(1); }
 }
 
-//Redirect HTTP to HTTPS
-const http = require('http');
-const hostname = 'grapewebtech.me';
-const httpServer = http.createServer((request, result) => {
-    result.statusCode = 301;
-    result.setHeader =('Location', `https://${hostname}${request.url}`);
-    result.send();
-});
-httpServer.listen(80);
+
 
 
 // Serve a request by delivering a file.
