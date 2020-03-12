@@ -20,7 +20,6 @@ let root = "./resources"
 // See http://en.wikipedia.org/wiki/List_of_HTTP_status_codes.
 // The file types supported are set up in the defineTypes function.
 // The paths variable is a cache of url paths in the site, to check case.
-let http = require("http");
 let https = require("https");
 let fs = require("fs").promises;
 let OK = 200, NotFound = 404, BadType = 415, Error = 500;
@@ -66,13 +65,22 @@ async function start() {
         };
         let service = https.createServer(options, handle);
         service.listen(port);
-        let address = "https://localhost";
+        let address = "https://grapewebtech.me";
         if (port != 80) address = address + ":" + port;
         console.log("Server running at", address);
     }
     catch (err) { console.log(err); process.exit(1); }
 }
 
+//Redirect HTTP to HTTPS
+const http = require('http');
+const hostname = 'grapewebtech.me';
+const httpServer = http.createServer((request, result) => {
+    result.statusCode = 301;
+    result.setHeader =('Location', 'https://${hostname}${req.url}');
+    result.end();
+});
+httpServer.listen(80);
 
 
 // Serve a request by delivering a file.
