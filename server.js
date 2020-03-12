@@ -66,7 +66,7 @@ async function start() {
         };
         let service = https.createServer(options, handle);
         service.listen(port);
-        let address = "http://localhost";
+        let address = "https://localhost";
         if (port != 80) address = address + ":" + port;
         console.log("Server running at", address);
     }
