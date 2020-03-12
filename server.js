@@ -73,8 +73,10 @@ async function start() {
         //Redirect HTTP to HTTPS
         const http = require('http');
         const hostname = 'grapewebtech.me';
-        const httpServer = http.createServer((request, result) => {
-            result.redirect(`https://${hostname}${request.url}`);
+        const httpServer = http.createServer((req, res) => {
+            res.writeHead(301,{Location: 'http://w3docs.com'});
+            res.end();
+            // result.redirect(`https://${hostname}${request.url}`);
         }).listen(8080);
 
     }
