@@ -60,9 +60,9 @@ async function start() {
         paths = new Set();
         paths.add("/");
         let options = {
-            cert = fs.readFile("/root/sslkey/grapewebtech_me.crt","utf8"),
-            ca = fs.readFile("/root/sslkey/grapewebtech_me.ca-bundle","utf8"),
-            key = fs.readFile("/root/sslkey/grapewebtech_com.key","utf8")
+            cert: fs.readFile("/root/sslkey/grapewebtech_me.crt","utf8"),
+            ca: fs.readFile("/root/sslkey/grapewebtech_me.ca-bundle","utf8"),
+            key: fs.readFile("/root/sslkey/grapewebtech_com.key","utf8")
         };
         let service = https.createServer(options, handle);
         service.listen(port);
