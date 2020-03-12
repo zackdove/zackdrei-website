@@ -136,7 +136,7 @@ function getData(text, url, response){
     connection.query(statement, function(err, results,  fields){
         if (err) throw err;
         results = JSON.stringify(results);
-        prepare(text, results, response);
+        addWineToWinePage(text, results, response);
     });
 }
 
