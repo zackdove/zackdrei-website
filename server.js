@@ -91,27 +91,38 @@ async function handle(request, response) {
     var url = request.url;
     console.log("url=", url);
     // can add a list of wines here
-    if (url =="/wines") getList(response);
+    if (url =="/list") getWineList(response);
     else if (url.startsWith("/wine.html")) getWine(url, response);
     else getFile(url, response);
 }
 
 function getWineList(response){
-    var statement = "SELECT * FROM wines";
-    connection.query(statement, function(err, list, fields){
-        if(err) throw err;
-        deliverList(list, response)
-    });
+  var statement = "SELECT * FROM wines";
+  connection.query(statement, function(err, rows){
+    if(err) throw err;
+    getContentList(rows, response)
+  });
 }
 
-function deliverList(list, response){
-    var text = JSON.stringify(list);
-    deliver(response,"text/plain", text);
+
+async function getContentList(rows, respnse){
+  var content = await fs.readFile(root+"/list.html", "utf8");
+  prepareWineList(rows,respnse,content);
+}
+
+function prepareWineList(rows,response,content){
+  parts = content.split("$");
+  let html = " ";
+  for(var i=0; i<rows.length; i++){
+    var wine = rows[i];
+    html += "<tr><td>"+wine.Country+"</td><td>"+wine.Grape+"</td><td>"+wine.Vintage+"</td><td>"+wine.Colour+"</td><td>"+wine.Producer+"</td>";
+  }
+  html += "</tr>"
+  var page = parts[0] + html + parts[1];
+  deliver(response, "text/html", page);
 }
 
 async function getWine(url, response){
-    // if option is a string then it specifies encoding otherwise paramter is callback function
-    // could have callback function here as a parameter but may not be needed????
     var content = await fs.readFile("./resources/wineTemplate.html","utf8");
     getData(content, url, response);
 
@@ -124,8 +135,6 @@ function getData(text, url, response){
     var statement = "SELECT * FROM wines WHERE ID=" + connection.escape(id);
     connection.query(statement, function(err, results,  fields){
         if (err) throw err;
-        // do something with the tings
-        // convert it from RPD
         results = JSON.stringify(results);
         prepare(text, results, response);
     });
