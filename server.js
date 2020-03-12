@@ -12,7 +12,7 @@
 
 // Change the port to the default 80, if there are no permission issues and port
 // 80 isn't already in use. The root folder corresponds to the "/" url.
-let port = 8080;
+
 let root = "./resources"
 
 // Load the library modules, and define the global constants and variables.
@@ -64,6 +64,7 @@ async function start() {
             key: await fs.readFile("/root/sslkey/grapewebtech_com.key","utf8")
         };
         let service = https.createServer(options, handle);
+        let port = 443;
         service.listen(port);
         let address = "https://grapewebtech.me";
         if (port != 80) address = address + ":" + port;
@@ -80,7 +81,7 @@ const httpServer = http.createServer((request, result) => {
     result.setHeader =('Location', `https://${hostname}${request.url}`);
     result.end();
 });
-httpServer.listen(8080);
+httpServer.listen(80);
 
 
 // Serve a request by delivering a file.
