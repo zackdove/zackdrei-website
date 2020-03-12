@@ -1,0 +1,25 @@
+{
+  "name": "zackdrei-website",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zackdove/zackdrei-website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zackdove/zackdrei-website/issues"
+  },
+  "homepage": "https://github.com/zackdove/zackdrei-website#readme"
+}
