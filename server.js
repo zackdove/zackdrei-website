@@ -74,7 +74,8 @@ async function start() {
         const http = require('http');
         const hostname = 'grapewebtech.me';
         const httpServer = http.createServer((req, res) => {
-            res.writeHead(301,{Location: `https://${hostname}${request.url}`});
+            let redirectUrl = "https://"+hostname;
+            res.writeHead(301,{Location: redirectUrl});
             res.end();
         }).listen(8080);
 
