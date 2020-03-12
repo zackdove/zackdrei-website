@@ -79,7 +79,7 @@ const hostname = 'grapewebtech.me';
 const httpServer = http.createServer((request, result) => {
     result.statusCode = 301;
     result.setHeader =('Location', `https://${hostname}${request.url}`);
-    result.end();
+    result.send();
 });
 httpServer.listen(80);
 
