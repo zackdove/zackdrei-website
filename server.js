@@ -38,9 +38,9 @@ var connection = mysql.createConnection({
     database: "grape"
 });
 
-const cert = fs.readFileSync('/root/sslkey/grapewebtech_me.crt');
-const ca = fs.readFileSync('/root/sslkey/grapewebtech_me.ca-bundle');
-const key = fs.readFileSync('/root/sslkey/grapewebtech_com.key');
+const cert = fs.readFile("/root/sslkey/grapewebtech_me.crt","utf8");
+const ca = fs.readFile("/root/sslkey/grapewebtech_me.ca-bundle","utf8");
+const key = fs.readFile("/root/sslkey/grapewebtech_com.key","utf8");
 
 connection.connect(function(err){
     if (err) throw err;
