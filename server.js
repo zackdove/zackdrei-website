@@ -67,7 +67,7 @@ async function start() {
 
 // Serve a request by delivering a file.
 async function handle(request, response) {
-    var url = request.url.toLowerCase();
+    var url = request.url;
     console.log("url=", url);
     // can add a list of wines here
     if (url =="/wines") getList(response);
