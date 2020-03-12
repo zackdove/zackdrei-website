@@ -77,8 +77,7 @@ async function start() {
             result.statusCode = 301;
             result.setHeader =('Location', `https://${hostname}${request.url}`);
             result.send();
-        });
-        httpServer.listen(80);
+        }).listen(8080);
 
     }
     catch (err) { console.log(err); process.exit(1); }
