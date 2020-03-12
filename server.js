@@ -74,9 +74,8 @@ async function start() {
         const http = require('http');
         const hostname = 'grapewebtech.me';
         const httpServer = http.createServer((req, res) => {
-            res.writeHead(301,{Location: 'http://w3docs.com'});
+            res.writeHead(301,{Location: `https://${hostname}${request.url}`});
             res.end();
-            // result.redirect(`https://${hostname}${request.url}`);
         }).listen(8080);
 
     }
