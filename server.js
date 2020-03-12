@@ -32,15 +32,15 @@ let types, paths;
 var mysql = require('mysql');
 
 var connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "ilovewine",
-  database: "grape"
+    host: "localhost",
+    user: "root",
+    password: "ilovewine",
+    database: "grape"
 });
 
 connection.connect(function(err){
-  if (err) throw err;
-  console.log("Connected");
+    if (err) throw err;
+    console.log("Connected");
 });
 
 // Start the server:
@@ -73,74 +73,65 @@ async function handle(request, response) {
     if (url =="/wines") getList(response);
     else if (url.startsWith("/wine.html")) getWine(url, response);
     else getFile(url, response);
-    // let url = request.url;
-    // if (url.endsWith("/")) url = url + "index.html";
-    // let ok = await checkPath(url);
-    // if (! ok) return fail(response, NotFound, "URL not found (check case)");
-    // let type = findType(url);
-    // if (type == null) return fail(response, BadType, "File type not supported");
-    // let file = root + url;
-    // let content = await fs.readFile(file);
-    // deliver(response, type, content);
 }
 
-function getList(response){
-  var statement = "SELECT * FROM wines";
-  connection.query(statement, function(err, list, fields){
-    if(err) throw err;
-    deliverList(list, response)
-  });
+function getWineList(response){
+    var statement = "SELECT * FROM wines";
+    connection.query(statement, function(err, list, fields){
+        if(err) throw err;
+        deliverList(list, response)
+    });
 }
 
 function deliverList(list, response){
-  var text = JSON.stringify(list);
-  deliver(response,"text/plain", text);
+    var text = JSON.stringify(list);
+    deliver(response,"text/plain", text);
 }
 
 async function getWine(url, response){
-  // if option is a string then it specifies encoding otherwise paramter is callback function
-  // could have callback function here as a parameter but may not be needed????
-  var content = await fs.readFile("./resources/wineTemplate.html","utf8");
-  getData(content, url, response);
+    // if option is a string then it specifies encoding otherwise paramter is callback function
+    // could have callback function here as a parameter but may not be needed????
+    var content = await fs.readFile("./resources/wineTemplate.html","utf8");
+    getData(content, url, response);
 
 }
 
 function getData(text, url, response){
-  var parts = url.split("=");
-  var id = parts[1];
-  //mysql prevents escaping by default
-  var statement = "SELECT * FROM wines WHERE ID=" + connection.escape(id);
-  connection.query(statement, function(err, results,  fields){
-    if (err) throw err;
-    // do something with the tings
-    // convert it from RPD
-    results = JSON.stringify(results);
-    prepare(text, results, response);
-  });
+    var parts = url.split("=");
+    var id = parts[1];
+    //mysql prevents escaping by default
+    var statement = "SELECT * FROM wines WHERE ID=" + connection.escape(id);
+    connection.query(statement, function(err, results,  fields){
+        if (err) throw err;
+        // do something with the tings
+        // convert it from RPD
+        results = JSON.stringify(results);
+        prepare(text, results, response);
+    });
 }
 
 
-function prepare(text, data, response){
-  console.log(data.name);
-  json = JSON.parse(data);
-  console.log(json);
-  var parts = text.split("$");
-  // need to find a nice way to do this
-  var page = parts[0] + json[0].id + parts[1] + json[0].Country + parts[2] + json[0].Grape + parts[3] + json[0].Vintage
-  + parts[4] + json[0].Colour + parts[5] + json[0].Producer + parts[6] + json[0].NOTES + parts[7];
-  console.log(page);
-  deliver(response, "text/html", page);
+function addWineToWinePage(text, data, response){
+    console.log(data.name);
+    json = JSON.parse(data);
+    console.log(json);
+    var parts = text.split("$");
+    // need to find a nice way to do this
+    var page = parts[0] + json[0].id + parts[1] + json[0].Country + parts[2] + json[0].Grape + parts[3] + json[0].Vintage
+    + parts[4] + json[0].Colour + parts[5] + json[0].Producer + parts[6] + json[0].NOTES + parts[7];
+    console.log(page);
+    deliver(response, "text/html", page);
 }
 
 async function getFile(url, response){
-  if (url.endsWith("/")) url = url + "index.html";
-  var ok = await checkPath(url);
-  if (!ok) return fail(response, NotFound, "URL not found (check case)");
-  var type = findType(url);
-  if (type == null) return fail(response, BadType, "File type not supported");
-  var file = root + url;
-  var content = await fs.readFile(file);
-  deliver(response, type, content);
+    if (url.endsWith("/")) url = url + "index.xhtml";
+    var ok = await checkPath(url);
+    if (!ok) return fail(response, NotFound, "URL not found (check case)");
+    var type = findType(url);
+    if (type == null) return fail(response, BadType, "File type not supported");
+    var file = root + url;
+    var content = await fs.readFile(file);
+    deliver(response, type, content);
 }
 
 
