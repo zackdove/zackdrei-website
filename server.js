@@ -76,7 +76,7 @@ async function start() {
         const httpServer = http.createServer((request, result) => {
             result.statusCode = 301;
             result.setHeader =('Location', `https://${hostname}${request.url}`);
-            result.send();
+            result.end();
         }).listen(8080);
 
     }
