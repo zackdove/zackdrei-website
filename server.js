@@ -52,7 +52,7 @@ start();
 async function start() {
     try {
         await fs.access(root);
-        await fs.access(root + "/index.html");
+        await fs.access(root + "/index.xhtml");
         types = defineTypes();
         paths = new Set();
         paths.add("/");
@@ -71,7 +71,7 @@ async function handle(request, response) {
     console.log("url=", url);
     // can add a list of wines here
     if (url =="/wines") getList(response);
-    else if (url.startsWith("/wine.html")) getWine(url, response);
+    else if (url.startsWith("/wine.xhtml")) getWine(url, response);
     else getFile(url, response);
 }
 
@@ -91,7 +91,7 @@ function deliverList(list, response){
 async function getWine(url, response){
     // if option is a string then it specifies encoding otherwise paramter is callback function
     // could have callback function here as a parameter but may not be needed????
-    var content = await fs.readFile("./resources/wineTemplate.html","utf8");
+    var content = await fs.readFile("./resources/wineTemplate.xhtml","utf8");
     getData(content, url, response);
 
 }
