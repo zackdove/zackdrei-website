@@ -38,6 +38,10 @@ var connection = mysql.createConnection({
     database: "grape"
 });
 
+const cert = fs.readFileSync('/root/sslkey/grapewebtech_me.crt');
+const ca = fs.readFileSync('/root/sslkey/grapewebtech_me.ca-bundle');
+const key = fs.readFileSync('/root/sslkey/grapewebtech_com.key');
+
 connection.connect(function(err){
     if (err) throw err;
     console.log("Connected");
@@ -56,7 +60,12 @@ async function start() {
         types = defineTypes();
         paths = new Set();
         paths.add("/");
-        let service = http.createServer(handle);
+        let options = {
+            cert: cert,
+            ca: ca,
+            key:key
+        }
+        let service = https.createServer(options, handle);
         service.listen(port);
         let address = "http://localhost";
         if (port != 80) address = address + ":" + port;
@@ -64,6 +73,8 @@ async function start() {
     }
     catch (err) { console.log(err); process.exit(1); }
 }
+
+
 
 // Serve a request by delivering a file.
 async function handle(request, response) {
