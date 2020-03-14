@@ -68,7 +68,8 @@ function getWineList(response){
     var statement = "SELECT * FROM wines";
     mysqlconnection.query(statement, function(err, wines){
         if(err) throw err;
-        var template = getWineListTemplate();
+        //the +'' is needed to set template to a string
+        var template = getWineListTemplate() + '';
         parts = template.split("$");
         let html = " ";
         for(var i=0; i<wines.length; i++){
@@ -92,7 +93,7 @@ function getWine(url, response){
     var statement = "SELECT * FROM wines WHERE ID=" + connection.escape(id);
     connection.query(statement, function(err, wine){
         if (err) throw err;
-        var template = getWineTemplate();
+        var template = getWineTemplate()+'';
         var parts = template.split("$");
         var page = parts[0] + wine[0].id + parts[1] + wine[0].Country + parts[2] + wine[0].Grape + parts[3] + wine[0].Vintage
         + parts[4] + wine[0].Colour + parts[5] + wine[0].Producer + parts[6] + wine[0].NOTES + parts[7];
