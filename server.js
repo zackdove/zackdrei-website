@@ -69,7 +69,7 @@ function getWineList(response){
     mysqlconnection.query(statement, function(err, wines){
         if(err) throw err;
         var template = getWineListTemplate();
-        parts = content.split("$");
+        parts = template.split("$");
         let html = " ";
         for(var i=0; i<wines.length; i++){
             var wine = wines[i];
