@@ -67,7 +67,7 @@ async function handle(request, response) {
     if (url =="/list") {
         getWineList(response);
     }
-    else if (url.startsWith("/wine")) {
+    else if (url.startsWith("/wine?=")) {
         getWine(url, response);
     }
     else {
@@ -88,7 +88,7 @@ async function getWineList(response){
             html += "<tr><td>"+wine.Country+"</td><td>"+wine.Grape+"</td><td>"+wine.Vintage+"</td><td>"+wine.Colour+"</td><td>"+wine.Producer+"</td></tr>";
         }
         var page = parts[0] + html + parts[1];
-        deliver(response, "text/html", page);
+        deliver(response, "application/xhtml+xml", page);
     });
 }
 
@@ -104,7 +104,7 @@ async function getWine(url, response){
         var parts = template.split("$");
         var page = parts[0] + wine[0].id + parts[1] + wine[0].Country + parts[2] + wine[0].Grape + parts[3] + wine[0].Vintage
         + parts[4] + wine[0].Colour + parts[5] + wine[0].Producer + parts[6] + wine[0].NOTES + parts[7];
-        deliver(response, "text/html", page);
+        deliver(response, "application/xhtml+xml", page);
     });
 }
 
