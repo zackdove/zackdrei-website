@@ -12,47 +12,35 @@ lang="en-GB" xml:lang="en-GB">
 
 </head>
 <body>
-
-
-    <div class="fullFlexContainer justify-content-center pt-3">
+    <div class="fullFlexContainer justify-content-center pad5">
         <div class="col25 pad5">
             <h3>Filters:</h3>
-            <form action="#" method="post">
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1">Country</span>
-                    </div>
-                    <input type="text" class="form-control" aria-label="Country" aria-describedby="basic-addon1"/>
+            <form>
+                <div class="inputContainer">
+                    <label for="country">Country</label>
+                    <input id="country" type="text" name="country"/>
                 </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1">Grape</span>
-                    </div>
-                    <input  type="text" class="form-control"  aria-label="Grape" aria-describedby="basic-addon1"/>
+                <div class="inputContainer">
+                    <label for="grape">Grape</label>
+                    <input id="grape" type="text" name="grape"/>
                 </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1">Vintage</span>
-                    </div>
-                    <input  type="text" class="form-control" aria-label="Vintage" aria-describedby="basic-addon1"/>
+                <div class="inputContainer">
+                    <label for="vintage">Vintage</label>
+                    <input id="vintage" type="text" name="vintage"/>
                 </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1">Colour</span>
-                    </div>
-                    <input type="text" class="form-control" aria-label="Colour" aria-describedby="basic-addon1"/>
+                <div class="inputContainer">
+                    <label for="colour">Colour</label>
+                    <input id="colour" type="text" name="colour"/>
                 </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1">Producer</span>
-                    </div>
-                    <input type="text" class="form-control" aria-label="Producer" aria-describedby="basic-addon1"/>
+                <div class="inputContainer">
+                    <label for="Producer">Producer</label>
+                    <input id="producer" type="text" name="producer"/>
                 </div>
-
-                <input type="submit" class="btn btn-grape btn-block text-white" value="Submit" />
-                <a href="/events" class="btn btn-grape btn-block text-white">Clear</a>
-                <button type="button" class="btn btn-grape btn-block text-white" onclick="'javascript:updateEventListFragment();'">Refresh
-                </button>
+                <div class="inputContainer">
+                    <input type="submit" value="Submit" class="btn2 btn-grape"/>
+                    <button type="button" class="btn2 btn-grape">Clear</button>
+                    <button type="button" class="btn2 btn-grape">Refresh</button>
+                </div>
             </form>
         </div>
         <div id="eventListFragment" class="col75 pad5" style="height: 85vh; overflow:auto">

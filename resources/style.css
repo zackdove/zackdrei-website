@@ -234,3 +234,37 @@ iframe {
 .grapeLogo{
     height: 100%;
 }
+
+.inputContainer{
+    margin-top: 10px;
+    width:100%;
+    float:left;
+}
+
+label{
+    text-align: center;
+    border: 1px solid grey;
+    border-right-style: none;
+    border-radius: 4px 0px 0px 4px;
+    height:3em;
+    width: 25%;
+    float:left;
+    background-color: #e9ecef;
+    display: inline-block;
+    line-height:3em;
+}
+
+input[type=text]{
+    border: 1px solid grey;
+    border-radius: 0px 4px 4px 0px;
+    height:3em;
+    width:75%;
+    float:left;
+}
+
+.btn2{
+    height:2.5em;
+    width:100%;
+    margin-top: 10px;
+    border-radius: 4px;
+}
