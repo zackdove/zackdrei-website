@@ -1,56 +1,23 @@
-// Run a node.js web server for local development of a static web site. Create a
-// site folder, put server.js in it, create a sub-folder called "public", with
-// at least a file "index.html" in it. Start the server with "node server.js &",
-// and visit the site at the address printed on the console.
-//     The server is designed so that a site will still work if you move it to a
-// different platform, by treating the file system as case-sensitive even when
-// it isn't (as on Windows and some Macs). URLs are then case-sensitive.
-//     All HTML files are assumed to have a .html extension and are delivered as
-// application/xhtml+xml for instant feedback on XHTML errors. Content
-// negotiation is not implemented, so old browsers are not supported. Https is
-// not supported. Add to the list of file types in defineTypes, as necessary.
-
-// Change the port to the default 80, if there are no permission issues and port
-// 80 isn't already in use. The root folder corresponds to the "/" url.
-
 let root = "./resources"
-
-// Load the library modules, and define the global constants and variables.
-// Load the promises version of fs, so that async/await can be used.
-// See http://en.wikipedia.org/wiki/List_of_HTTP_status_codes.
-// The file types supported are set up in the defineTypes function.
-// The paths variable is a cache of url paths in the site, to check case.
 let https = require("https");
 let fs = require("fs").promises;
 let OK = 200, NotFound = 404, BadType = 415, Error = 500;
 let types, paths;
 
-//connect to database --> to do: prompt user for password to connect,
-// change it to pool to allow multiple connections??
-//Ian reccomends an embedded database should probs change to sqlite
-
 var mysql = require('mysql');
-
-var connection = mysql.createConnection({
+var mysqlconnection = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "ilovewine",
     database: "grape"
 });
-
-
-
-connection.connect(function(err){
+mysqlconnection.connect(function(err){
     if (err) throw err;
     console.log("Connected");
 });
-
-// Start the server:
+//Start the server
 start();
 
-// Check the site, giving quick feedback if it hasn't been set up properly.
-// Start the http service. Accept only requests from localhost, for security.
-// If successful, the handle function is called for each request.
 async function start() {
     try {
         await fs.access(root);
@@ -69,7 +36,6 @@ async function start() {
         let address = "https://grapewebtech.me";
         if (port != 80) address = address + ":" + port;
         console.log("Server running at", address);
-
         //Redirect HTTP to HTTPS
         const http = require('http');
         const hostname = 'grapewebtech.me';
@@ -83,75 +49,53 @@ async function start() {
     catch (err) { console.log(err); process.exit(1); }
 }
 
-
-
-
 // Serve a request by delivering a file.
 async function handle(request, response) {
     var url = request.url;
     console.log("url=", url);
-    // can add a list of wines here
-    if (url =="/list") getWineList(response);
-    else if (url.startsWith("/wine.html")) getWine(url, response);
-    else getFile(url, response);
+    if (url =="/list") {
+        getWineList(response);
+    }
+    else if (url.startsWith("/wine")) {
+        getWine(url, response);
+    }
+    else {
+        getFile(url, response);
+    }
 }
 
-function getWineList(response){
-  var statement = "SELECT * FROM wines";
-  connection.query(statement, function(err, rows){
-    if(err) throw err;
-    getContentList(rows, response)
-  });
-}
-
-
-async function getContentList(rows, respnse){
-  var content = await fs.readFile(root+"/list.html", "utf8");
-  prepareWineList(rows,respnse,content);
-}
-
-function prepareWineList(rows,response,content){
-  parts = content.split("$");
-  let html = " ";
-  for(var i=0; i<rows.length; i++){
-    var wine = rows[i];
-    html += "<tr><td>"+wine.Country+"</td><td>"+wine.Grape+"</td><td>"+wine.Vintage+"</td><td>"+wine.Colour+"</td><td>"+wine.Producer+"</td>";
-  }
-  html += "</tr>"
-  var page = parts[0] + html + parts[1];
-  deliver(response, "text/html", page);
+async function getWineList(response){
+    var statement = "SELECT * FROM wines";
+    mysqlconnection.query(statement, function(err, wines){
+        if(err) throw err;
+        var template = await fs.readFile(root+"/list.html", "utf8");
+        parts = content.split("$");
+        let html = " ";
+        for(var i=0; i<wines.length; i++){
+            var wine = wines[i];
+            html += "<tr><td>"+wine.Country+"</td><td>"+wine.Grape+"</td><td>"+wine.Vintage+"</td><td>"+wine.Colour+"</td><td>"+wine.Producer+"</td></tr>";
+        }
+        var page = parts[0] + html + parts[1];
+        deliver(response, "text/html", page);
+    });
 }
 
 async function getWine(url, response){
-    var content = await fs.readFile("./resources/wineTemplate.html","utf8");
-    getData(content, url, response);
-
-}
-
-function getData(text, url, response){
-    var parts = url.split("=");
-    var id = parts[1];
+    var urlparts = url.split("=");
+    var wineid = parts[1];
     //mysql prevents escaping by default
     var statement = "SELECT * FROM wines WHERE ID=" + connection.escape(id);
-    connection.query(statement, function(err, results,  fields){
+    connection.query(statement, function(err, wine){
         if (err) throw err;
-        results = JSON.stringify(results);
-        addWineToWinePage(text, results, response);
+        var template = await fs.readFile("./resources/wineTemplate.html","utf8");
+        var parts = template.split("$");
+        var page = parts[0] + wine[0].id + parts[1] + wine[0].Country + parts[2] + wine[0].Grape + parts[3] + wine[0].Vintage
+        + parts[4] + wine[0].Colour + parts[5] + wine[0].Producer + parts[6] + wine[0].NOTES + parts[7];
+        deliver(response, "text/html", page);
     });
 }
 
 
-function addWineToWinePage(text, data, response){
-    console.log(data.name);
-    json = JSON.parse(data);
-    console.log(json);
-    var parts = text.split("$");
-    // need to find a nice way to do this
-    var page = parts[0] + json[0].id + parts[1] + json[0].Country + parts[2] + json[0].Grape + parts[3] + json[0].Vintage
-    + parts[4] + json[0].Colour + parts[5] + json[0].Producer + parts[6] + json[0].NOTES + parts[7];
-    console.log(page);
-    deliver(response, "text/html", page);
-}
 
 async function getFile(url, response){
     if (url.endsWith("/")) url = url + "index.html";
@@ -163,9 +107,6 @@ async function getFile(url, response){
     var content = await fs.readFile(file);
     deliver(response, type, content);
 }
-
-
-
 
 // Check if a path is in or can be added to the set of site paths, in order
 // to ensure case-sensitivity.
