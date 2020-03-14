@@ -81,18 +81,18 @@ function getWineList(response){
 }
 
 async function getWineListTemplate(){
-    var template = await fs.readFile(root+"/list.html", "utf8");
+    var template = await fs.readFile(root+"/listTemplate.html", "utf8");
     return template;
 }
 
-async function getWine(url, response){
+function getWine(url, response){
     var urlparts = url.split("=");
     var wineid = parts[1];
     //mysql prevents escaping by default
     var statement = "SELECT * FROM wines WHERE ID=" + connection.escape(id);
     connection.query(statement, function(err, wine){
         if (err) throw err;
-        var template = await fs.readFile("./resources/wineTemplate.html","utf8");
+        var template = await getWineTemplate;
         var parts = template.split("$");
         var page = parts[0] + wine[0].id + parts[1] + wine[0].Country + parts[2] + wine[0].Grape + parts[3] + wine[0].Vintage
         + parts[4] + wine[0].Colour + parts[5] + wine[0].Producer + parts[6] + wine[0].NOTES + parts[7];
@@ -100,6 +100,10 @@ async function getWine(url, response){
     });
 }
 
+async function getWineTemplate(){
+    var template = await fs.readFile(root+"/wineTemplate.html", "utf8");
+    return template;
+}
 
 
 async function getFile(url, response){
