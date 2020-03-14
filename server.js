@@ -1,9 +1,16 @@
 let root = "./resources"
 let https = require("https");
+const http = require('http');
 let fs = require("fs").promises;
 let OK = 200, NotFound = 404, BadType = 415, Error = 500;
 let types, paths;
-
+var mode;
+if (process.argv[2] == undefined){
+    mode = "dev";
+} else {
+    mode = process.argv[2];
+}
+console.log("mode = "+mode);
 var mysql = require('mysql');
 var mysqlconnection = mysql.createConnection({
     host: "localhost",
@@ -25,26 +32,30 @@ async function start() {
         types = defineTypes();
         paths = new Set();
         paths.add("/");
-        let options = {
-            cert: await fs.readFile("/root/sslkey/grapewebtech_me.crt","utf8"),
-            ca: await fs.readFile("/root/sslkey/grapewebtech_me.ca-bundle","utf8"),
-            key: await fs.readFile("/root/sslkey/grapewebtech_com.key","utf8")
-        };
-        let service = https.createServer(options, handle);
-        let port = 443;
-        service.listen(port);
-        let address = "https://grapewebtech.me";
-        if (port != 80) address = address + ":" + port;
-        console.log("Server running at", address);
-        //Redirect HTTP to HTTPS
-        const http = require('http');
-        const hostname = 'grapewebtech.me';
-        const httpServer = http.createServer((req, res) => {
-            let redirectUrl = "https://"+hostname;
-            res.writeHead(301,{Location: redirectUrl});
-            res.end();
-        }).listen(8080);
-
+        if (mode == "dev"){
+            let service = http.createServer(handle);
+            service.listen(8080);
+            console.log("Server running in dev mode localhost:8080");
+        } else if (mode == "prod"){
+            let options = {
+                cert: await fs.readFile("/root/sslkey/grapewebtech_me.crt","utf8"),
+                ca: await fs.readFile("/root/sslkey/grapewebtech_me.ca-bundle","utf8"),
+                key: await fs.readFile("/root/sslkey/grapewebtech_com.key","utf8")
+            };
+            let service = https.createServer(options, handle);
+            let port = 443;
+            service.listen(port);
+            let address = "https://grapewebtech.me";
+            if (port != 80) address = address + ":" + port;
+            console.log("Server running at", address);
+            //Redirect HTTP to HTTPS
+            const hostname = 'grapewebtech.me';
+            const httpServer = http.createServer((req, res) => {
+                let redirectUrl = "https://"+hostname;
+                res.writeHead(301,{Location: redirectUrl});
+                res.end();
+            }).listen(8080);
+        }
     }
     catch (err) { console.log(err); process.exit(1); }
 }
@@ -86,26 +97,20 @@ async function getWineListTemplate(){
     return template;
 }
 
-function getWine(url, response){
+async function getWine(url, response){
     var urlparts = url.split("=");
-    var wineid = parts[1];
+    var wineid = urlparts[1];
     //mysql prevents escaping by default
-    var statement = "SELECT * FROM wines WHERE ID=" + connection.escape(id);
-    connection.query(statement, function(err, wine){
+    var template = await fs.readFile(root+"/wineTemplate.html", "utf8");
+    var statement = "SELECT * FROM wines WHERE ID=" + mysqlconnection.escape(wineid);
+    mysqlconnection.query(statement, function(err, wine){
         if (err) throw err;
-        var template = getWineTemplate()+'';
         var parts = template.split("$");
         var page = parts[0] + wine[0].id + parts[1] + wine[0].Country + parts[2] + wine[0].Grape + parts[3] + wine[0].Vintage
         + parts[4] + wine[0].Colour + parts[5] + wine[0].Producer + parts[6] + wine[0].NOTES + parts[7];
         deliver(response, "text/html", page);
     });
 }
-
-async function getWineTemplate(){
-    var template = await fs.readFile(root+"/wineTemplate.html", "utf8");
-    return template;
-}
-
 
 async function getFile(url, response){
     if (url.endsWith("/")) url = url + "index.html";
