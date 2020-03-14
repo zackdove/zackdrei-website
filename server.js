@@ -64,11 +64,11 @@ async function handle(request, response) {
     }
 }
 
-async function getWineList(response){
+function getWineList(response){
     var statement = "SELECT * FROM wines";
     mysqlconnection.query(statement, function(err, wines){
         if(err) throw err;
-        var template = await fs.readFile(root+"/list.html", "utf8");
+        var template = getWineListTemplate;
         parts = content.split("$");
         let html = " ";
         for(var i=0; i<wines.length; i++){
@@ -78,6 +78,11 @@ async function getWineList(response){
         var page = parts[0] + html + parts[1];
         deliver(response, "text/html", page);
     });
+}
+
+async function getWineListTemplate(){
+    var template = await fs.readFile(root+"/list.html", "utf8");
+    return template;
 }
 
 async function getWine(url, response){
