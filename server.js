@@ -62,10 +62,16 @@ async function start() {
 
 // Serve a request by delivering a file.
 async function handle(request, response) {
+    // console.log(request);
+    console.log("response = "+response);
     var url = request.url;
     console.log("url=", url);
     if (url =="/list") {
         getWineList(response);
+    }
+    else if (url.startsWith("/list/filter?")){
+        console.log("!!!!");
+        getFilteredWineList(url, response);
     }
     else if (url.startsWith("/wine?=")) {
         getWine(url, response);
@@ -76,7 +82,32 @@ async function handle(request, response) {
 }
 
 async function getWineList(response){
+    console.log("response1 = "+response);
     var statement = "SELECT * FROM wines";
+    var template = await fs.readFile(root+"/listTemplate.html", "utf8");
+    mysqlconnection.query(statement, function(err, wines){
+        if(err) throw err;
+        parts = template.split("$");
+        let html = " ";
+        for(var i=0; i<wines.length; i++){
+            var wine = wines[i];
+            html += "<tr><td>"+wine.Country+"</td><td>"+wine.Grape+"</td><td>"+wine.Vintage+"</td><td>"+wine.Colour+"</td><td>"+wine.Producer+"</td><td><button type='button' class='btn2 btn-grape infoButton'>ⓘ</button></td></tr>";
+        }
+        var page = parts[0] + html + parts[1];
+        console.log("response44 = "+response);
+        deliver(response, "application/xhtml+xml", page);
+    });
+}
+
+async function getFilteredWineList(url, response){
+    var urlparts = url.split("&");
+    var country = urlparts[0].split("=")[1];
+    var grape = urlparts[1].split("=")[1];
+    var vintage = urlparts[2].split("=")[1];
+    var colour = urlparts[3].split("=")[1];
+    var producer = urlparts[4].split("=")[1];
+    var statement = "SELECT * FROM wines WHERE Country='"+country+"' AND Grape='"+grape+"' AND Vintage='"+vintage+"' AND Colour='"+colour+"' AND Producer='"+producer+"'";
+    console.log(statement);
     var template = await fs.readFile(root+"/listTemplate.html", "utf8");
     mysqlconnection.query(statement, function(err, wines){
         if(err) throw err;
@@ -85,13 +116,12 @@ async function getWineList(response){
         let html = " ";
         for(var i=0; i<wines.length; i++){
             var wine = wines[i];
-            html += "<tr><td>"+wine.Country+"</td><td>"+wine.Grape+"</td><td>"+wine.Vintage+"</td><td>"+wine.Colour+"</td><td>"+wine.Producer+"</td></tr>";
+            html += "<tr><td>"+wine.Country+"</td><td>"+wine.Grape+"</td><td>"+wine.Vintage+"</td><td>"+wine.Colour+"</td><td>"+wine.Producer+"</td><td><button type='button' class='btn2 btn-grape infoButton'>ⓘ</button></td></tr>";
         }
         var page = parts[0] + html + parts[1];
         deliver(response, "application/xhtml+xml", page);
     });
 }
-
 
 async function getWine(url, response){
     var urlparts = url.split("=");
@@ -119,8 +149,6 @@ async function getFile(url, response){
     deliver(response, type, content);
 }
 
-// Check if a path is in or can be added to the set of site paths, in order
-// to ensure case-sensitivity.
 async function checkPath(path) {
     if (! paths.has(path)) {
         let n = path.lastIndexOf("/", path.length - 2);
@@ -131,7 +159,6 @@ async function checkPath(path) {
     return paths.has(path);
 }
 
-// Add the files and subfolders in a folder to the set of site paths.
 async function addContents(folder) {
     let folderBit = 1 << 14;
     let names = await fs.readdir(root + folder);
@@ -143,7 +170,6 @@ async function addContents(folder) {
     }
 }
 
-// Find the content type to respond with, or undefined.
 function findType(url) {
     let dot = url.lastIndexOf(".");
     let extension = url.substring(dot + 1);
@@ -152,6 +178,7 @@ function findType(url) {
 
 // Deliver the file that has been read in to the browser.
 function deliver(response, type, content) {
+    console.log("response2= "+response);
     let typeHeader = { "Content-Type": type };
     response.writeHead(OK, typeHeader);
     response.write(content);

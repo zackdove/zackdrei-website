@@ -4,70 +4,60 @@ lang="en-GB" xml:lang="en-GB">
 <head>
     <meta charset="UTF-8"/>
     <title>Grape</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    rel="stylesheet" media="all"/>
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    rel="stylesheet" media="all"/> -->
 
-    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="/style.css"/>
 
 
 </head>
 <body>
     <div class="fullFlexContainer justify-content-center pad5">
-        <div class="col25 pad5">
+        <div class="col25 mar5">
             <h3>Filters:</h3>
-            <form>
-                <div class="inputContainer">
+            <form method="get" action="/list/filter">
+                <fieldset>
                     <label for="country">Country</label>
                     <input id="country" type="text" name="country"/>
-                </div>
-                <div class="inputContainer">
+                </fieldset>
+                <fieldset>
                     <label for="grape">Grape</label>
                     <input id="grape" type="text" name="grape"/>
-                </div>
-                <div class="inputContainer">
+                </fieldset>
+                <fieldset>
                     <label for="vintage">Vintage</label>
                     <input id="vintage" type="text" name="vintage"/>
-                </div>
-                <div class="inputContainer">
+                </fieldset>
+                <fieldset>
                     <label for="colour">Colour</label>
                     <input id="colour" type="text" name="colour"/>
-                </div>
-                <div class="inputContainer">
+                </fieldset>
+                <fieldset>
                     <label for="Producer">Producer</label>
                     <input id="producer" type="text" name="producer"/>
-                </div>
-                <div class="inputContainer">
+                </fieldset>
+                <fieldset>
                     <input type="submit" value="Submit" class="btn2 btn-grape"/>
-                    <button type="button" class="btn2 btn-grape">Clear</button>
+                    <button type="button" class="btn2 btn-grape" onclick="document.location = '/list'">Clear</button>
                     <button type="button" class="btn2 btn-grape">Refresh</button>
-                </div>
+                </fieldset>
             </form>
         </div>
-        <div id="eventListFragment" class="col75 pad5" style="height: 85vh; overflow:auto">
+        <div id="eventListFragment" class="tableContainer col70 mar5">
             <table class="table">
                 <thead>
-                <tr>
-                    <th>Country</th>
-                    <th>Grape</th>
-                    <th>Vintage</th>
-                    <th>Colour</th>
-                    <th>Producer</th>
-                    <th></th>
-                </tr>
-                </thead>$
-                <!-- <tr>
-                    <td class="align-middle"><div class="flag" ></div></td>
-                    <td class="align-middle"><span /></td>
-                    <td class="align-middle"><span /></td>
-                    <td class="align-middle"><span /></td>
-                    <td class="align-middle"><span /></td>
-                    <td class="align-middle">
-                        <a role="button" class="btn btn-grape text-white"
-                            href="#" target="_blank">
-                            ⓘ
-                        </a>
-                    </td>
-                </tr> -->
+                    <tr>
+                        <th>Country</th>
+                        <th>Grape</th>
+                        <th>Vintage</th>
+                        <th>Colour</th>
+                        <th>Producer</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    $
+                </tbody>
             </table>
         </div>
     </div>

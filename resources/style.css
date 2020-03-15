@@ -220,25 +220,38 @@ iframe {
 }
 
 .col25{
-    flex: 0 0 25vw;
+    flex: 0 0 23vw;
 }
 
-.col75{
-    flex: 0 0 75vw;
+.col70{
+    flex: 0 0 70vw;
 }
 
 .pad5{
     padding: 1vw 1vw 1vw 1vw;
 }
 
+.mar5{
+    margin: 1vw;
+}
+
 .grapeLogo{
     height: 100%;
 }
 
-.inputContainer{
+.buttonGroup{
     margin-top: 10px;
     width:100%;
     float:left;
+    font-size:4em;
+}
+
+fieldset{
+    border-style: none;
+    padding: 10px 0px 0px 0px;
+    margin: 0px;
+    height: 3rem;
+    line-height:3rem;
 }
 
 label{
@@ -246,25 +259,62 @@ label{
     border: 1px solid grey;
     border-right-style: none;
     border-radius: 4px 0px 0px 4px;
-    height:3em;
+    height:inherit;
     width: 25%;
     float:left;
     background-color: #e9ecef;
     display: inline-block;
-    line-height:3em;
+    padding: 0px;
+    margin: 0px;
+    font-size:inherit;
 }
 
 input[type=text]{
     border: 1px solid grey;
     border-radius: 0px 4px 4px 0px;
-    height:3em;
-    width:75%;
+    height:inherit;
+    width:74%;
     float:left;
+    padding: 0px;
+    margin: 0px;
+    text-align:center;
+    font-size:inherit;
 }
 
 .btn2{
-    height:2.5em;
+    height:3rem;
     width:100%;
     margin-top: 10px;
     border-radius: 4px;
+    font-size:inherit;
+}
+
+.tableContainer{
+    height: 85vh;
+    overflow:auto;
+}
+
+table{
+    width:100%;
+    border-collapse: collapse;
+    font-size: 1.3rem;
+}
+
+thead{
+    border-bottom: 1px solid lightgrey;
+}
+
+th,td{
+    text-align:left;
+    height: 50px;
+}
+
+
+.borderTop{
+    border: 1px solid black;
+}
+
+.infoButton{
+    width: 2em;
+    height:2em;
 }
