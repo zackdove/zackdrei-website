@@ -87,13 +87,12 @@ async function getWineList(response){
     var template = await fs.readFile(root+"/listTemplate.html", "utf8");
     mysqlconnection.query(statement, function(err, wines){
         if(err) throw err;
-        parts = template.split("$");
-        let html = " ";
+        let insertion = " ";
         for(var i=0; i<wines.length; i++){
             var wine = wines[i];
-            html += "<tr><td>"+wine.Country+"</td><td>"+wine.Grape+"</td><td>"+wine.Vintage+"</td><td>"+wine.Colour+"</td><td>"+wine.Producer+"</td><td><button type='button' class='btn2 btn-grape infoButton'>ⓘ</button></td></tr>";
+            insertion += "<tr><td>"+wine.Country+"</td><td>"+wine.Grape+"</td><td>"+wine.Vintage+"</td><td>"+wine.Colour+"</td><td>"+wine.Producer+"</td><td><button type='button' class='btn2 btn-grape infoButton'>ⓘ</button></td></tr>";
         }
-        var page = parts[0] + html + parts[1];
+        var page = template.replace(/\$wines/gi, insertion);
         console.log("response44 = "+response);
         deliver(response, "application/xhtml+xml", page);
     });
@@ -106,22 +105,57 @@ async function getFilteredWineList(url, response){
     var vintage = urlparts[2].split("=")[1];
     var colour = urlparts[3].split("=")[1];
     var producer = urlparts[4].split("=")[1];
-    var statement = "SELECT * FROM wines WHERE Country='"+country+"' AND Grape='"+grape+"' AND Vintage='"+vintage+"' AND Colour='"+colour+"' AND Producer='"+producer+"'";
+    if (country != "" || grape != "" || vintage!=""||colour!=""||producer!=""){
+        var statement = "SELECT * FROM wines WHERE ";
+        if (country!=""){
+            statement+="Country='"+country+"' ";
+        }
+        if (grape!=""){
+            statement+="Grape='"+grape+"' ";
+        }
+        if (vintage!=""){
+            statement+="Vintage='"+vintage+"' ";
+        }
+        if (colour!=""){
+            statement+="Colour='"+colour+"' ";
+        }
+        if (producer!=""){
+            statement+="Producer='"+producer+"' ";
+        }
+    } else {
+        var statement = "SELECT * FROM wines";
+    }
     console.log(statement);
     var template = await fs.readFile(root+"/listTemplate.html", "utf8");
     mysqlconnection.query(statement, function(err, wines){
         if(err) throw err;
         //the +'' is needed to set template to a string
-        parts = template.split("$");
-        let html = " ";
+        // parts = template.split("$");
+        let insertion = " ";
         for(var i=0; i<wines.length; i++){
             var wine = wines[i];
-            html += "<tr><td>"+wine.Country+"</td><td>"+wine.Grape+"</td><td>"+wine.Vintage+"</td><td>"+wine.Colour+"</td><td>"+wine.Producer+"</td><td><button type='button' class='btn2 btn-grape infoButton'>ⓘ</button></td></tr>";
+            insertion += "<tr><td>"+wine.Country+"</td><td>"+wine.Grape+"</td><td>"+wine.Vintage+"</td><td>"+wine.Colour+"</td><td>"+wine.Producer+"</td><td><button type='button' class='btn2 btn-grape infoButton'>ⓘ</button></td></tr>";
         }
-        var page = parts[0] + html + parts[1];
+        // var page = parts[0] + html + parts[1];
+        var page = template.replace(/\$wines/gi, insertion);
         deliver(response, "application/xhtml+xml", page);
     });
 }
+
+//Not needed since string.replace does this
+// function replaceWith(page, old, new){
+//     var result="";
+//     var parts = page.split(old);
+//     if (parts.length>1){
+//         for (var i=0; i<parts.length-1; i++){
+//             result+= parts[i]+new;
+//         }
+//         result+= parts[parts.length-1];
+//         return result;
+//     } else {
+//         return page;
+//     }
+// }
 
 async function getWine(url, response){
     var urlparts = url.split("=");
