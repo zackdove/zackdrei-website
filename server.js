@@ -67,11 +67,11 @@ async function handle(request, response) {
     var url = request.url;
     console.log("url=", url);
     if (url =="/list") {
-        getWineList(response);
+        getWineList("http://localhost:8080/list/filter?country=&grape=&vintage=&colour=&producer=",response);
     }
     else if (url.startsWith("/list/filter?")){
         console.log("!!!!");
-        getFilteredWineList(url, response);
+        getWineList(url, response);
     }
     else if (url.startsWith("/wine?=")) {
         getWine(url, response);
@@ -81,24 +81,7 @@ async function handle(request, response) {
     }
 }
 
-async function getWineList(response){
-    console.log("response1 = "+response);
-    var statement = "SELECT * FROM wines";
-    var template = await fs.readFile(root+"/listTemplate.html", "utf8");
-    mysqlconnection.query(statement, function(err, wines){
-        if(err) throw err;
-        let insertion = " ";
-        for(var i=0; i<wines.length; i++){
-            var wine = wines[i];
-            insertion += "<tr><td>"+wine.Country+"</td><td>"+wine.Grape+"</td><td>"+wine.Vintage+"</td><td>"+wine.Colour+"</td><td>"+wine.Producer+"</td><td><button type='button' class='btn2 btn-grape infoButton'>ⓘ</button></td></tr>";
-        }
-        var page = template.replace(/\$wines/gi, insertion);
-        console.log("response44 = "+response);
-        deliver(response, "application/xhtml+xml", page);
-    });
-}
-
-async function getFilteredWineList(url, response){
+async function getWineList(url, response){
     var urlparts = url.split("&");
     var country = urlparts[0].split("=")[1];
     var grape = urlparts[1].split("=")[1];
@@ -108,19 +91,22 @@ async function getFilteredWineList(url, response){
     if (country != "" || grape != "" || vintage!=""||colour!=""||producer!=""){
         var statement = "SELECT * FROM wines WHERE ";
         if (country!=""){
-            statement+="Country='"+country+"' ";
+            statement+="Country='"+country+"' AND ";
         }
         if (grape!=""){
-            statement+="Grape='"+grape+"' ";
+            statement+="Grape='"+grape+"' AND ";
         }
         if (vintage!=""){
-            statement+="Vintage='"+vintage+"' ";
+            statement+="Vintage='"+vintage+"' AND ";
         }
         if (colour!=""){
-            statement+="Colour='"+colour+"' ";
+            statement+="Colour='"+colour+"' AND ";
         }
         if (producer!=""){
-            statement+="Producer='"+producer+"' ";
+            statement+="Producer='"+producer+"'";
+        }
+        if (statement.endsWith("AND ")){
+            statement = statement.slice(0, statement.length-4);
         }
     } else {
         var statement = "SELECT * FROM wines";
@@ -138,6 +124,11 @@ async function getFilteredWineList(url, response){
         }
         // var page = parts[0] + html + parts[1];
         var page = template.replace(/\$wines/gi, insertion);
+        var page = page.replace(/\$country/gi, country);
+        var page = page.replace(/\$grape/gi, grape);
+        var page = page.replace(/\$vintage/gi, vintage);
+        var page = page.replace(/\$colour/gi, colour);
+        var page = page.replace(/\$producer/gi, producer);
         deliver(response, "application/xhtml+xml", page);
     });
 }
