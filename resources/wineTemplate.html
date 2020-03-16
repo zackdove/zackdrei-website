@@ -4,9 +4,6 @@ lang="en-GB" xml:lang="en-GB">
 <head>
     <meta charset="UTF-8"/>
     <title>Grape</title>
-<!--   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"
-    rel="stylesheet" media="all"/> -->
 
     <link rel="stylesheet" href="style.css"/>
 
@@ -14,17 +11,18 @@ lang="en-GB" xml:lang="en-GB">
 </head>
 <body>
 
-<div class="container-fluid pt-1">
-        <div class="card text-white bg-grape mx-auto mt-5" style="max-width:30rem">
-            <div class="card-header">
-                <h3>
+        <div class="wineCard">
+            <div class="wineCardHead bg-grape">
+                <div class="wineCardTitle">
                     Wine
-                    <button onclick="javascript:window.close();" type="button" class="close btn-grape" aria-label="Close">
-                        <span aria-hidden="true">x</span>
+                </div>
+                <div class="closeButtonContainer">
+                    <button onclick="javascript:window.close();" type="button" class="closeButton">
+                        x
                     </button>
-                </h3>
+                </div>
             </div>
-            <div class="card-body bg-white">
+            <div class="wineCardBody">
                 <div class="table-responsive">
                     <table class="table table-borderless">
                         <tr>
@@ -32,7 +30,7 @@ lang="en-GB" xml:lang="en-GB">
                             <td>$<span/></td>
                         </tr>
                         <tr>
-                            <th>Country</th>
+                            <th>Country:</th>
                             <td>$<span/></td>
                         </tr>
                         <tr>
@@ -64,7 +62,6 @@ lang="en-GB" xml:lang="en-GB">
                     </table>
                 </div>
             </div>
-        </div>
-</div>
+    </div>
 </body>
 </html>

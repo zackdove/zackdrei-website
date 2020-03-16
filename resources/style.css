@@ -318,3 +318,63 @@ th,td{
     width: 2em;
     height:2em;
 }
+
+.wineCard{
+    display:flex;
+    flex-direction: column;
+    width: 40vw;
+    margin-left: 30vw;
+    margin-right: 30vw;
+    margin-top: 10vh;
+    align-items: center;
+    /* border: 1px solid grey;
+    border-radius: 4px; */
+    /* overflow:auto; */
+}
+
+.wineCardHead{
+    height:4rem;
+    line-height:4rem;
+    font-size:2rem;
+    width:40vw;
+    border-top: 1px solid grey;
+    border-left: 1px solid grey;
+    border-right: 1px solid grey;
+    border-radius: 6px 6px 0px 0px;
+    float:left;
+}
+
+.wineCardBody{
+    padding: 1vw 2vw 0rem 2vw;
+    overflow:auto;
+    border-bottom: 1px solid grey;
+    border-left: 1px solid grey;
+    border-right: 1px solid grey;
+    border-radius: 4px;
+    height: 60vh;
+    border-radius: 0px 0px 6px 6px;
+    width:36vw;
+}
+
+.closeButton{
+    background-color:transparent;
+    color: white;
+    font-family: arial;
+    border: none;
+    font-size:1.7rem;
+}
+
+.wineCardTitle{
+    width: 20vw;
+    /* background-color:red; */
+    float:left;
+    text-align:center;
+    padding-left:10vw;
+}
+
+.closeButtonContainer{
+    width:6vw;
+    /* background-color:green; */
+    float:right;
+    text-align:center;
+}

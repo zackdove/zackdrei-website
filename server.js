@@ -120,7 +120,7 @@ async function getWineList(url, response){
         let insertion = " ";
         for(var i=0; i<wines.length; i++){
             var wine = wines[i];
-            insertion += "<tr><td>"+wine.Country+"</td><td>"+wine.Grape+"</td><td>"+wine.Vintage+"</td><td>"+wine.Colour+"</td><td>"+wine.Producer+"</td><td><button type='button' class='btn2 btn-grape infoButton'>ⓘ</button></td></tr>";
+            insertion += "<tr><td>"+wine.Country+"</td><td>"+wine.Grape+"</td><td>"+wine.Vintage+"</td><td>"+wine.Colour+"</td><td>"+wine.Producer+"</td><td><button type='button' class='btn2 btn-grape infoButton' onclick='document.location = `/wine?="+wine.id+"`'>ⓘ</button></td></tr>";
         }
         // var page = parts[0] + html + parts[1];
         var page = template.replace(/\$wines/gi, insertion);
