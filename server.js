@@ -1,6 +1,7 @@
 let root = "./resources"
 let https = require("https");
 const http = require('http');
+const { parse } = require('querystring');
 let fs = require("fs").promises;
 let OK = 200, NotFound = 404, BadType = 415, Error = 500;
 let types, paths;
@@ -63,9 +64,10 @@ async function start() {
 // Serve a request by delivering a file.
 async function handle(request, response) {
     // console.log(request);
-    console.log("response = "+response);
+    // console.log("response = "+response);
     var url = request.url;
-    console.log("url=", url);
+    var method = request.method;
+    console.log(method, url);
     if (url =="/list") {
         getWineList("http://localhost:8080/list/filter?country=&grape=&vintage=&colour=&producer=",response);
     }
@@ -75,6 +77,12 @@ async function handle(request, response) {
     }
     else if (url.startsWith("/wine?=")) {
         getWine(url, response);
+    }
+    else if (url == "/add" && method=='GET'){
+        getAddWine(response);
+    }
+    else if (url == "/add" && method=='POST'){
+        postAddWine(request, response);
     }
     else {
         getFile(url, response);
@@ -133,20 +141,6 @@ async function getWineList(url, response){
     });
 }
 
-//Not needed since string.replace does this
-// function replaceWith(page, old, new){
-//     var result="";
-//     var parts = page.split(old);
-//     if (parts.length>1){
-//         for (var i=0; i<parts.length-1; i++){
-//             result+= parts[i]+new;
-//         }
-//         result+= parts[parts.length-1];
-//         return result;
-//     } else {
-//         return page;
-//     }
-// }
 
 async function getWine(url, response){
     var urlparts = url.split("=");
@@ -161,6 +155,38 @@ async function getWine(url, response){
         + parts[4] + wine[0].Colour + parts[5] + wine[0].Producer + parts[6] + wine[0].NOTES + parts[7];
         deliver(response, "application/xhtml+xml", page);
     });
+}
+
+async function getAddWine(response){
+    var page = await fs.readFile(root+"/addWine.html", "utf8");
+    deliver(response, "application/xhtml+xml", page);
+}
+
+async function postAddWine(request, response){
+    var data = [];
+    request.on('data', dataPart => {
+        data += dataPart;
+    })
+    request.on('end', ()=>{
+        //Do stuff with data
+        data = parse(data);
+        console.log(data.country);
+        //what about ID
+        var statement = "INSERT INTO wines (country, grape, vintage, colour, producer) VALUES ('";
+        statement += data.country + "', '";
+        statement += data.grape+ "', '";
+        statement += data.vintage+"', '";
+        statement += data.colour+"', '";
+        statement += data.producer+"')"
+        console.log(statement);
+        mysqlconnection.query(statement, function(err){
+            if (err) throw err;
+            getWineList("http://localhost:8080/list/filter?country=&grape=&vintage=&colour=&producer=",response);
+        });
+    })
+
+    // var country = await request.body.country;
+
 }
 
 async function getFile(url, response){
