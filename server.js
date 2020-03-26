@@ -84,9 +84,22 @@ async function handle(request, response) {
     else if (url == "/add" && method=='POST'){
         postAddWine(request, response);
     }
+    else if (url.startsWith("/delete?=") && method=='POST'){
+        deleteWine(url, response);
+    }
     else {
         getFile(url, response);
     }
+}
+
+function deleteWine(url, response){
+    var urlparts = url.split("=");
+    var wineid = urlparts[1];
+    var statement = "DELETE FROM wines WHERE ID=" + mysqlconnection.escape(wineid);
+    mysqlconnection.query(statement, function(err, wine){
+        if (err) throw err;
+        getWineList("http://localhost:8080/list/filter?country=&grape=&vintage=&colour=&producer=",response);
+    });
 }
 
 async function getWineList(url, response){
