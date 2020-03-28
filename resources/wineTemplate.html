@@ -27,40 +27,37 @@ lang="en-GB" xml:lang="en-GB">
                     <table class="table table-borderless">
                         <tr>
                             <th>ID:</th>
-                            <td>$<span/></td>
+                            <td>$id</td>
                         </tr>
                         <tr>
                             <th>Country:</th>
-                            <td>$<span/></td>
+                            <td>$country</td>
                         </tr>
                         <tr>
                             <th>Grape:</th>
-                            <td>$<a>
-                                <span /></a>
-                            </td>
+                            <td>$grape</td>
                         </tr>
                         <tr>
                             <th>Vintage:</th>
-                            <td>$<a>
-                                <span/></a></td>
+                            <td>$vintage</td>
                         </tr>
                         <tr>
                             <th>Colour:</th>
-                            <td>$<a >
-                                <span /></a></td>
+                            <td>$colour</td>
                         </tr>
                         <tr>
                             <th>Producer:</th>
-                            <td>$<a><span
-                                    /></a></td>
+                            <td>$producer</td>
                         </tr>
                         <tr>
                             <th>Notes:</th>
-                            <td>$<a >
-                                <span/></a></td>
+                            <td>$notes</td>
                         </tr>
                     </table>
                 </div>
+                <form method="post" action="/delete?=$id">
+                    <input type="submit" value="Delete" class="btn2 btn-grape"/>
+                </form>
             </div>
     </div>
 </body>

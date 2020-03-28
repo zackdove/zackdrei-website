@@ -69,7 +69,7 @@ async function handle(request, response) {
     var method = request.method;
     console.log(method, url);
     if (url =="/list") {
-        getWineList("http://localhost:8080/list/filter?country=&grape=&vintage=&colour=&producer=",response);
+        getWineList("/list",response);
     }
     else if (url.startsWith("/list/filter?")){
         console.log("!!!!");
@@ -98,39 +98,45 @@ function deleteWine(url, response){
     var statement = "DELETE FROM wines WHERE ID=" + mysqlconnection.escape(wineid);
     mysqlconnection.query(statement, function(err, wine){
         if (err) throw err;
-        getWineList("http://localhost:8080/list/filter?country=&grape=&vintage=&colour=&producer=",response);
+        getWineList("/list",response);
     });
 }
 
 async function getWineList(url, response){
-    var urlparts = url.split("&");
-    var country = urlparts[0].split("=")[1];
-    var grape = urlparts[1].split("=")[1];
-    var vintage = urlparts[2].split("=")[1];
-    var colour = urlparts[3].split("=")[1];
-    var producer = urlparts[4].split("=")[1];
-    if (country != "" || grape != "" || vintage!=""||colour!=""||producer!=""){
-        var statement = "SELECT * FROM wines WHERE ";
-        if (country!=""){
-            statement+="Country='"+country+"' AND ";
+    var country = "";
+    var grape = "";
+    var vintage = "";
+    var colour = "";
+    var producer = "";
+    var statement = "SELECT * FROM wines";
+    if (url.startsWith("/list/filter")){
+        var urlparts = url.split("&");
+        var country = urlparts[0].split("=")[1];
+        var grape = urlparts[1].split("=")[1];
+        var vintage = urlparts[2].split("=")[1];
+        var colour = urlparts[3].split("=")[1];
+        var producer = urlparts[4].split("=")[1];
+        if (country != "" || grape != "" || vintage!=""||colour!=""||producer!=""){
+            var statement = "SELECT * FROM wines WHERE ";
+            if (country!=""){
+                statement+="Country='"+country+"' AND ";
+            }
+            if (grape!=""){
+                statement+="Grape='"+grape+"' AND ";
+            }
+            if (vintage!=""){
+                statement+="Vintage='"+vintage+"' AND ";
+            }
+            if (colour!=""){
+                statement+="Colour='"+colour+"' AND ";
+            }
+            if (producer!=""){
+                statement+="Producer='"+producer+"'";
+            }
+            if (statement.endsWith("AND ")){
+                statement = statement.slice(0, statement.length-4);
+            }
         }
-        if (grape!=""){
-            statement+="Grape='"+grape+"' AND ";
-        }
-        if (vintage!=""){
-            statement+="Vintage='"+vintage+"' AND ";
-        }
-        if (colour!=""){
-            statement+="Colour='"+colour+"' AND ";
-        }
-        if (producer!=""){
-            statement+="Producer='"+producer+"'";
-        }
-        if (statement.endsWith("AND ")){
-            statement = statement.slice(0, statement.length-4);
-        }
-    } else {
-        var statement = "SELECT * FROM wines";
     }
     console.log(statement);
     var template = await fs.readFile(root+"/listTemplate.html", "utf8");
@@ -163,9 +169,13 @@ async function getWine(url, response){
     var statement = "SELECT * FROM wines WHERE ID=" + mysqlconnection.escape(wineid);
     mysqlconnection.query(statement, function(err, wine){
         if (err) throw err;
-        var parts = template.split("$");
-        var page = parts[0] + wine[0].id + parts[1] + wine[0].Country + parts[2] + wine[0].Grape + parts[3] + wine[0].Vintage
-        + parts[4] + wine[0].Colour + parts[5] + wine[0].Producer + parts[6] + wine[0].NOTES + parts[7];
+        var page = template.replace(/\$id/gi, wine[0].id);
+        var page = page.replace(/\$country/gi, wine[0].Country);
+        var page = page.replace(/\$grape/gi, wine[0].Grape);
+        var page = page.replace(/\$vintage/gi, wine[0].Vintage);
+        var page = page.replace(/\$colour/gi, wine[0].Colour);
+        var page = page.replace(/\$producer/gi, wine[0].Producer);
+        var page = page.replace(/\$notes/gi, wine[0].NOTES);
         deliver(response, "application/xhtml+xml", page);
     });
 }
@@ -194,7 +204,7 @@ async function postAddWine(request, response){
         console.log(statement);
         mysqlconnection.query(statement, function(err){
             if (err) throw err;
-            getWineList("http://localhost:8080/list/filter?country=&grape=&vintage=&colour=&producer=",response);
+            getWineList("/list",response);
         });
     })
 
