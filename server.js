@@ -87,9 +87,41 @@ async function handle(request, response) {
     else if (url.startsWith("/delete?=") && method=='POST'){
         deleteWine(url, response);
     }
+    else if (url == "/signup"){
+        handleSignup(request, response);
+    }
+    else if (url == "/login"){
+        hangleLogin(request, response);
+    }
     else {
         getFile(url, response);
     }
+}
+
+async function handleSignup(request, response){
+    if (request.method == 'POST'){
+        var data = [];
+        request.on('data', dataPart => {
+            data += dataPart;
+        })
+        request.on('end', ()=>{
+            data = parse(data);
+            signup(data.username, data.password);
+        })
+    } else if (request.method == 'GET'){
+        var page = await fs.readFile(root+"/signup.html", "utf8");
+        deliver(response, "application/xhtml+xml", page);
+    }
+}
+
+function signup(username, password){
+    //hash the pwd
+    var statement = "INSERT INTO users (username, password) VALUES ('"+username+"', '"+password+"')";
+    mysqlconnection.query(statement, function(err){
+        if (err) throw err;
+        console.log("user added");
+
+    })
 }
 
 function deleteWine(url, response){
