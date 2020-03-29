@@ -91,7 +91,9 @@ async function handle(request, response) {
         handleSignup(request, response);
     }
     else if (url == "/login"){
-        hangleLogin(request, response);
+        handleLogin(request, response);
+    } else if (url == "/menu"){
+        getMenu(response);
     }
     else {
         getFile(url, response);
@@ -114,14 +116,62 @@ async function handleSignup(request, response){
     }
 }
 
+async function handleLogin(request, response){
+    if (request.method == 'GET'){
+        var page = await fs.readFile(root+"/login.html", "utf8");
+        deliver(response, "application/xhtml+xml", page);
+    } else if (request.method == 'POST'){
+        var data = [];
+        request.on('data', dataPart => {
+            data += dataPart;
+        })
+        request.on('end', ()=>{
+            data = parse(data);
+            login(data.username, data.password, response);
+        })
+    }
+}
+
+function login(username, password, response){
+    console.log(username, password);
+    var statement = "SELECT * FROM users WHERE username='"+username+"'";
+    //check username
+    mysqlconnection.query(statement, function(err, rows){
+        if (err) throw err;
+        //check user exits
+        if (rows.length < 1){
+            console.log("username not found");
+        } else {
+            console.log("user found");
+            //check password
+            //this password should already be hashed, so we'd need to hash the input password
+            var dbpassword = rows[0].password;
+            if (password == dbpassword){
+                console.log("password matches")
+                response.writeHead(301,{Location: "/list"});
+                response.end();
+            } else {
+                console.log("password does not match");
+            }
+        }
+
+    })
+    // use rows . length
+}
+
 function signup(username, password){
     //hash the pwd
     var statement = "INSERT INTO users (username, password) VALUES ('"+username+"', '"+password+"')";
     mysqlconnection.query(statement, function(err){
         if (err) throw err;
         console.log("user added");
-
+        //redirect
     })
+}
+
+async function getMenu(response){
+    var page = await fs.readFile(root+"/menu.html", "utf8");
+    
 }
 
 function deleteWine(url, response){
