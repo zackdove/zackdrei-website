@@ -3,6 +3,7 @@ let https = require("https");
 const http = require('http');
 const { parse } = require('querystring');
 let fs = require("fs").promises;
+let jwt = require("jsonwebtoken");
 let OK = 200, NotFound = 404, BadType = 415, Error = 500;
 let types, paths;
 var mode;
@@ -94,10 +95,27 @@ async function handle(request, response) {
         handleLogin(request, response);
     } else if (url == "/menu"){
         getMenu(response);
+    } else if (url == "/secret"){
+        handleSecret(request);
     }
     else {
         getFile(url, response);
     }
+}
+
+//used for testing sessions
+function handleSecret(request){
+    if (isAuthenticated(request)){
+        console.log("user is authenticated");
+    } else {
+        console.log("user is NOT authenticated");
+    }
+}
+
+function isAuthenticated(request){
+    let cookies = request.headers.cookie;
+    console.log(cookies);
+    return false;
 }
 
 async function handleSignup(request, response){
@@ -108,7 +126,7 @@ async function handleSignup(request, response){
         })
         request.on('end', ()=>{
             data = parse(data);
-            signup(data.username, data.password);
+            signup(data.username, data.password, response);
         })
     } else if (request.method == 'GET'){
         var page = await fs.readFile(root+"/signup.html", "utf8");
@@ -145,10 +163,16 @@ function login(username, password, response){
             console.log("user found");
             //check password
             //this password should already be hashed, so we'd need to hash the input password
-            var dbpassword = rows[0].password;
+            var user = rows[0];
+            var dbpassword = user.password;
             if (password == dbpassword){
-                console.log("password matches")
-                response.writeHead(301,{Location: "/list"});
+                console.log("password matches");
+
+                var token = generateToken(user);
+                response.writeHead(301,{
+                    Location: "/menu",
+                    'Set-Cookie': token
+                });
                 response.end();
             } else {
                 console.log("password does not match");
@@ -159,19 +183,29 @@ function login(username, password, response){
     // use rows . length
 }
 
-function signup(username, password){
+
+function generateToken(user){
+    var data = {
+        id: user.id,
+        username : user.username
+    }
+    return jwt.sign({ data}, 'supersecret', { expiresIn: '6h' });
+}
+
+function signup(username, password, response){
     //hash the pwd
     var statement = "INSERT INTO users (username, password) VALUES ('"+username+"', '"+password+"')";
     mysqlconnection.query(statement, function(err){
         if (err) throw err;
         console.log("user added");
-        //redirect
+        response.writeHead(301,{Location: "/login"});
+        response.end();
     })
 }
 
 async function getMenu(response){
     var page = await fs.readFile(root+"/menu.html", "utf8");
-    
+    deliver(response, "application/xhtml+xml", page);
 }
 
 function deleteWine(url, response){
