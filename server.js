@@ -71,7 +71,23 @@ async function handle(request, response) {
     var url = request.url;
     var method = request.method;
     console.log(method, url);
-    if (url =="/list") {
+    var loggedIn = isAuthenticated(request);
+    if (url == "/signup"){
+        handleSignup(request, response);
+    }
+    else if (url == "/login"){
+        handleLogin(request, response);
+    }
+    else if (url =="/about"){
+        deliverAbout(response);
+    }
+    else if (url == "/"){
+        deliverIndex(response);
+    }
+    else if (url == "/logout"){
+        handleLogout(request, response);
+    }
+    else if (url =="/list") {
         getWineList("/list",response);
     }
     else if (url.startsWith("/list/filter?")){
@@ -89,22 +105,24 @@ async function handle(request, response) {
     }
     else if (url.startsWith("/delete?=") && method=='POST'){
         deleteWine(url, response);
-    }
-    else if (url == "/signup"){
-        handleSignup(request, response);
-    }
-    else if (url == "/login"){
-        handleLogin(request, response);
     } else if (url == "/menu"){
         getMenu(response);
     } else if (url == "/secret"){
         handleSecret(request);
-    } else if (url == "/logout"){
-        handleLogout(request, response);
-    }
-    else {
+    } else {
+        //this MUST be changed, otherwise can just serve all pages, should point to 404
         getFile(url, response);
     }
+}
+
+async function deliverAbout(response){
+    var page = await fs.readFile(root+"/about.html", "utf8");
+    deliver(response, "application/xhtml+xml", page);
+}
+
+async function deliverIndex(response){
+    var page = await fs.readFile(root+"/index.html", "utf8");
+    deliver(response, "application/xhtml+xml", page);
 }
 
 function handleLogout(request, response){
@@ -115,7 +133,7 @@ function handleLogout(request, response){
         if (isAuthenticated(request)){
             var token = generateLogoutToken();
             response.writeHead(301,{
-                Location: "/menu",
+                Location: "/",
                 'Set-Cookie': token
             });
             console.log("logging out");
@@ -241,7 +259,7 @@ function signup(username, password, response){
     mysqlconnection.query(statement, function(err){
         if (err) throw err;
         console.log("user added");
-        response.writeHead(301,{Location: "/login"});
+        response.writeHead(301,{Location: "/"});
         response.end();
     })
 }
@@ -411,7 +429,6 @@ function findType(url) {
 
 // Deliver the file that has been read in to the browser.
 function deliver(response, type, content) {
-    console.log("response2= "+response);
     let typeHeader = { "Content-Type": type };
     response.writeHead(OK, typeHeader);
     response.write(content);
