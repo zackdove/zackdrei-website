@@ -2,6 +2,7 @@ let root = "./resources"
 let https = require("https");
 const http = require('http');
 const { parse } = require('querystring');
+const bcrypt = require("bcrypt");
 let fs = require("fs").promises;
 let jwt = require("jsonwebtoken");
 let OK = 200, NotFound = 404, BadType = 415, Error = 500;
@@ -26,6 +27,7 @@ mysqlconnection.connect(function(err){
     if (err) throw err;
     console.log("Connected");
 });
+initialiseDB();
 //Start the server
 start();
 
@@ -87,27 +89,27 @@ async function handle(request, response) {
     else if (url == "/logout"){
         handleLogout(request, response);
     }
-    else if (url =="/list") {
+    else if (url =="/list" && loggedIn) {
         getWineList("/list",response);
     }
-    else if (url.startsWith("/list/filter?")){
+    else if (url.startsWith("/list/filter?") && loggedIn){
         console.log("!!!!");
         getWineList(url, response);
     }
-    else if (url.startsWith("/wine?=")) {
+    else if (url.startsWith("/wine?=")&& loggedIn) {
         getWine(url, response);
     }
-    else if (url == "/add" && method=='GET'){
+    else if (url == "/add" && method=='GET'&& loggedIn){
         getAddWine(response);
     }
-    else if (url == "/add" && method=='POST'){
+    else if (url == "/add" && method=='POST'&& loggedIn){
         postAddWine(request, response);
     }
-    else if (url.startsWith("/delete?=") && method=='POST'){
+    else if (url.startsWith("/delete?=") && method=='POST'&& loggedIn){
         deleteWine(url, response);
-    } else if (url == "/menu"){
+    } else if (url == "/menu" && loggedIn){
         getMenu(response);
-    } else if (url == "/secret"){
+    } else if (url == "/secret"&& loggedIn){
         handleSecret(request);
     } else {
         //this MUST be changed, otherwise can just serve all pages, should point to 404
@@ -155,15 +157,15 @@ function handleSecret(request){
 
 function isAuthenticated(request){
     let cookie = request.headers.cookie;
-    console.log(cookie);
+    // console.log(cookie);
     var result = false;
     if (cookie){
         jwt.verify(cookie, jwtSecret, (err, token) => {
             if (err) {
-                console.log("token not valid");
-                    result = false;
+                // console.log("token not valid");
+                result = false;
             } else {
-                console.log("token is valid");
+                // console.log("token is valid");
                 result = true;
             }
         })
@@ -253,9 +255,12 @@ function generateLogoutToken(){
     return jwt.sign({}, jwtSecret, {expiresIn: '0h'});
 }
 
-function signup(username, password, response){
+async function signup(username, password, response){
     //hash the pwd
-    var statement = "INSERT INTO users (username, password) VALUES ('"+username+"', '"+password+"')";
+    var salt = await bcrypt.genSalt(10);
+    password = await bcrypt.hash(password, salt);
+    console.log("password hashed, length = "+password.length);
+    var statement = "INSERT INTO users (username, password, salt) VALUES ('"+username+"', '"+password+"', '"+salt+"')";
     mysqlconnection.query(statement, function(err){
         if (err) throw err;
         console.log("user added");
@@ -425,6 +430,22 @@ function findType(url) {
     let dot = url.lastIndexOf(".");
     let extension = url.substring(dot + 1);
     return types[extension];
+}
+
+function initialiseDB(){
+    const statement1 = "CREATE DATABASE IF NOT EXISTS grape;"
+    const statement2 = " CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTO_INCREMENT, username VARCHAR(50), password VARCHAR(60), salt VARCHAR(60));"
+    const statement3 = " CREATE TABLE IF NOT EXISTS wines (id INTEGER PRIMARY KEY,Country VARCHAR(50),Grape VARCHAR(50),Vintage VARCHAR(50),Colour VARCHAR(50),Producer VARCHAR(50),NOTES TEXT);"
+    mysqlconnection.query(statement1 , function(err){
+        if (err) throw err;
+        mysqlconnection.query(statement2 , function(err){
+            if (err) throw err;
+            mysqlconnection.query(statement3 , function(err){
+                if (err) throw err;
+                console.log("database initialised");
+            });
+        });
+    });
 }
 
 // Deliver the file that has been read in to the browser.
