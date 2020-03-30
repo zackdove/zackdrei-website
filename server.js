@@ -7,6 +7,8 @@ let jwt = require("jsonwebtoken");
 let OK = 200, NotFound = 404, BadType = 415, Error = 500;
 let types, paths;
 var mode;
+const jwtSecret = 'supersecret';
+
 if (process.argv[2] == undefined){
     mode = "dev";
 } else {
@@ -97,9 +99,30 @@ async function handle(request, response) {
         getMenu(response);
     } else if (url == "/secret"){
         handleSecret(request);
+    } else if (url == "/logout"){
+        handleLogout(request, response);
     }
     else {
         getFile(url, response);
+    }
+}
+
+function handleLogout(request, response){
+    if (request.method == 'GET'){
+        //pass template and deliver
+    } else if (request.method == 'POST'){
+        //check authenticated, then remove cookie
+        if (isAuthenticated(request)){
+            var token = generateLogoutToken();
+            response.writeHead(301,{
+                Location: "/menu",
+                'Set-Cookie': token
+            });
+            console.log("logging out");
+            response.end();
+        } else {
+            console.log("no user logged in, so cannot log out");
+        }
     }
 }
 
@@ -113,9 +136,25 @@ function handleSecret(request){
 }
 
 function isAuthenticated(request){
-    let cookies = request.headers.cookie;
-    console.log(cookies);
-    return false;
+    let cookie = request.headers.cookie;
+    console.log(cookie);
+    var result = false;
+    if (cookie){
+        jwt.verify(cookie, jwtSecret, (err, token) => {
+            if (err) {
+                console.log("token not valid");
+                    result = false;
+            } else {
+                console.log("token is valid");
+                result = true;
+            }
+        })
+        //Needed outside otherwise doesnt return anything
+        return result;
+    } else {
+        console.log("no cookie found");
+        return false;
+    }
 }
 
 async function handleSignup(request, response){
@@ -189,7 +228,11 @@ function generateToken(user){
         id: user.id,
         username : user.username
     }
-    return jwt.sign({ data}, 'supersecret', { expiresIn: '6h' });
+    return jwt.sign({ data}, jwtSecret, { expiresIn: '6h' });
+}
+
+function generateLogoutToken(){
+    return jwt.sign({}, jwtSecret, {expiresIn: '0h'});
 }
 
 function signup(username, password, response){

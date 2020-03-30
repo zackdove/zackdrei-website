@@ -17,7 +17,9 @@ lang="en-GB" xml:lang="en-GB">
         <h1>grape menu</h1>
         <a class="menuButton" href="/list">search wines</a>
         <a class="menuButton" href="mywines.html">my wines</a>
-        <a class="menuButton" href="/logout">logout</a>
+        <form method="post" action="/logout">
+            <button type="submit" value="logout" class="menuButton">logout</button>
+        </form>
     </div>
 
 </body>
