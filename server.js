@@ -9,25 +9,16 @@ let OK = 200, NotFound = 404, BadType = 415, Error = 500;
 let types, paths;
 var mode;
 const jwtSecret = 'supersecret';
-
+const userService = require("./services/userService");
+userService.hello("a");
 if (process.argv[2] == undefined){
     mode = "dev";
 } else {
     mode = process.argv[2];
 }
 console.log("mode = "+mode);
-var mysql = require('mysql');
-var mysqlconnection = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "ilovewine",
-    database: "grape"
-});
-mysqlconnection.connect(function(err){
-    if (err) throw err;
-    console.log("Connected");
-});
-initialiseDB();
+const dbService = require("./services/dbService");
+mysqlconnection = dbService.initialiseDB();
 //Start the server
 start();
 
@@ -208,40 +199,50 @@ async function handleLogin(request, response){
         })
     }
 }
+od
+async function getUsersByUsername(username){
+    try {
+        const statement = "SELECT * FROM users WHERE username='"+username+"'";
+        // console.log(statement);
+        let users = await mysqlconnection.query(statement);
+        console.log("users length in mysql="+users.length);
+        //[1] is for meta data
+        return users[0];
+    } catch (err){
+        console.log("error");
+        //handle it
+    }
 
-function login(username, password, response){
-    console.log(username, password);
-    var statement = "SELECT * FROM users WHERE username='"+username+"'";
-    //check username
-    mysqlconnection.query(statement, function(err, rows){
-        if (err) throw err;
-        //check user exits
-        if (rows.length < 1){
-            console.log("username not found");
-        } else {
-            console.log("user found");
-            //check password
-            //this password should already be hashed, so we'd need to hash the input password
-            var user = rows[0];
-            var dbpassword = user.password;
-            if (password == dbpassword){
-                console.log("password matches");
-
-                var token = generateToken(user);
-                response.writeHead(301,{
-                    Location: "/menu",
-                    'Set-Cookie': token
-                });
-                response.end();
-            } else {
-                console.log("password does not match");
-            }
-        }
-
-    })
-    // use rows . length
 }
 
+async function login(username, password, response){
+    console.log(username, password);
+    var users = await getUsersByUsername(username);
+    console.log("users here="+users.length);
+    if (users.length < 1){
+        console.log("username not found");
+    } else {
+        console.log("user found");
+        //check password
+        //this password should already be hashed, so we'd need to hash the input password
+        var user = users[0];
+        console.log("user="+user.username);
+        var inputhash = await bcrypt.hash(password, user.salt);
+        if (inputhash == user.password){
+            console.log("password matches");
+            var token = generateToken(user);
+            response.writeHead(301,{
+                Location: "/menu",
+                'Set-Cookie': token
+            });
+            response.end();
+        } else {
+            console.log("password does not match");
+        }
+    }
+
+    // use rows . length
+}
 
 function generateToken(user){
     var data = {
@@ -342,7 +343,6 @@ async function getWineList(url, response){
     });
 }
 
-
 async function getWine(url, response){
     var urlparts = url.split("=");
     var wineid = urlparts[1];
@@ -432,21 +432,6 @@ function findType(url) {
     return types[extension];
 }
 
-function initialiseDB(){
-    const statement1 = "CREATE DATABASE IF NOT EXISTS grape;"
-    const statement2 = " CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTO_INCREMENT, username VARCHAR(50), password VARCHAR(60), salt VARCHAR(60));"
-    const statement3 = " CREATE TABLE IF NOT EXISTS wines (id INTEGER PRIMARY KEY,Country VARCHAR(50),Grape VARCHAR(50),Vintage VARCHAR(50),Colour VARCHAR(50),Producer VARCHAR(50),NOTES TEXT);"
-    mysqlconnection.query(statement1 , function(err){
-        if (err) throw err;
-        mysqlconnection.query(statement2 , function(err){
-            if (err) throw err;
-            mysqlconnection.query(statement3 , function(err){
-                if (err) throw err;
-                console.log("database initialised");
-            });
-        });
-    });
-}
 
 // Deliver the file that has been read in to the browser.
 function deliver(response, type, content) {
