@@ -29,31 +29,42 @@ async function handle(request, response) {
     else if (url == "/logout"){
         userController.handleLogout(request, response);
     }
-    else if (url =="/list" && loggedIn) {
-        wineController.getWineList("/list",response);
-    }
-    else if (url.startsWith("/list/filter?") && loggedIn){
-        console.log("!!!!");
+    else if (url.startsWith("/wines") && loggedIn){
         wineController.getWineList(url, response);
     }
     else if (url.startsWith("/wine?=")&& loggedIn) {
         wineController.getWine(url, response);
     }
-    else if (url == "/add" && method=='GET'&& loggedIn){
+    else if (url == "/addwine" && method=='GET'&& loggedIn){
         wineController.getAddWine(response);
     }
-    else if (url == "/add" && method=='POST'&& loggedIn){
+    else if (url == "/addwine" && method=='POST'&& loggedIn){
         wineController.postAddWine(request, response);
     }
-    else if (url.startsWith("/delete?=") && method=='POST'&& loggedIn){
+    else if (url.startsWith("/deletewine?=") && method=='POST'&& loggedIn){
         wineController.deleteWine(url, response);
     } else if (url == "/menu" && loggedIn){
-        getMenu(response);
+        userController.getMenu(request, response);
+    } else if (url.startsWith("/user?=") && loggedIn){
+        userController.handleViewUser(request, response);
+    } else if (url.startsWith("/users")){
+        userController.handleUserList(url, response);
+    } else if (url.startsWith("/toggleAdmin?=") && loggedIn){
+        userController.handleToggleAdmin(request, response);
     } else {
         //this MUST be changed, otherwise can just serve all pages, should point to 404
         getFile(url, response);
     }
 }
+
+function redirect(response, url){
+    response.writeHead(301,{
+        Location: url
+    });
+    console.log("redirecting to "+url);
+    response.end();
+}
+exports.redirect = redirect;
 
 async function deliverAbout(response){
     var page = await fs.readFile(__basedir+"/resources/about.html", "utf8");
@@ -65,14 +76,11 @@ async function deliverIndex(response){
     deliver(response, "application/xhtml+xml", page);
 }
 
-async function getMenu(response){
-    var page = await fs.readFile(__basedir+"/resources/menu.html", "utf8");
-    deliver(response, "application/xhtml+xml", page);
-}
+
 async function getFile(url, response){
     if (url.endsWith("/")) url = url + "index.html";
     var ok = await checkPath(url);
-    if (!ok) return fail(response, NotFound, "URL not found (check case)");
+    if (!ok) return fail(response, 404, "URL not found (check case)");
     var type = findType(url);
     if (type == null) return fail(response, 415, "File type not supported");
     var file = root + url;
@@ -156,7 +164,6 @@ function defineTypes() {
 exports.handle = handle;
 exports.deliverAbout = deliverAbout;
 exports.deliverIndex = deliverIndex;
-exports.getMenu = getMenu;
 exports.getFile = getFile;
 exports.deliver = deliver;
 exports.fail = fail;

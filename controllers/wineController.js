@@ -8,7 +8,7 @@ function deleteWine(url, response){
     var statement = "DELETE FROM wines WHERE ID=" + mysqlconnection.escape(wineid);
     mysqlconnection.query(statement, function(err, wine){
         if (err) throw err;
-        getWineList("/list",response);
+        getWineList("/wines",response);
     });
 }
 exports.deleteWine = deleteWine;
@@ -20,7 +20,7 @@ async function getWineList(url, response){
     var colour = "";
     var producer = "";
     var statement = "SELECT * FROM wines";
-    if (url.startsWith("/list/filter")){
+    if (url.startsWith("/wines/filter")){
         var urlparts = url.split("&");
         var country = urlparts[0].split("=")[1];
         var grape = urlparts[1].split("=")[1];
@@ -50,7 +50,7 @@ async function getWineList(url, response){
         }
     }
     console.log(statement);
-    var template = await fs.readFile(__basedir+"/resources/listTemplate.html", "utf8");
+    var template = await fs.readFile(__basedir+"/resources/wineList.html", "utf8");
     mysqlconnection.query(statement, function(err, wines){
         if(err) throw err;
         //the +'' is needed to set template to a string
@@ -76,7 +76,7 @@ async function getWine(url, response){
     var urlparts = url.split("=");
     var wineid = urlparts[1];
     //mysql prevents escaping by default
-    var template = await fs.readFile(__basedir+"/resources/wineTemplate.html", "utf8");
+    var template = await fs.readFile(__basedir+"/resources/wine.html", "utf8");
     var statement = "SELECT * FROM wines WHERE ID=" + mysqlconnection.escape(wineid);
     mysqlconnection.query(statement, function(err, wine){
         if (err) throw err;
@@ -117,7 +117,7 @@ async function postAddWine(request, response){
         console.log(statement);
         mysqlconnection.query(statement, function(err){
             if (err) throw err;
-            getWineList("/list",response);
+            getWineList("/wines",response);
         });
     })
 

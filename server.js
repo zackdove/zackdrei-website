@@ -1,8 +1,10 @@
+global.__basedir = __dirname;
 let https = require("https");
 const http = require('http');
+
 const generalController = require("./controllers/generalController.js");
 let fs = require("fs").promises;
-global.__basedir = __dirname;
+
 var mode;
 const jwtSecret = 'supersecret';
 const userService = require("./services/userService.js");

@@ -24,6 +24,44 @@ function isAuthenticated(request){
     }
 }
 
+
+async function getUserFromRequest(request){
+    let cookie = request.headers.cookie;
+    var result;
+    if (cookie){
+        await jwt.verify(cookie, jwtSecret, async (err, token) => {
+            if (err) {
+                console.log("token not valid");
+
+            } else {
+                result =await getUserByID(token.data.id);
+            }
+        })
+        // console.log(result);
+        //Needed outside otherwise doesnt return anything
+        console.log("hmmm"+result.id);
+        return result;
+    } else {
+        console.log("no cookie found");
+        return false;
+    }
+}
+
+async function getUserByID(id){
+    try {
+        const statement = "SELECT * FROM users WHERE id='"+id+"'";
+        // console.log(statement);
+        let users = await mysqlconnection.query(statement);
+        console.log("users length in mysql="+users.length);
+        //[1] is for meta data
+        return users[0][0];
+    } catch (err){
+        console.log("error");
+        //handle it
+    }
+}
+
+
 async function getUsersByUsername(username){
     try {
         const statement = "SELECT * FROM users WHERE username='"+username+"'";
@@ -36,7 +74,6 @@ async function getUsersByUsername(username){
         console.log("error");
         //handle it
     }
-
 }
 
 async function login(username, password, response){
@@ -46,7 +83,7 @@ async function login(username, password, response){
     if (users.length < 1){
         console.log("username not found");
     } else {
-        console.log("user found");
+        console.log("user found"+users);
         //check password
         //this password should already be hashed, so we'd need to hash the input password
         var user = users[0];
@@ -72,8 +109,10 @@ async function login(username, password, response){
 function generateToken(user){
     var data = {
         id: user.id,
-        username : user.username
+        username : user.username,
+        isAdmin: user.isAdmin
     }
+    console.log(data);
     return jwt.sign({ data}, jwtSecret, { expiresIn: '6h' });
 }
 
@@ -86,7 +125,8 @@ async function signup(username, password, response){
     var salt = await bcrypt.genSalt(10);
     password = await bcrypt.hash(password, salt);
     console.log("password hashed, length = "+password.length);
-    var statement = "INSERT INTO users (username, password, salt) VALUES ('"+username+"', '"+password+"', '"+salt+"')";
+    isAdmin = 1;
+    var statement = "INSERT INTO users (username, password, salt, isAdmin) VALUES ('"+username+"', '"+password+"', '"+salt+"', '"+isAdmin+"')";
     mysqlconnection.query(statement, function(err){
         if (err) throw err;
         console.log("user added");
@@ -101,3 +141,4 @@ exports.login = login;
 exports.generateToken = generateToken;
 exports.generateLogoutToken = generateLogoutToken;
 exports.signup = signup;
+exports.getUserFromRequest = getUserFromRequest;

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+lang="en-GB" xml:lang="en-GB">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Grape</title>
+
+    <link rel="stylesheet" href="style.css"/>
+
+
+</head>
+<body>
+        <div class="wineCard">
+            <div class="wineCardHead bg-grape">
+                <div class="wineCardTitle">
+                    User
+                </div>
+                <div class="closeButtonContainer">
+                    <button type="button" class="closeButton" onclick="window.close()">
+                        x
+                    </button>
+                </div>
+            </div>
+            <div class="wineCardBody">
+                <div class="table-responsive">
+                    <table class="table table-borderless">
+                        <tr>
+                            <th>ID:</th>
+                            <td>$id</td>
+                        </tr>
+                        <tr>
+                            <th>Username:</th>
+                            <td>$username</td>
+                        </tr>
+                        <tr>
+                            <th>Password:</th>
+                            <td>$password</td>
+                        </tr>
+                        <tr>
+                            <th>Is Admin:</th>
+                            <td>$isAdmin</td>
+                        </tr>
+                    </table>
+                </div>
+                <form method="post" action="/toggleAdmin?=$id">
+                    <input type="submit" value="Toggle Admin" class="btn2 btn-grape"/>
+                </form>
+                <form method="post" action="/deleteUser?=$id">
+                    <input type="submit" value="Delete" class="btn2 btn-grape"/>
+                </form>
+            </div>
+    </div>
+</body>
+</html>

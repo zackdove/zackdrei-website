@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+lang="en-GB" xml:lang="en-GB">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Grape</title>
+
+
+    <link rel="stylesheet" href="/style.css"/>
+
+
+</head>
+<body>
+    <div class="fullFlexContainer justify-content-center pad5">
+        <div class="col25 mar5">
+            <h3>Users:</h3>
+            <form method="get" action="/list/filter">
+                <fieldset>
+                    <label for="country">Username</label>
+                    <input id="country" type="text" name="username" value="$username"/>
+                </fieldset>
+                <fieldset>
+                    <label for="grape">Admin</label>
+                    <input id="grape" type="text" name="isAdmin" value="$isAdmin"/>
+                </fieldset>
+                <fieldset>
+                    <input type="submit" value="Submit" class="btn2 btn-grape"/>
+                    <button type="button" class="btn2 btn-grape" onclick="document.location = '/userlist'">Clear</button>
+                    <button type="button" class="btn2 btn-grape">Refresh</button>
+                </fieldset>
+            </form>
+        </div>
+        <div id="eventListFragment" class="tableContainer col70 mar5">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Admin</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    $users
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>

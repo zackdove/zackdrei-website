@@ -15,7 +15,7 @@ lang="en-GB" xml:lang="en-GB">
     <div class="fullFlexContainer justify-content-center pad5">
         <div class="col25 mar5">
             <h3>Filters:</h3>
-            <form method="get" action="/list/filter">
+            <form method="get" action="/wines/filter">
                 <fieldset>
                     <label for="country">Country</label>
                     <input id="country" type="text" name="country" value="$country"/>
@@ -38,7 +38,7 @@ lang="en-GB" xml:lang="en-GB">
                 </fieldset>
                 <fieldset>
                     <input type="submit" value="Submit" class="btn2 btn-grape"/>
-                    <button type="button" class="btn2 btn-grape" onclick="document.location = '/list'">Clear</button>
+                    <button type="button" class="btn2 btn-grape" onclick="document.location = '/wines'">Clear</button>
                     <button type="button" class="btn2 btn-grape">Refresh</button>
                 </fieldset>
             </form>

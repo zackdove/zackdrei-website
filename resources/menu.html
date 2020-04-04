@@ -12,8 +12,12 @@ lang="en-GB" xml:lang="en-GB">
 
     <div class="menuColumn">
         <h1>grape menu</h1>
-        <a class="menuButton" href="/list">search wines</a>
+        <h4>welcome $username</h4>
+        <a class="menuButton" href="/wines">search wines</a>
         <a class="menuButton" href="mywines.html">my wines</a>
+        $adminsectionA
+        <a class="menuButton" href="/users">view users</a>
+        $adminsectionB
         <form method="post" action="/logout">
             <button type="submit" value="logout" class="menuButton">logout</button>
         </form>
