@@ -135,6 +135,8 @@ async function signup(username, password, response){
     })
 }
 
+
+
 exports.isAuthenticated = isAuthenticated;
 exports.getUsersByUsername = getUsersByUsername;
 exports.login = login;

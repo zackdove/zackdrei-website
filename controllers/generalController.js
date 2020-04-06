@@ -1,6 +1,7 @@
 const userService = require(__basedir+"/services/userService.js");
 const userController = require(__basedir+"/controllers/userController.js");
 const wineController = require(__basedir+"/controllers/wineController.js");
+const userWineController = require(__basedir+"/controllers/userWineController.js");
 let fs = require("fs").promises;
 let root = __basedir+"/resources";
 console.log(root);
@@ -30,7 +31,7 @@ async function handle(request, response) {
         userController.handleLogout(request, response);
     }
     else if (url.startsWith("/wines") && loggedIn){
-        wineController.getWineList(url, response);
+        wineController.getWineList(request, response);
     }
     else if (url.startsWith("/wine?=")&& loggedIn) {
         wineController.getWine(url, response);
@@ -51,7 +52,10 @@ async function handle(request, response) {
         userController.handleUserList(url, response);
     } else if (url.startsWith("/toggleAdmin?=") && loggedIn){
         userController.handleToggleAdmin(request, response);
-    } else {
+    } else if (url.startsWith("/addToMyWines")){
+        userWineController.handleAddToMyWines(request, response);
+    }
+    else {
         //this MUST be changed, otherwise can just serve all pages, should point to 404
         getFile(url, response);
     }

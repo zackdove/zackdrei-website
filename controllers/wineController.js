@@ -1,6 +1,7 @@
 let fs = require("fs").promises;
 const generalController = require(__basedir+"/controllers/generalController.js");
 const { parse } = require('querystring');
+const userService = require(__basedir+"/services/userService.js");
 
 function deleteWine(url, response){
     var urlparts = url.split("=");
@@ -13,12 +14,14 @@ function deleteWine(url, response){
 }
 exports.deleteWine = deleteWine;
 
-async function getWineList(url, response){
+async function getWineList(request, response){
+    var url = request.url;
     var country = "";
     var grape = "";
     var vintage = "";
     var colour = "";
     var producer = "";
+    var mywines = false;
     var statement = "SELECT * FROM wines";
     if (url.startsWith("/wines/filter")){
         var urlparts = url.split("&");
@@ -27,8 +30,19 @@ async function getWineList(url, response){
         var vintage = urlparts[2].split("=")[1];
         var colour = urlparts[3].split("=")[1];
         var producer = urlparts[4].split("=")[1];
+        // maybe chang to includes
+        if (url.includes("mywines=on")){
+            console.log("my wine true");
+            mywines = true;
+            let user = await userService.getUserFromRequest(request);
+            statement = statement + " LEFT JOIN userWines ON wines.id = userWines.wineID WHERE userWines.userID="+user.id;
+        }
         if (country != "" || grape != "" || vintage!=""||colour!=""||producer!=""){
-            var statement = "SELECT * FROM wines WHERE ";
+            if (statement.includes("WHERE")){
+                statement = statement+" AND ";
+            } else {
+                statement = statement+ " WHERE ";
+            }
             if (country!=""){
                 statement+="Country='"+country+"' AND ";
             }
@@ -67,6 +81,11 @@ async function getWineList(url, response){
         var page = page.replace(/\$vintage/gi, vintage);
         var page = page.replace(/\$colour/gi, colour);
         var page = page.replace(/\$producer/gi, producer);
+        if (mywines){
+            page = page.replace(/\$mywines/gi, "checked='checked'");
+        } else {
+            page = page.replace(/\$mywines/gi, "");
+        }
         generalController.deliver(response, "application/xhtml+xml", page);
     });
 }
@@ -117,7 +136,7 @@ async function postAddWine(request, response){
         console.log(statement);
         mysqlconnection.query(statement, function(err){
             if (err) throw err;
-            getWineList("/wines",response);
+            generalController.redirect(response, "/wines")
         });
     })
 
