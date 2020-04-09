@@ -30,17 +30,14 @@ async function handle(request, response) {
     else if (url == "/logout"){
         userController.handleLogout(request, response);
     }
-    else if (url.startsWith("/wines") && loggedIn){
-        wineController.getWineList(request, response);
+    else if (url.startsWith("/wines")){
+        wineController.handleWineList(request, response);
     }
-    else if (url.startsWith("/wine?=")&& loggedIn) {
-        wineController.getWine(url, response);
+    else if (url.startsWith("/wine?=")) {
+        wineController.handleWine(request, response);
     }
-    else if (url == "/addwine" && method=='GET'&& loggedIn){
-        wineController.getAddWine(response);
-    }
-    else if (url == "/addwine" && method=='POST'&& loggedIn){
-        wineController.postAddWine(request, response);
+    else if (url == "/addwine"){
+        wineController.handleAddWine(request, response);
     }
     else if (url.startsWith("/deletewine?=") && method=='POST'&& loggedIn){
         wineController.deleteWine(url, response);
