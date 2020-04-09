@@ -144,6 +144,29 @@ async function handleUserList(url, response){
 }
 exports.handleUserList = handleUserList;
 
+async function handleDeleteUser(request, response){
+    //check if admin && post
+    if (request.method == "POST"){
+        user = await userService.getUserFromRequest(request);
+        if (user.isAdmin){
+            var urlparts = request.url.split("=");
+            var userid = urlparts[1];
+            var statement = "DELETE FROM users WHERE ID=" + mysqlconnection.escape(userid);
+            mysqlconnection.query(statement, function(err){
+                if (err) throw err;
+                console.log("deleting user with id: "+user.id);
+                generalController.redirect(response, "/users");
+            });
+        } else {
+            console.log("user must be admin to delete a user");
+        }
+    } else {
+        console.log("method must be post");
+        // redirct to error
+    }
+}
+exports.handleDeleteUser = handleDeleteUser;
+
 exports.handleSignup = handleSignup;
 exports.handleLogout = handleLogout;
 exports.handleLogin = handleLogin;

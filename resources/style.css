@@ -106,6 +106,10 @@ text {
     text-decoration:inherit; color:inherit;
 }
 
+a{
+    text-decoration:inherit; color:inherit;
+}
+
 .aboutColumn {
     display: flex;
     flex-direction: column;
@@ -378,3 +382,25 @@ th,td{
     float:right;
     text-align:center;
 }
+
+.backContainer{
+    color: #EDEDED;
+    transition: 0.3s;
+}
+.backContainer:hover{
+    color: #000000;
+}
+.backArrow{
+    color: #000000; !important;
+}
+.backArrow:hover{
+    color: #000000; !important;
+}
+
+/* .backText{
+    opacity: 0;
+    transition: 0.3s;
+}
+.backText:hover{
+    opacity:1;
+} */

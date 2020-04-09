@@ -109,8 +109,7 @@ async function login(username, password, response){
 function generateToken(user){
     var data = {
         id: user.id,
-        username : user.username,
-        isAdmin: user.isAdmin
+        username : user.username
     }
     console.log(data);
     return jwt.sign({ data}, jwtSecret, { expiresIn: '6h' });

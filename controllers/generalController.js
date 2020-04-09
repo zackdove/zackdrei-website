@@ -54,6 +54,8 @@ async function handle(request, response) {
         userController.handleToggleAdmin(request, response);
     } else if (url.startsWith("/addToMyWines")){
         userWineController.handleAddToMyWines(request, response);
+    } else if (url.startsWith("/deleteUser?=")){
+        userController.handleDeleteUser(request, response);
     }
     else {
         //this MUST be changed, otherwise can just serve all pages, should point to 404
