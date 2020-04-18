@@ -39,20 +39,32 @@ async function handle(request, response) {
     else if (url == "/addwine"){
         wineController.handleAddWine(request, response);
     }
-    else if (url.startsWith("/deletewine?=") && method=='POST'&& loggedIn){
-        wineController.deleteWine(url, response);
-    } else if (url == "/menu" && loggedIn){
+    else if (url.startsWith("/deletewine?=")){
+        wineController.handleDeleteWine(request, response);
+    }
+    else if (url == "/menu"){
         userController.getMenu(request, response);
-    } else if (url.startsWith("/user?=") && loggedIn){
+    }
+    else if (url.startsWith("/user?=")){
         userController.handleViewUser(request, response);
-    } else if (url.startsWith("/users")){
+    }
+    else if (url.startsWith("/users")){
         userController.handleUserList(url, response);
-    } else if (url.startsWith("/toggleAdmin?=") && loggedIn){
+    }
+    else if (url.startsWith("/toggleAdmin?=")){
         userController.handleToggleAdmin(request, response);
-    } else if (url.startsWith("/addToMyWines")){
+    }
+    else if (url.startsWith("/addToMyWines")){
         userWineController.handleAddToMyWines(request, response);
-    } else if (url.startsWith("/deleteUser?=")){
+    }
+    else if (url.startsWith("/deleteUser?=")){
         userController.handleDeleteUser(request, response);
+    } else if (url == "/getRandomWineName"){
+        wineController.handleGetRandomWineName(request,response);
+    } else if (url == "/recommendation"){
+        wineController.handleRecommendation(request,response);
+    } else if (url == "/404"){
+        handle404(request, response);
     }
     else {
         //this MUST be changed, otherwise can just serve all pages, should point to 404
@@ -60,8 +72,13 @@ async function handle(request, response) {
     }
 }
 
+async function handle404(request, response){
+    var page = await fs.readFile(__basedir+"/resources/404.html", "utf8");
+    deliver(response, "application/xhtml+xml", page);
+}
+
 function redirect(response, url){
-    response.writeHead(301,{
+    response.writeHead(307,{
         Location: url
     });
     console.log("redirecting to "+url);

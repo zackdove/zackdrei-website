@@ -1,8 +1,9 @@
 // Get the id of the <path> element
-var curve = document.getElementById("curve");
+
 // Find scroll percentage on scroll (using cross-browser properties), and offset dash same amount as percentage scrolled
 // window.addEventListener("scroll", myFunction);
 function myFunction() {
+    var curve = document.getElementById("curve");
     var column = document.getElementById("column");
     var curveRect = curve.getBoundingClientRect();
     var columnRect = column.getBoundingClientRect();

@@ -4,16 +4,24 @@ const { parse } = require('querystring');
 const userService = require(__basedir+"/services/userService.js");
 const wineService = require(__basedir+"/services/wineService.js");
 
-function deleteWine(url, response){
-    var urlparts = url.split("=");
-    var wineid = urlparts[1];
-    var statement = "DELETE FROM wines WHERE ID=" + mysqlconnection.escape(wineid);
-    mysqlconnection.query(statement, function(err, wine){
-        if (err) throw err;
-        getWineList("/wines",response);
-    });
+function handleDeleteWine(request, response){
+    if (userService.isAuthenticated(request)){
+        if (request.method == "POST"){
+            var urlparts = request.url.split("=");
+            var wineid = urlparts[1];
+            var statement = "DELETE FROM wines WHERE ID=" + mysqlconnection.escape(wineid);
+            mysqlconnection.query(statement, function(err, wine){
+                if (err) throw err;
+                getWineList("/wines",response);
+            });
+        } else {
+            console.log("method must be post");
+        }
+    } else {
+        console.log("user must be authenticated");
+    }
 }
-exports.deleteWine = deleteWine;
+exports.handleDeleteWine = handleDeleteWine;
 
 async function handleWineList(request, response){
     if (userService.isAuthenticated(request)){
@@ -145,3 +153,18 @@ async function handleAddWine(request, response){
     }
 }
 exports.handleAddWine = handleAddWine;
+
+async function handleGetRandomWineName(request, response){
+    let wineName = await wineService.getRandomWineName();
+    generalController.deliver(response, "text/plain", wineName);
+}
+exports.handleGetRandomWineName = handleGetRandomWineName;
+
+
+async function handleRecommendation(request, response){
+    let id = await wineService.getRandomWineID();
+    console.log(id);
+    console.log("????"+id);
+    generalController.redirect(response, "/wine?="+id);
+}
+exports.handleRecommendation = handleRecommendation;
