@@ -1,6 +1,7 @@
 const jwtSecret = 'supersecret';
 let jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const userController = require(__basedir+"/controllers/userController.js");
 
 function isAuthenticated(request){
     let cookie = request.headers.cookie;
@@ -82,6 +83,7 @@ async function login(username, password, response){
     console.log("users here="+users.length);
     if (users.length < 1){
         console.log("username not found");
+        userController.handleBadLogin(response);
     } else {
         console.log("user found"+users);
         //check password
@@ -99,6 +101,7 @@ async function login(username, password, response){
             response.end();
         } else {
             console.log("password does not match");
+            userController.handleBadLogin(response);
         }
     }
 

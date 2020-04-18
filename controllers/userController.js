@@ -79,6 +79,7 @@ async function handleSignup(request, response){
 async function handleLogin(request, response){
     if (request.method == 'GET'){
         var page = await fs.readFile(__basedir+"/resources/login.html", "utf8");
+        page = page.replace(/\$ifIncorrect[^]+\$endIfIncorrect/gi, '');
         generalController.deliver(response, "application/xhtml+xml", page);
     } else if (request.method == 'POST'){
         var data = [];
@@ -91,6 +92,15 @@ async function handleLogin(request, response){
         })
     }
 }
+
+async function handleBadLogin(response){
+    var page = await fs.readFile(__basedir+"/resources/login.html", "utf8");
+    // here insert a thing saying incorrect login
+    page = page.replace(/\$ifIncorrect/gi, '');
+    page = page.replace(/\$endIfIncorrect/gi, '');
+    generalController.deliver(response, "application/xhtml+xml", page);
+}
+exports.handleBadLogin = handleBadLogin;
 
 async function getMenu(request, response){
     if (userService.isAuthenticated(request)){

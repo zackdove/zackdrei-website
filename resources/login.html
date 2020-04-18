@@ -10,29 +10,31 @@ lang="en-GB" xml:lang="en-GB">
 </head>
 <body>
 
-<div class="container pt-5">
-    <div class="row">
-        <div class="col-md-6 col-12 mx-auto">
-            <form method="post">
-                <div class="form-group">
-                    <label class="font-weight-bold">Email Address:</label>
-                    <input type="text" class="form-control" name="username" required="true"/>
-                </div>
-                <div class="form-group">
-                    <label class="font-weight-bold">Password:</label>
-                    <input type="password" class="form-control" name="password"  required="true"/>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" name="remember-me"/> Remember me
-                    </label>
-                </div>
-                <button type="submit" class="btn btn-grape btn-block">Submit</button>
-            </form>
-        </div>
-    </div>
-</div>
 
+<div class="fullFlexContainer justify-content-center pad5">
+    <div class="col25 mar5">
+        <h3>Login:</h3>
+        <form method="post" action="/login">
+            <fieldset>
+                <label for="username">Username</label>
+                <input id="username" type="text" name="username" required="true"/>
+            </fieldset>
+            <fieldset>
+                <label for="password">Password</label>
+                <input id="password" type="text" name="password" require="true"/>
+            </fieldset>
+            <fieldset>
+                <input type="submit" value="Submit" class="btn2 btn-grape"/>
+            </fieldset>
+        </form>
+        $ifIncorrect
+        <div class="incorrectLogin">
+            <p>Incorrect username/password combination, try again</p>
+        </div>
+        $endIfIncorrect
+    </div>
+
+</div>
 
 </body>
 

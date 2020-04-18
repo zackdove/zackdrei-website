@@ -404,3 +404,14 @@ th,td{
 .backText:hover{
     opacity:1;
 } */
+
+.incorrectLogin{
+    height:3rem;
+    width:100%;
+    margin-top: 10px;
+    border-radius: 4px;
+    font-size:inherit;
+    background-color: #EAEAEA;
+    text-align:center;
+    line-height: 1.5rem;
+}
