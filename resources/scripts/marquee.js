@@ -4,9 +4,14 @@ function addNewMovingElement() {
     var text = document.createElement("p");
     // text.innerHTML = "Arpeggio Nerello Mascalese";
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "/getRandomWineName", false);
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+           text.innerHTML = xhttp.responseText;
+        }
+    };
+    xhttp.open("GET", "/getRandomWineName", true);
     xhttp.send();
-    text.innerHTML = xhttp.responseText;
+
     var randomHeight = Math.floor(Math.random() * 91);
     text.style.top = randomHeight.toString() + "%";
     //Speed, size and opacity should all be correlated
