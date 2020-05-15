@@ -162,6 +162,39 @@ a{
     text-decoration: none;
 }
 
+.menuFormButton{
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    /* font-family: arial, sans-serif; */
+    color: inherit;
+    cursor: pointer;
+    width: 100%!important;
+    font-size: 3vh;
+
+}
+
+.menuFormButtonContainer{
+    width: 100%!important;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+}
+
+.menuFormButtonContainer:hover{
+    width: 100%!important;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    background-color: #eeeeee;
+}
+
+.menuFormButton:hover{
+    border: none;
+    padding: 0!important;
+    /* font-family: arial, sans-serif; */
+    color: inherit;
+    cursor: pointer;
+}
+
 iframe {
     position: absolute;
     width: 100vw;
