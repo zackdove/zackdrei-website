@@ -7,6 +7,8 @@ let root = __basedir+"/resources";
 console.log(root);
 let types = defineTypes();
 
+userPaths = ["/wines"]
+adminPaths = []
 
 async function handle(request, response) {
     // console.log(request);
@@ -15,67 +17,58 @@ async function handle(request, response) {
     var method = request.method;
     console.log(method, url);
     var loggedIn = userService.isAuthenticated(request);
-    if (url == "/signup"){
-        userController.handleSignup(request, response);
-    }
-    else if (url == "/login"){
-        userController.handleLogin(request, response);
-    }
-    else if (url =="/about"){
-        deliverAbout(response);
-    }
-    else if (url == "/"){
-        deliverIndex(response);
-    }
-    else if (url == "/logout"){
-        userController.handleLogout(request, response);
-    }
-    else if (url.startsWith("/wines")){
-        wineController.handleWineList(request, response);
-    }
-    else if (url.startsWith("/wine?=")) {
-        wineController.handleWine(request, response);
-    }
-    else if (url == "/addwine"){
-        wineController.handleAddWine(request, response);
-    }
-    else if (url.startsWith("/deletewine?=")){
-        wineController.handleDeleteWine(request, response);
-    }
-    else if (url == "/menu"){
-        userController.getMenu(request, response);
-    }
-    else if (url.startsWith("/user?=")){
-        userController.handleViewUser(request, response);
-    }
-    else if (url.startsWith("/users")){
-        userController.handleUserList(url, response);
-    }
-    else if (url.startsWith("/toggleAdmin?=")){
-        userController.handleToggleAdmin(request, response);
-    }
-    else if (url.startsWith("/addToMyWines")){
-        userWineController.handleAddToMyWines(request, response);
-    }
-    else if (url.startsWith("/deleteUser?=")){
-        userController.handleDeleteUser(request, response);
-    } else if (url == "/getRandomWineName"){
-        wineController.handleGetRandomWineName(request,response);
-    } else if (url == "/recommendation"){
-        wineController.handleRecommendation(request,response);
-    } else if (url == "/404"){
-        handle404(request, response);
-    }
-    else {
-        //this MUST be changed, otherwise can just serve all pages, should point to 404
-        getFile(url, response);
-    }
+    if (url == "/signup"){ userController.handleSignup(request, response);}
+    else if (url == "/login"){userController.handleLogin(request, response);}
+    else if (url =="/about"){deliverAbout(response);}
+    else if (url == "/"){deliverIndex(response);}
+    else if (url == "/logout"){userController.handleLogout(request, response);}
+    else if (url.startsWith("/wines")){wineController.handleWineList(request, response);}
+    else if (url.startsWith("/wine?=")) {wineController.handleWine(request, response);}
+    else if (url == "/addwine"){wineController.handleAddWine(request, response);}
+    else if (url.startsWith("/deletewine?=")){wineController.handleDeleteWine(request, response);}
+    else if (url == "/menu"){userController.getMenu(request, response);}
+    else if (url.startsWith("/user?=")){userController.handleViewUser(request, response);}
+    else if (url.startsWith("/users")){userController.handleUserList(request, response);}
+    else if (url.startsWith("/toggleAdmin?=")){userController.handleToggleAdmin(request, response);}
+    else if (url.startsWith("/addToMyWines")){userWineController.handleAddToMyWines(request, response);}
+    else if (url.startsWith("/deleteUser?=")){userController.handleDeleteUser(request, response);}
+    else if (url == "/getRandomWineName"){wineController.handleGetRandomWineName(request,response);}
+    else if (url == "/recommendation"){wineController.handleRecommendation(request,response);}
+    else if (url == "/404"){handle404(request, response);}
+    else if (url == "/registered"){userController.handleRegistered(request,response);}
+    else if (url.startsWith("/scripts") || url.startsWith("/style") || url.startsWith("/images") || url=="/moving.html"){getFile(url, response);}
+    else {handle404(response);}
 }
 
-async function handle404(request, response){
+async function handle404(response){
     var page = await fs.readFile(__basedir+"/resources/404.html", "utf8");
-    deliver(response, "application/xhtml+xml", page);
+    response.writeHead(404, "application/xhtml+xml");
+    response.write(page);
+    response.end();
 }
+
+async function errorHandler(code, response){
+    console.log("ERROR: " + code)
+    switch (code){
+        case 404:
+            var page = await fs.readFile(__basedir+"/resources/404.html", "utf8");
+            break;
+        case 401:
+            var page = await fs.readFile(__basedir+"/resources/401.html", "utf8");
+            break;
+        case 500:
+            var page = await fs.readFile(__basedir+"/resources/500.html", "utf8");
+            break;
+        default:
+            var page = await fs.readFile(__basedir+"/resources/500.html", "utf8");
+            break;
+    }
+    console.log("ERROR: " + code)
+    response.writeHead(code, "application/xhtml+xml");
+    response.write(page);
+    response.end();
+}
+exports.errorHandler = errorHandler;
 
 function redirect(response, url){
     response.writeHead(307,{

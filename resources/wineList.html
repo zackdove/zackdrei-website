@@ -47,8 +47,10 @@ lang="en-GB" xml:lang="en-GB">
                     <input id="producer" type="text" name="producer" value="$producer"/>
                 </fieldset>
                 <fieldset>
-                    <label for="mywines">My Wines?</label>
-                    <input id="mywines" type="checkbox" name="mywines" $mywines/>
+                    <label for="mywines" class="switchLabel">My Wines Only?</label>
+                    <div class="checkContainer">
+                        <input id="mywines" type="checkbox" name="mywines" $mywines/>
+                    </div>
                 </fieldset>
                 <fieldset>
                     <input type="submit" value="Submit" class="btn2 btn-grape"/>

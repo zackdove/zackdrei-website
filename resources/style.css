@@ -145,6 +145,8 @@ a{
     background-color: #ffffff;
     align-items: center;
     color: #421C52;
+    background-color: #ffffff;
+    box-shadow: 5vh 5vh 5vh 5vh #ffffff;
 }
 
 .menuButton{
@@ -209,11 +211,30 @@ iframe {
     height: 100vh;
 }
 
-.halfColumn{
-    width: 50vw;
-    height:100vh;
-    float:left;
-    position:relative;
+@media only screen and (orientation: portrait) {
+    .halfColumn{
+        width: 100vw;
+        height:50vh;
+        float:left;
+        position:relative;
+        /* background-color: #647744; */
+    }
+    .bottleHolder{
+        height:50vh;
+        padding-bottom:4rem;
+    }
+}
+
+@media only screen and (orientation: landscape) {
+    .halfColumn{
+        width: 50vw;
+        height:100vh;
+        float:left;
+        position:relative;
+    }
+    .bottleHolder{
+        margin-right:20vw; margin-bottom:10vh; height:50rem;
+    }
 }
 
 /* Clear floats after the columns */
@@ -283,12 +304,19 @@ iframe {
     font-size:4em;
 }
 
+form{
+    padding: 0px;
+    margin: 0px;
+    width:23vw;
+}
+
 fieldset{
     border-style: none;
     padding: 10px 0px 0px 0px;
     margin: 0px;
     height: 3rem;
     line-height:3rem;
+    width:23vw;
 }
 
 label{
@@ -297,8 +325,8 @@ label{
     border-right-style: none;
     border-radius: 4px 0px 0px 4px;
     height:inherit;
-    width: 25%;
-    float:left;
+    width: 7vw;
+    position:absolute;
     background-color: #e9ecef;
     display: inline-block;
     padding: 0px;
@@ -310,8 +338,9 @@ input[type=text]{
     border: 1px solid grey;
     border-radius: 0px 4px 4px 0px;
     height:inherit;
-    width:74%;
-    float:left;
+    width:16vw;
+    left:9vw;
+    position:absolute;
     padding: 0px;
     margin: 0px;
     text-align:center;
@@ -324,6 +353,7 @@ input[type=text]{
     margin-top: 10px;
     border-radius: 4px;
     font-size:inherit;
+    min-width: 10rem;
 }
 
 .tableContainer{
@@ -417,17 +447,11 @@ th,td{
 }
 
 .backContainer{
-    color: #EDEDED;
+    color: #000000;
     transition: 0.3s;
 }
 .backContainer:hover{
-    color: #000000;
-}
-.backArrow{
-    color: #000000; !important;
-}
-.backArrow:hover{
-    color: #000000; !important;
+    color: #EDEDED;
 }
 
 /* .backText{
@@ -447,4 +471,76 @@ th,td{
     background-color: #EAEAEA;
     text-align:center;
     line-height: 1.5rem;
+}
+
+
+
+
+.svgContainer{
+    height:100%;
+}
+
+.centerChildrenXY{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.margin20rem{
+    margin: 5rem;
+}
+
+
+.switchLabel{
+    width:60%;
+    border-radius: 4px 4px 4px 4px;
+    border-right-style: solid;
+    position:absolute;
+    width:15vw;
+}
+
+.checkContainer{
+    padding: 0px;
+    margin: 0px;
+    text-align:center;
+    position:absolute;
+    width:8vw;
+    left:17vw;
+}
+
+input[type="checkbox"]{
+    appearance: initial;
+    background: gray;
+    width: 2.9rem;
+    height: 2.9rem;
+    border: none;
+    -webkit-appearance: initial;
+    background:#e9ecef;
+    position:relative;
+    border-radius: 4px 4px 4px 4px;
+
+}
+input[type="checkbox"]:after {
+    content: "\2717";
+    color: #f00;
+    font-size: 2rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+}
+input[type="checkbox"]:checked:after {
+    content: "\2713";
+    color: #0e8c30;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+
 }

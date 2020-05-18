@@ -120,7 +120,15 @@ async function handleWine(request, response){
             var page = page.replace(/\$vintage/gi, wine[0].Vintage);
             var page = page.replace(/\$colour/gi, wine[0].Colour);
             var page = page.replace(/\$producer/gi, wine[0].Producer);
-            var page = page.replace(/\$notes/gi, wine[0].NOTES);
+            if (wine[0].NOTES){
+                page = page.replace(/\$ifNotes/gi, '');
+                page = page.replace(/\$notes/gi, wine[0].NOTES);
+                page = page.replace(/\$endIfNotes/gi, '');
+            } else {
+                console.log("no notes");
+                page = page.replace(/\$ifNotes[^]+\$endIfNotes/gi, '');
+            }
+
             generalController.deliver(response, "application/xhtml+xml", page);
         });
     } else {

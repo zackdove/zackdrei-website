@@ -77,13 +77,13 @@ async function getUsersByUsername(username){
     }
 }
 
-async function login(username, password, response){
+async function login(username, password, callback){
     console.log(username, password);
     var users = await getUsersByUsername(username);
     console.log("users here="+users.length);
     if (users.length < 1){
         console.log("username not found");
-        userController.handleBadLogin(response);
+        callback();
     } else {
         console.log("user found"+users);
         //check password
@@ -94,11 +94,7 @@ async function login(username, password, response){
         if (inputhash == user.password){
             console.log("password matches");
             var token = generateToken(user);
-            response.writeHead(301,{
-                Location: "/menu",
-                'Set-Cookie': token
-            });
-            response.end();
+            callback(token);
         } else {
             console.log("password does not match");
             userController.handleBadLogin(response);
@@ -122,7 +118,7 @@ function generateLogoutToken(){
     return jwt.sign({}, jwtSecret, {expiresIn: '0h'});
 }
 
-async function signup(username, password, response){
+async function signup(username, password, callback){
     //hash the pwd
     var salt = await bcrypt.genSalt(10);
     password = await bcrypt.hash(password, salt);
@@ -132,8 +128,7 @@ async function signup(username, password, response){
     mysqlconnection.query(statement, function(err){
         if (err) throw err;
         console.log("user added");
-        response.writeHead(301,{Location: "/"});
-        response.end();
+        callback();
     })
 }
 

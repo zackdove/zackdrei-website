@@ -48,10 +48,12 @@ lang="en-GB" xml:lang="en-GB">
                             <th>Producer:</th>
                             <td>$producer</td>
                         </tr>
+                        $ifNotes
                         <tr>
                             <th>Notes:</th>
                             <td>$notes</td>
                         </tr>
+                        $endIfNotes
                     </table>
                 </div>
                 <form method="post" action="/delete?=$id">

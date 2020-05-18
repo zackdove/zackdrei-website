@@ -35,12 +35,12 @@ async function handleViewUser(request, response){
             user = rows[0];
             var page = template.replace(/\$id/gi, user.id);
             var page = page.replace(/\$username/gi, user.username);
-            var page = page.replace(/\$password/gi, user.password);
             var page = page.replace(/\$isAdmin/gi, user.isAdmin);
             generalController.deliver(response, "application/xhtml+xml", page);
         });
     } else {
         console.log("user is not authenticated");
+        generalController.errorHandler(401, response);
     }
 }
 exports.handleViewUser = handleViewUser;
@@ -62,13 +62,24 @@ exports.handleToggleAdmin = handleToggleAdmin;
 
 async function handleSignup(request, response){
     if (request.method == 'POST'){
+        var page = await fs.readFile(__basedir+"/resources/registered.html", "utf8");
         var data = [];
         request.on('data', dataPart => {
             data += dataPart;
         })
         request.on('end', ()=>{
             data = parse(data);
-            userService.signup(data.username, data.password, response);
+            userService.signup(data.username, data.password, function(){
+                page = page.replace(/\$username/gi, data.username);
+                // console.log(page);
+                userService.login(data.username, data.password, function(token){
+                    response.writeHead(301,{
+                        Location: "/registered",
+                        'Set-Cookie': token
+                    });
+                    response.end();
+                });
+            });
         })
     } else if (request.method == 'GET'){
         var page = await fs.readFile(__basedir+"/resources/signup.html", "utf8");
@@ -76,31 +87,52 @@ async function handleSignup(request, response){
     }
 }
 
+async function handleRegistered(request, response){
+    var page = await fs.readFile(__basedir+"/resources/registered.html", "utf8");
+    var user = await userService.getUserFromRequest(request);
+    // console.log(user);
+    page = page.replace(/\$username/gi, user.username);
+    generalController.deliver(response, "application/xhtml+xml", page);
+}
+exports.handleRegistered = handleRegistered;
+
 async function handleLogin(request, response){
-    if (request.method == 'GET'){
-        var page = await fs.readFile(__basedir+"/resources/login.html", "utf8");
-        page = page.replace(/\$ifIncorrect[^]+\$endIfIncorrect/gi, '');
+    if (userService.isAuthenticated(request)){
+        var page = await fs.readFile(__basedir+"/resources/alreadyloggedin.html", "utf8");
+        var user = await userService.getUserFromRequest(request);
+        page = page.replace(/\$username/gi, user.username);
         generalController.deliver(response, "application/xhtml+xml", page);
-    } else if (request.method == 'POST'){
-        var data = [];
-        request.on('data', dataPart => {
-            data += dataPart;
-        })
-        request.on('end', ()=>{
-            data = parse(data);
-            userService.login(data.username, data.password, response);
-        })
+    } else {
+        if (request.method == 'GET'){
+            var page = await fs.readFile(__basedir+"/resources/login.html", "utf8");
+            page = page.replace(/\$ifIncorrect[^]+\$endIfIncorrect/gi, '');
+            generalController.deliver(response, "application/xhtml+xml", page);
+        } else if (request.method == 'POST'){
+            var page = await fs.readFile(__basedir+"/resources/login.html", "utf8");
+            var data = [];
+            request.on('data', dataPart => {
+                data += dataPart;
+            })
+            request.on('end', ()=>{
+                data = parse(data);
+                userService.login(data.username, data.password, function(token){
+                    if (token){
+                        response.writeHead(301,{
+                            Location: "/menu",
+                            'Set-Cookie': token
+                        });
+                        response.end();
+                    } else {
+                        page = page.replace(/\$ifIncorrect/gi, '');
+                        page = page.replace(/\$endIfIncorrect/gi, '');
+                        generalController.deliver(response, "application/xhtml+xml", page);
+                    }
+                });
+            })
+        }
     }
 }
 
-async function handleBadLogin(response){
-    var page = await fs.readFile(__basedir+"/resources/login.html", "utf8");
-    // here insert a thing saying incorrect login
-    page = page.replace(/\$ifIncorrect/gi, '');
-    page = page.replace(/\$endIfIncorrect/gi, '');
-    generalController.deliver(response, "application/xhtml+xml", page);
-}
-exports.handleBadLogin = handleBadLogin;
 
 async function getMenu(request, response){
     if (userService.isAuthenticated(request)){
@@ -114,8 +146,6 @@ async function getMenu(request, response){
         } else {
             console.log("user is not admin");
             page = page.replace(/\$adminsectionA[^]+\$adminsectionB/gi, '');
-
-
             // hide the bits using commenting or delete them?
         }
         generalController.deliver(response, "application/xhtml+xml", page);
@@ -125,21 +155,21 @@ async function getMenu(request, response){
 }
 
 
-async function handleUserList(url, response){
+async function handleUserList(request, response){
     if (userService.isAuthenticated(request)){
         var username = "";
         var isAdmin = "";
         var statement = "SELECT * FROM users";
-        if (url.startsWith("/list/filter")){
-            var urlparts = url.split("&");
+        if (request.url.startsWith("/users/filter")){
+            var urlparts = request.url.split("&");
             var username = urlparts[0].split("=")[1];
             var isAdmin = urlparts[1].split("=")[1];
             if (username != "" || isAdmin != ""){
-                var statement = "SELECT * FROM wines WHERE ";
-                if (country!=""){
+                var statement = "SELECT * FROM users WHERE ";
+                if (username!=""){
                     statement+="Username='"+username+"' AND ";
                 }
-                if (grape!=""){
+                if (isAdmin!=""){
                     statement+="isAdmin='"+isAdmin+"' AND ";
                 }
                 if (statement.endsWith("AND ")){
@@ -192,6 +222,9 @@ async function handleDeleteUser(request, response){
     }
 }
 exports.handleDeleteUser = handleDeleteUser;
+
+
+
 
 exports.handleSignup = handleSignup;
 exports.handleLogout = handleLogout;
