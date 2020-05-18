@@ -11,33 +11,39 @@ userPaths = ["/wines"]
 adminPaths = []
 
 async function handle(request, response) {
-    // console.log(request);
-    // console.log("response = "+response);
-    var url = request.url;
-    var method = request.method;
-    console.log(method, url);
-    var loggedIn = userService.isAuthenticated(request);
-    if (url == "/signup"){ userController.handleSignup(request, response);}
-    else if (url == "/login"){userController.handleLogin(request, response);}
-    else if (url =="/about"){deliverAbout(response);}
-    else if (url == "/"){deliverIndex(response);}
-    else if (url == "/logout"){userController.handleLogout(request, response);}
-    else if (url.startsWith("/wines")){wineController.handleWineList(request, response);}
-    else if (url.startsWith("/wine?=")) {wineController.handleWine(request, response);}
-    else if (url == "/addwine"){wineController.handleAddWine(request, response);}
-    else if (url.startsWith("/deletewine?=")){wineController.handleDeleteWine(request, response);}
-    else if (url == "/menu"){userController.getMenu(request, response);}
-    else if (url.startsWith("/user?=")){userController.handleViewUser(request, response);}
-    else if (url.startsWith("/users")){userController.handleUserList(request, response);}
-    else if (url.startsWith("/toggleAdmin?=")){userController.handleToggleAdmin(request, response);}
-    else if (url.startsWith("/addToMyWines")){userWineController.handleAddToMyWines(request, response);}
-    else if (url.startsWith("/deleteUser?=")){userController.handleDeleteUser(request, response);}
-    else if (url == "/getRandomWineName"){wineController.handleGetRandomWineName(request,response);}
-    else if (url == "/recommendation"){wineController.handleRecommendation(request,response);}
-    else if (url == "/404"){handle404(request, response);}
-    else if (url == "/registered"){userController.handleRegistered(request,response);}
-    else if (url.startsWith("/scripts") || url.startsWith("/style") || url.startsWith("/images") || url=="/moving.html"){getFile(url, response);}
-    else {handle404(response);}
+    try {
+        // console.log(request);
+        // console.log("response = "+response);
+        var url = request.url;
+        var method = request.method;
+        console.log(method, url);
+        var loggedIn = userService.isAuthenticated(request);
+        
+        if (url == "/signup"){ userController.handleSignup(request, response);}
+        else if (url == "/login"){userController.handleLogin(request, response);}
+        else if (url =="/about"){deliverAbout(response);}
+        else if (url == "/"){deliverIndex(response);}
+        else if (url == "/logout"){userController.handleLogout(request, response);}
+        else if (url.startsWith("/wines")){wineController.handleWineList(request, response);}
+        else if (url.startsWith("/wine?=")) {wineController.handleWine(request, response);}
+        else if (url == "/addwine"){wineController.handleAddWine(request, response);}
+        else if (url.startsWith("/deletewine?=")){wineController.handleDeleteWine(request, response);}
+        else if (url == "/menu"){userController.getMenu(request, response);}
+        else if (url.startsWith("/user?=")){userController.handleViewUser(request, response);}
+        else if (url.startsWith("/users")){userController.handleUserList(request, response);}
+        else if (url.startsWith("/toggleAdmin?=")){userController.handleToggleAdmin(request, response);}
+        else if (url.startsWith("/addToMyWines")){userWineController.handleAddToMyWines(request, response);}
+        else if (url.startsWith("/deleteUser?=")){userController.handleDeleteUser(request, response);}
+        else if (url == "/getRandomWineName"){wineController.handleGetRandomWineName(request,response);}
+        else if (url == "/recommendation"){wineController.handleRecommendation(request,response);}
+        else if (url == "/404"){handle404(request, response);}
+        else if (url == "/registered"){userController.handleRegistered(request,response);}
+        else if (url.startsWith("/scripts") || url.startsWith("/style") || url.startsWith("/images") || url=="/moving.html"){getFile(url, response);}
+        else {handle404(response);}
+    } catch(e){
+        console.log(e);
+        errorHandler(500, response);
+    }
 }
 
 async function handle404(response){
@@ -50,13 +56,19 @@ async function handle404(response){
 async function errorHandler(code, response){
     console.log("ERROR: " + code)
     switch (code){
+        case 400:
+        // bad url
+            var page = await fs.readFile(__basedir+"/resources/400.html", "utf8");
         case 404:
+        // page not found
             var page = await fs.readFile(__basedir+"/resources/404.html", "utf8");
             break;
         case 401:
+        // unauthorised
             var page = await fs.readFile(__basedir+"/resources/401.html", "utf8");
             break;
         case 500:
+        // internal server error
             var page = await fs.readFile(__basedir+"/resources/500.html", "utf8");
             break;
         default:

@@ -572,3 +572,14 @@ input[type="checkbox"]:checked:after {
 
 /* Add a grey background color on mouse-over */
 .pagination a:hover:not(.active) {background-color: #ddd;}
+
+.padded{
+    padding: 1rem;
+}
+
+
+.wineButtonContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

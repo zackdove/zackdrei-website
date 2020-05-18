@@ -34,8 +34,8 @@ async function handleWineList(request, response){
         var producer = "";
         var user = 0;
         var mywines = false;
-        if (url.includes == "mywines=on"){
-            user = userService.getUserFromRequest(request);
+        if (url.includes("mywines=on")){
+            user = await userService.getUserFromRequest(request);
             mywines = true;
         }
         if (url.startsWith("/wines/filter")){
@@ -48,7 +48,7 @@ async function handleWineList(request, response){
         }
         var currentPString = /page=\d+/gi.exec(url) + '';
         var currentPage = currentPString.split("=")[1];
-        if (!currentPage){
+        if (!currentPage || currentPage <1){
             currentPage = 1;
         }
         var wines = await wineService.getWines(country, grape, vintage, colour, producer, user, currentPage, async function(wines){
@@ -64,6 +64,7 @@ async function handleWineList(request, response){
             var page = page.replace(/\$vintage/gi, vintage);
             var page = page.replace(/\$colour/gi, colour);
             var page = page.replace(/\$producer/gi, producer);
+            console.log("my wines: "+mywines);
             if (mywines){
                 page = page.replace(/\$mywines/gi, "checked='checked'");
             } else {
@@ -76,12 +77,24 @@ async function handleWineList(request, response){
                 var paginationString = " ";
                 var i;
                 url = url.replace(/\&page=\d+/gi, "");
+                if (currentPage>1){
+                    below = Number(currentPage)-1;
+                    paginationString += "<a href='" + url + "&page="+(below) + "'>←</a>"
+                } else {
+                    paginationString += "<a href='#'>←</a>"
+                }
                 for (i = 1; i<=pages; i++){
                     if (i == currentPage){
                         paginationString +=  "<a class='active' href='" + url +"&page="+i+"'>"+i+"</a>";
                     } else {
                         paginationString +=  "<a href='" + url +"&page="+i+"'>"+i+"</a>";
                     }
+                }
+                if (currentPage<pages){
+                    above = Number(currentPage)+1;
+                    paginationString += "<a href='" + url + "&page="+(above) + "'>→</a>"
+                } else {
+                    paginationString += "<a href='#'>→</a>"
                 }
                 page = page.replace(/\$pagination/gi, paginationString);
                 page = page.replace(/\&/gi, '&amp;');

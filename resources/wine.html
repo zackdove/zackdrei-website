@@ -56,12 +56,14 @@ lang="en-GB" xml:lang="en-GB">
                         $endIfNotes
                     </table>
                 </div>
-                <form method="post" action="/delete?=$id">
-                    <input type="submit" value="Delete" class="btn2 btn-grape"/>
-                </form>
-                <form method="post" action="/addToMyWines?$id?wishlist">
-                    <input type="submit" value="Add To My Wines" class="btn2 btn-grape"/>
-                </form>
+                <div class="wineButtonContainer">
+                    <form method="post" action="/delete?=$id">
+                        <input type="submit" value="Delete" class="btn2 btn-grape"/>
+                    </form>
+                    <form method="post" action="/addToMyWines?$id?wishlist">
+                        <input type="submit" value="Add To My Wines" class="btn2 btn-grape"/>
+                    </form>
+                </div>
             </div>
     </div>
 </body>
