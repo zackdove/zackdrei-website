@@ -24,6 +24,7 @@ function handleDeleteWine(request, response){
 exports.handleDeleteWine = handleDeleteWine;
 
 async function handleWineList(request, response){
+    var template = await fs.readFile(__basedir+"/resources/wineList.html", "utf8");
     if (userService.isAuthenticated(request)){
         var url = request.url;
         var country = "";
@@ -31,8 +32,13 @@ async function handleWineList(request, response){
         var vintage = "";
         var colour = "";
         var producer = "";
+        var user = 0;
         var mywines = false;
-        var statement = "SELECT * FROM wines";
+        if (url.includes == "mywines=on"){
+            user = userService.getUserFromRequest(request);
+            mywines = true;
+        }
+        pageNum = 0;
         if (url.startsWith("/wines/filter")){
             var urlparts = url.split("&");
             var country = urlparts[0].split("=")[1];
@@ -40,45 +46,8 @@ async function handleWineList(request, response){
             var vintage = urlparts[2].split("=")[1];
             var colour = urlparts[3].split("=")[1];
             var producer = urlparts[4].split("=")[1];
-            // maybe chang to includes
-            if (url.includes("mywines=on")){
-                console.log("my wine true");
-                mywines = true;
-                let user = await userService.getUserFromRequest(request);
-                statement = statement + " LEFT JOIN userWines ON wines.id = userWines.wineID WHERE userWines.userID="+user.id;
-            }
-            if (country != "" || grape != "" || vintage!=""||colour!=""||producer!=""){
-                if (statement.includes("WHERE")){
-                    statement = statement+" AND ";
-                } else {
-                    statement = statement+ " WHERE ";
-                }
-                if (country!=""){
-                    statement+="Country='"+country+"' AND ";
-                }
-                if (grape!=""){
-                    statement+="Grape='"+grape+"' AND ";
-                }
-                if (vintage!=""){
-                    statement+="Vintage='"+vintage+"' AND ";
-                }
-                if (colour!=""){
-                    statement+="Colour='"+colour+"' AND ";
-                }
-                if (producer!=""){
-                    statement+="Producer='"+producer+"'";
-                }
-                if (statement.endsWith("AND ")){
-                    statement = statement.slice(0, statement.length-4);
-                }
-            }
         }
-        console.log(statement);
-        var template = await fs.readFile(__basedir+"/resources/wineList.html", "utf8");
-        mysqlconnection.query(statement, function(err, wines){
-            if(err) throw err;
-            //the +'' is needed to set template to a string
-            // parts = template.split("$");
+        var wines = await wineService.getWines(country, grape, vintage, colour, producer, user, pageNum, async function(wines){
             let insertion = " ";
             for(var i=0; i<wines.length; i++){
                 var wine = wines[i];
@@ -96,8 +65,24 @@ async function handleWineList(request, response){
             } else {
                 page = page.replace(/\$mywines/gi, "");
             }
-            generalController.deliver(response, "application/xhtml+xml", page);
+
+            var count = await wineService.getNumOfWines(country, grape, vintage, colour, producer, user, function(count){
+                pages = Math.ceil(count/10);
+                // '' needed to force to be a string
+                currentPString = /page=\d+/gi.exec(url) + '';
+                var currentPage = currentPString.split("=")[1];
+                var paginationString = " ";
+                var i;
+                url = url.replace(/page=\d+/gi, "");
+                for (i = 1; i<=pages; i++){
+                    paginationString +=  "<a href='" + url +"page="+i+"'>"+i+"</a>";
+                }
+                page = page.replace(/\$pagination/gi, paginationString);
+                generalController.deliver(response, "application/xhtml+xml", page);
+            });
+
         });
+
     } else {
         console.log("User must be authenticated");
         // redirect to error page

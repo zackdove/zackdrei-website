@@ -544,3 +544,31 @@ input[type="checkbox"]:checked:after {
     transform: translate(-50%,-50%);
 
 }
+
+.pagination{
+    display:flex;
+    /* flex: 0 0 70vw; */
+    /* background-color:green; */
+    justify-content:center;
+    /* position:absolute;
+    bottom:0; */
+    /* align-items:flex-end; */
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+
+}
+
+
+.pagination a.active {
+  background-color: #421C52;
+  color: white;
+}
+
+/* Add a grey background color on mouse-over */
+.pagination a:hover:not(.active) {background-color: #ddd;}

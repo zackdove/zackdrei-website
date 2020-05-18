@@ -59,24 +59,43 @@ lang="en-GB" xml:lang="en-GB">
                 </fieldset>
             </form>
         </div>
-        <div id="eventListFragment" class="tableContainer col70 mar5">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Country</th>
-                        <th>Grape</th>
-                        <th>Vintage</th>
-                        <th>Colour</th>
-                        <th>Producer</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    $wines
-                </tbody>
-            </table>
+        <div id="eventListFragment" class="col70 mar5">
+            <div class="tableContainer">
+                <table class="listTable">
+                    <thead>
+                        <tr>
+                            <th>Country</th>
+                            <th>Grape</th>
+                            <th>Vintage</th>
+                            <th>Colour</th>
+                            <th>Producer</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        $wines
+                    </tbody>
+                </table>
+            </div>
+            <!-- <div class="pagination">
+                <a href="#">←</a>
+                <a class="active" href="#">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+                <a href="#">6</a>
+                <a href="#">→</a>
+            </div> -->
+            <div class="pagination">
+
+                $pagination
+
+            </div>
         </div>
+
     </div>
+
 
 </body>
 </html>
