@@ -68,7 +68,8 @@ async function getWines(country, grape, vintage, colour, producer, user, page, c
         }
     }
     var offset = page * 10;
-    statement += " ORDER BY Grape Limit 10 Offset "+page;
+    statement += " ORDER BY Grape Limit 10 Offset "+(offset-10);
+    console.log(statement);
     mysqlconnection.query(statement, function(err, wines){
         if(err) throw err;
         callback(wines);

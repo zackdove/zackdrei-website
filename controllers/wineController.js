@@ -38,7 +38,6 @@ async function handleWineList(request, response){
             user = userService.getUserFromRequest(request);
             mywines = true;
         }
-        pageNum = 0;
         if (url.startsWith("/wines/filter")){
             var urlparts = url.split("&");
             var country = urlparts[0].split("=")[1];
@@ -47,7 +46,12 @@ async function handleWineList(request, response){
             var colour = urlparts[3].split("=")[1];
             var producer = urlparts[4].split("=")[1];
         }
-        var wines = await wineService.getWines(country, grape, vintage, colour, producer, user, pageNum, async function(wines){
+        var currentPString = /page=\d+/gi.exec(url) + '';
+        var currentPage = currentPString.split("=")[1];
+        if (!currentPage){
+            currentPage = 1;
+        }
+        var wines = await wineService.getWines(country, grape, vintage, colour, producer, user, currentPage, async function(wines){
             let insertion = " ";
             for(var i=0; i<wines.length; i++){
                 var wine = wines[i];
@@ -65,19 +69,22 @@ async function handleWineList(request, response){
             } else {
                 page = page.replace(/\$mywines/gi, "");
             }
-
             var count = await wineService.getNumOfWines(country, grape, vintage, colour, producer, user, function(count){
                 pages = Math.ceil(count/10);
                 // '' needed to force to be a string
-                currentPString = /page=\d+/gi.exec(url) + '';
-                var currentPage = currentPString.split("=")[1];
+
                 var paginationString = " ";
                 var i;
-                url = url.replace(/page=\d+/gi, "");
+                url = url.replace(/\&page=\d+/gi, "");
                 for (i = 1; i<=pages; i++){
-                    paginationString +=  "<a href='" + url +"page="+i+"'>"+i+"</a>";
+                    if (i == currentPage){
+                        paginationString +=  "<a class='active' href='" + url +"&page="+i+"'>"+i+"</a>";
+                    } else {
+                        paginationString +=  "<a href='" + url +"&page="+i+"'>"+i+"</a>";
+                    }
                 }
                 page = page.replace(/\$pagination/gi, paginationString);
+                page = page.replace(/\&/gi, '&amp;');
                 generalController.deliver(response, "application/xhtml+xml", page);
             });
 
