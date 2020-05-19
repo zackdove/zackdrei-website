@@ -10,7 +10,7 @@ async function handleAddToMyWines(request, response){
         var urlparts = request.url.split("?");
         var wineid = urlparts[1];
         var type = urlparts[2];
-        await userWineService.addToMyWines(user.id, wineid, type);
+        await userWineService.addToMyWines(user.id, wineid, 5);
         console.log(urlparts);
         generalController.redirect(response, "/wines");
     } else {

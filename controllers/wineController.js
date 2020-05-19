@@ -3,6 +3,7 @@ const generalController = require(__basedir+"/controllers/generalController.js")
 const { parse } = require('querystring');
 const userService = require(__basedir+"/services/userService.js");
 const wineService = require(__basedir+"/services/wineService.js");
+const userWineService = require(__basedir+"/services/userWineService.js");
 
 function handleDeleteWine(request, response){
     if (userService.isAuthenticated(request)){
@@ -117,6 +118,7 @@ async function handleWine(request, response){
         //mysql prevents escaping by default
         var template = await fs.readFile(__basedir+"/resources/wine.html", "utf8");
         var statement = "SELECT * FROM wines WHERE ID=" + mysqlconnection.escape(wineid);
+        var user = await userService.getUserFromRequest(request);
         mysqlconnection.query(statement, function(err, wine){
             if (err) throw err;
             var page = template.replace(/\$id/gi, wine[0].id);
@@ -133,7 +135,9 @@ async function handleWine(request, response){
                 console.log("no notes");
                 page = page.replace(/\$ifNotes[^]+\$endIfNotes/gi, '');
             }
-
+            userWineService.getUserWine(user.id, wineid, function(result){
+                console.log(result);
+            });
             generalController.deliver(response, "application/xhtml+xml", page);
         });
     } else {

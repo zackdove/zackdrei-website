@@ -57,8 +57,15 @@ lang="en-GB" xml:lang="en-GB">
                     </table>
                 </div>
                 <div class="wineButtonContainer">
+                    <div class="starContainer" onmouseleave="starLeave()">
+                        <span id="star1" class="star" onmouseover="starHover(1)">★</span>
+                        <span id="star2" class="star"  onmouseover="starHover(2)">★</span>
+                        <span id="star3" class="star"  onmouseover="starHover(3)">★</span>
+                        <span id="star4" class="star" onmouseover="starHover(4)">★</span>
+                        <span id="star5" class="star" onmouseover="starHover(5)">★</span>
+                    </div>
                     <form method="post" action="/delete?=$id">
-                        <input type="submit" value="Delete" class="btn2 btn-grape"/>
+                        <input type="submit" value="Delete Wine" class="btn2 btn-grape"/>
                     </form>
                     <form method="post" action="/addToMyWines?$id?wishlist">
                         <input type="submit" value="Add To My Wines" class="btn2 btn-grape"/>
@@ -66,5 +73,10 @@ lang="en-GB" xml:lang="en-GB">
                 </div>
             </div>
     </div>
+
+
+<script src="scripts/starscript.js"/>
 </body>
+
+
 </html>
