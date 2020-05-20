@@ -6,14 +6,30 @@ lang="en-GB" xml:lang="en-GB">
     <title>Grape</title>
 
     <link rel="stylesheet" href="/style.css"/>
-
+    <link rel="icon" type="image/png" href="images/logo.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 </head>
 <body>
-    <div class="fullFlexContainer justify-content-center pad5">
-        <div class="col25 mar5">
+    <div class="menuColumn centerX">
+        <a href="/menu">
+            <div class="backContainer">
+                <span class="backArrow">
+                    ←
+                </span>
+                <span class="backText">
+                    back to menu
+                </span>
+            </div>
+        </a>
+        <div class="grapeLogo">
+            <object data="images/logo.svg" type="image/svg+xml" class="svgContainer" >
+                Wine Logo
+            </object>
+        </div>
             <h3>Add Wine:</h3>
             <form method="post" action="/addwine">
+
                 <fieldset>
                     <label for="country">Country</label>
                     <input id="country" type="text" name="country"/>
@@ -40,7 +56,7 @@ lang="en-GB" xml:lang="en-GB">
             </form>
         </div>
 
-    </div>
+
 
 </body>
 </html>

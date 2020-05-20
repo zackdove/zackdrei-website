@@ -7,9 +7,11 @@ lang="en-GB" xml:lang="en-GB">
 
     <link rel="stylesheet" href="style.css"/>
 
-
+    <link rel="icon" type="image/png" href="images/logo.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
+    <div class="centerChildrenXY fullScreen">
         <div class="wineCard">
             <div class="wineCardHead bg-grape">
                 <div class="wineCardTitle">
@@ -26,7 +28,7 @@ lang="en-GB" xml:lang="en-GB">
                     <table class="table table-borderless">
                         <tr>
                             <th>ID:</th>
-                            <td>$id</td>
+                            <td id="wineid">$id</td>
                         </tr>
                         <tr>
                             <th>Country:</th>
@@ -57,24 +59,28 @@ lang="en-GB" xml:lang="en-GB">
                     </table>
                 </div>
                 <div class="wineButtonContainer">
-                    <div class="starContainer" onmouseleave="starLeave()">
-                        <span id="star1" class="star" onmouseover="starHover(1)">★</span>
-                        <span id="star2" class="star"  onmouseover="starHover(2)">★</span>
-                        <span id="star3" class="star"  onmouseover="starHover(3)">★</span>
-                        <span id="star4" class="star" onmouseover="starHover(4)">★</span>
-                        <span id="star5" class="star" onmouseover="starHover(5)">★</span>
+                <div class="starGreaterContainer">
+                    <div class="starHoverMessage" id="hovermessage">
+                    <p>
+                        You haven't tried this wine yet. Hover here to leave a rating.
+                    </p>
                     </div>
-                    <form method="post" action="/delete?=$id">
+                    <div class="starContainer starContainerHover" id="starContainer" onmouseleave="starLeave()">
+                        <span id="star1" class="star" onmouseover="starHover(1)" onclick="starClick(1)">★</span>
+                        <span id="star2" class="star"  onmouseover="starHover(2)" onclick="starClick(2)">★</span>
+                        <span id="star3" class="star"  onmouseover="starHover(3)" onclick="starClick(3)">★</span>
+                        <span id="star4" class="star" onmouseover="starHover(4)" onclick="starClick(4)">★</span>
+                        <span id="star5" class="star" onmouseover="starHover(5)" onclick="starClick(5)">★</span>
+                    </div>
+                </div>
+                    <form method="post" action="/deletewine?=$id">
                         <input type="submit" value="Delete Wine" class="btn2 btn-grape"/>
-                    </form>
-                    <form method="post" action="/addToMyWines?$id?wishlist">
-                        <input type="submit" value="Add To My Wines" class="btn2 btn-grape"/>
                     </form>
                 </div>
             </div>
     </div>
 
-
+</div>
 <script src="scripts/starscript.js"/>
 </body>
 

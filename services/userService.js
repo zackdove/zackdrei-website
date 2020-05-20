@@ -63,23 +63,26 @@ async function getUserByID(id){
 }
 
 
-async function getUsersByUsername(username){
+async function getUserByUsername(username){
     try {
         const statement = "SELECT * FROM users WHERE username='"+username+"'";
         // console.log(statement);
         let users = await mysqlconnection.query(statement);
         console.log("users length in mysql="+users.length);
         //[1] is for meta data
+        // console.log(users);
+        console.log("length1 = "+users[0].length);
         return users[0];
     } catch (err){
         console.log("error");
         //handle it
     }
 }
+exports.getUserByUsername = getUserByUsername;
 
 async function login(username, password, callback){
     console.log(username, password);
-    var users = await getUsersByUsername(username);
+    var users = await getUserByUsername(username);
     console.log("users here="+users.length);
     if (users.length < 1){
         console.log("username not found");
@@ -97,7 +100,7 @@ async function login(username, password, callback){
             callback(token);
         } else {
             console.log("password does not match");
-            userController.handleBadLogin(response);
+            callback();
         }
     }
 
@@ -135,7 +138,6 @@ async function signup(username, password, callback){
 
 
 exports.isAuthenticated = isAuthenticated;
-exports.getUsersByUsername = getUsersByUsername;
 exports.login = login;
 exports.generateToken = generateToken;
 exports.generateLogoutToken = generateLogoutToken;

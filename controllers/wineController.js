@@ -13,7 +13,7 @@ function handleDeleteWine(request, response){
             var statement = "DELETE FROM wines WHERE ID=" + mysqlconnection.escape(wineid);
             mysqlconnection.query(statement, function(err, wine){
                 if (err) throw err;
-                getWineList("/wines",response);
+                generalController.redirect(response, "/winedeleted");
             });
         } else {
             console.log("method must be post");
@@ -23,6 +23,12 @@ function handleDeleteWine(request, response){
     }
 }
 exports.handleDeleteWine = handleDeleteWine;
+
+async function handleDeleted(request, response){
+    var page = await fs.readFile(__basedir+"/resources/winedeleted.html", "utf8");
+    generalController.deliver(response, "application/xhtml+xml", page);
+}
+exports.handleDeleted = handleDeleted;
 
 async function handleWineList(request, response){
     var template = await fs.readFile(__basedir+"/resources/wineList.html", "utf8");
@@ -161,7 +167,7 @@ async function handleAddWine(request, response){
                 //Do stuff with data
                 data = parse(data);
                 wineService.addWine(data.country, data.grape, data.vintage, data.colour, data.producer);
-                generalController.redirect(response, "/wines")
+                generalController.redirect(response, "/wineAdded");
             })
         }
     } else {
@@ -185,3 +191,9 @@ async function handleRecommendation(request, response){
     generalController.redirect(response, "/wine?="+id);
 }
 exports.handleRecommendation = handleRecommendation;
+
+async function handleWineAdded(request, response){
+    var page = await fs.readFile(__basedir+"/resources/wineadded.html", "utf8");
+    generalController.deliver(response, "application/xhtml+xml", page);
+}
+exports.handleWineAdded = handleWineAdded;

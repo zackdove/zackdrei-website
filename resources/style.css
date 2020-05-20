@@ -15,7 +15,7 @@ body {
     color: white;
 }
 .duo-option{
-    font-size:5vw;
+    font-size:4rem;
 }
 .bg-grape{
     background-color:#421C52!important;
@@ -110,21 +110,43 @@ a{
     text-decoration:inherit; color:inherit;
 }
 
-.aboutColumn {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    /* We want overflow */
-    flex-wrap: nowrap;
-    overflow: auto;
-    align-items: center;
-    height: 100vh;
-    width: 50vw;
-    margin-left: 25vw;
-    margin-right: 25vw;
-    background-color: #ffffff;
-    box-shadow: 0 0 5vh 5vh #ffffff;
-    text-align:center;
+
+@media only screen and (orientation: portrait) {
+    .aboutColumn {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        /* We want overflow */
+        flex-wrap: nowrap;
+        overflow: auto;
+        align-items: center;
+        height: 100vh;
+        width: 94vw;
+        padding-left: 2vw;
+        padding-right: 2vw;
+        background-color: #ffffff;
+        box-shadow: 0 0 5vh 5vh #ffffff;
+        text-align:center;
+    }
+}
+
+@media only screen and (orientation: landscape) {
+    .aboutColumn {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        /* We want overflow */
+        flex-wrap: nowrap;
+        overflow: auto;
+        align-items: center;
+        height: 100vh;
+        width: 50vw;
+        margin-left: 25vw;
+        margin-right: 25vw;
+        background-color: #ffffff;
+        box-shadow: 0 0 5vh 5vh #ffffff;
+        text-align:center;
+    }
 }
 
 
@@ -132,22 +154,46 @@ a{
     margin-top: 3vh;
 }
 
-.menuColumn{
-    display:flex;
-    flex-direction: column;
-    position:absolute;
-    width: 40vw;
-    margin-left: 30vw;
-    margin-right: 30vw;
-    height: 60vh;
-    margin-top: 20vh;
-    margin-bottom: 20vh;
-    background-color: #ffffff;
-    align-items: center;
-    color: #421C52;
-    background-color: #ffffff;
-    box-shadow: 5vh 5vh 5vh 5vh #ffffff;
+@media only screen and (orientation: landscape) {
+    .menuColumn{
+        display:flex;
+        flex-direction: column;
+        position:absolute;
+        width: 40vw;
+        margin-left: 30vw;
+        margin-right: 30vw;
+        height: 60vh;
+        margin-top: 20vh;
+        margin-bottom: 20vh;
+        background-color: #ffffff;
+        align-items: center;
+        color: #421C52;
+        background-color: #ffffff;
+        box-shadow: 5vh 5vh 5vh 5vh #ffffff;
+        text-align:center;
+    }
 }
+@media only screen and (orientation: portrait) {
+    .menuColumn{
+        display:flex;
+        flex-direction: column;
+        position:absolute;
+        width: 96vw;
+        padding-left: 2vw;
+        padding-right: 2vw;
+        height: 60vh;
+        margin-top: 5vh;
+        margin-bottom: 20vh;
+        background-color: #ffffff;
+        align-items: center;
+        color: #421C52;
+        background-color: #ffffff;
+        box-shadow: 5vh 5vh 5vh 5vh #ffffff;
+        text-align:center;
+    }
+}
+
+
 
 .menuButton{
     width: 100%;
@@ -294,7 +340,8 @@ iframe {
 }
 
 .grapeLogo{
-    height: 100%;
+    height: 10vh;
+    text-align:center;
 }
 
 .buttonGroup{
@@ -307,7 +354,7 @@ iframe {
 form{
     padding: 0px;
     margin: 0px;
-    width:23vw;
+    width:23rem;
 }
 
 fieldset{
@@ -316,7 +363,9 @@ fieldset{
     margin: 0px;
     height: 3rem;
     line-height:3rem;
-    width:23vw;
+    width:23rem;
+    position:relative;
+    text-align:left;
 }
 
 label{
@@ -325,7 +374,7 @@ label{
     border-right-style: none;
     border-radius: 4px 0px 0px 4px;
     height:inherit;
-    width: 7vw;
+    width: 7rem;
     position:absolute;
     background-color: #e9ecef;
     display: inline-block;
@@ -338,8 +387,8 @@ input[type=text]{
     border: 1px solid grey;
     border-radius: 0px 4px 4px 0px;
     height:inherit;
-    width:16vw;
-    left:9vw;
+    width:16rem;
+    left:7rem;
     position:absolute;
     padding: 0px;
     margin: 0px;
@@ -354,6 +403,8 @@ input[type=text]{
     border-radius: 4px;
     font-size:inherit;
     min-width: 10rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 .tableContainer{
@@ -384,26 +435,20 @@ th,td{
 .infoButton{
     width: 2em;
     height:2em;
+    min-width:4rem;;
 }
 
 .wineCard{
     display:flex;
     flex-direction: column;
-    width: 40vw;
-    margin-left: 30vw;
-    margin-right: 30vw;
-    margin-top: 10vh;
     align-items: center;
-    /* border: 1px solid grey;
-    border-radius: 4px; */
-    /* overflow:auto; */
 }
 
 .wineCardHead{
     height:4rem;
     line-height:4rem;
     font-size:2rem;
-    width:40vw;
+    width:34rem;
     border-top: 1px solid grey;
     border-left: 1px solid grey;
     border-right: 1px solid grey;
@@ -412,15 +457,14 @@ th,td{
 }
 
 .wineCardBody{
-    padding: 1vw 2vw 0rem 2vw;
+    padding: 1rem 2rem 1rem 2rem;
     overflow:auto;
     border-bottom: 1px solid grey;
     border-left: 1px solid grey;
     border-right: 1px solid grey;
     border-radius: 4px;
-    height: 60vh;
     border-radius: 0px 0px 6px 6px;
-    width:36vw;
+    width:30rem;
 }
 
 .closeButton{
@@ -432,17 +476,13 @@ th,td{
 }
 
 .wineCardTitle{
-    width: 20vw;
     /* background-color:red; */
-    float:left;
     text-align:center;
-    padding-left:10vw;
 }
 
 .closeButtonContainer{
     width:6vw;
     /* background-color:green; */
-    float:right;
     text-align:center;
 }
 
@@ -496,7 +536,7 @@ th,td{
     border-radius: 4px 4px 4px 4px;
     border-right-style: solid;
     position:absolute;
-    width:15vw;
+    width:15rem;
 }
 
 .checkContainer{
@@ -504,8 +544,8 @@ th,td{
     margin: 0px;
     text-align:center;
     position:absolute;
-    width:8vw;
-    left:17vw;
+    width:8rem;
+    left:17.5rem;
 }
 
 input[type="checkbox"]{
@@ -582,12 +622,51 @@ input[type="checkbox"]:checked:after {
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
 }
 
 .starContainer{
     font-family: "Arial";
+    cursor: pointer;
+    position:absolute;
+}
+
+.starContainerHover{
+    opacity: 0;
+    transition:opacity 0.4s;
+    transition-delay: 0.3s;
 }
 
 .star{
     font-family: "Arial";
+    color: grey;
+    font-size: 1.4rem;
+}
+
+.checked{
+    color: gold;
+}
+
+.starGreaterContainer:hover  .starContainerHover{
+    opacity: 1;
+}
+
+.starGreaterContainer:hover  .starHoverMessage{
+    opacity:0;
+}
+
+.starHoverMessage{
+    position:absolute;
+    transition:opacity 0.4s;
+    transition-delay: 0.3s;
+    cursor:default;
+}
+
+.starGreaterContainer{
+    position:relative;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width: 20rem;
+    height: 5rem;
 }

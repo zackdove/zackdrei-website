@@ -1,12 +1,13 @@
 
 
 
-function addToMyWines(userid, wineid, rating){
+function addToMyWines(userid, wineid, rating, callback){
     var statement = "INSERT INTO userWines (userID, wineID, rating) VALUES ("+userid+", "+wineid+", '"+rating+"')";
     console.log(statement);
     mysqlconnection.query(statement, function(err){
         if (err) throw err;
         console.log("wine add to user's wines");
+        callback();
     })
 
 }
@@ -28,3 +29,24 @@ function getUserWine(userid, wineid, callback){
     });
 }
 exports.getUserWine = getUserWine;
+
+function setRating(userid, wineid, rating, callback){
+    getUserWine(userid, wineid, function(result){
+        if (result>0){
+            var statement = "UPDATE userWines SET rating="+rating+" WHERE userID ="+userid+" AND wineID =" + wineid;
+            mysqlconnection.query(statement, function(err){
+                if (err) throw err;
+                console.log("rating set");
+                callback(rating);
+            })
+        } else {
+            addToMyWines(userid, wineid, rating, function(result){
+                callback(rating);
+            });
+        }
+    });
+
+
+
+}
+exports.setRating = setRating;

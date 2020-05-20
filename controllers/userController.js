@@ -11,7 +11,7 @@ function handleLogout(request, response){
         if (userService.isAuthenticated(request)){
             var token = userService.generateLogoutToken();
             response.writeHead(301,{
-                Location: "/",
+                Location: "/loggedout",
                 'Set-Cookie': token
             });
             console.log("logging out");
@@ -21,6 +21,12 @@ function handleLogout(request, response){
         }
     }
 }
+
+async function handleLoggedOut(request, response){
+    var page = await fs.readFile(__basedir+"/resources/loggedout.html", "utf8");
+    generalController.deliver(response, "application/xhtml+xml", page);
+}
+exports.handleLoggedOut = handleLoggedOut;
 
 async function handleViewUser(request, response){
     if (userService.isAuthenticated(request)){
@@ -67,22 +73,32 @@ async function handleSignup(request, response){
         request.on('data', dataPart => {
             data += dataPart;
         })
-        request.on('end', ()=>{
+        request.on('end', async ()=>{
             data = parse(data);
-            userService.signup(data.username, data.password, function(){
-                page = page.replace(/\$username/gi, data.username);
-                // console.log(page);
-                userService.login(data.username, data.password, function(token){
-                    response.writeHead(301,{
-                        Location: "/registered",
-                        'Set-Cookie': token
+            users = await userService.getUserByUsername(data.username)
+            if (users.length>0){
+                console.log("user already exists");
+                page = await fs.readFile(__basedir+"/resources/signup.html", "utf8");
+                page = page.replace(/\$ifIncorrect/gi, '');
+                page = page.replace(/\$endIfIncorrect/gi, '');
+                generalController.deliver(response, "application/xhtml+xml", page);
+            } else {
+                userService.signup(data.username, data.password, function(){
+                    page = page.replace(/\$username/gi, data.username);
+                    // console.log(page);
+                    userService.login(data.username, data.password, function(token){
+                        response.writeHead(301,{
+                            Location: "/registered",
+                            'Set-Cookie': token
+                        });
+                        response.end();
                     });
-                    response.end();
                 });
-            });
+            }
         })
     } else if (request.method == 'GET'){
         var page = await fs.readFile(__basedir+"/resources/signup.html", "utf8");
+        page = page.replace(/\$ifIncorrect[^]+\$endIfIncorrect/gi, '');
         generalController.deliver(response, "application/xhtml+xml", page);
     }
 }

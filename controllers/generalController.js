@@ -18,7 +18,7 @@ async function handle(request, response) {
         var method = request.method;
         console.log(method, url);
         var loggedIn = userService.isAuthenticated(request);
-        
+
         if (url == "/signup"){ userController.handleSignup(request, response);}
         else if (url == "/login"){userController.handleLogin(request, response);}
         else if (url =="/about"){deliverAbout(response);}
@@ -37,7 +37,12 @@ async function handle(request, response) {
         else if (url == "/getRandomWineName"){wineController.handleGetRandomWineName(request,response);}
         else if (url == "/recommendation"){wineController.handleRecommendation(request,response);}
         else if (url == "/404"){handle404(request, response);}
+        else if (url.startsWith("/setRating")){userWineController.handleStarRating(request, response);}
+        else if (url.startsWith("/getRating")){userWineController.getRating(request, response);}
         else if (url == "/registered"){userController.handleRegistered(request,response);}
+        else if (url == "/loggedout"){userController.handleLoggedOut(request,response);}
+        else if (url == "/winedeleted"){wineController.handleDeleted(request, response);}
+        else if (url == "/wineAdded"){wineController.handleWineAdded(request, response);}
         else if (url.startsWith("/scripts") || url.startsWith("/style") || url.startsWith("/images") || url=="/moving.html"){getFile(url, response);}
         else {handle404(response);}
     } catch(e){

@@ -6,13 +6,18 @@ lang="en-GB" xml:lang="en-GB">
     <title>Grape</title>
 
     <link rel="stylesheet" href="style.css"/>
-
+    <link rel="icon" type="image/png" href="images/logo.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
 
 
-<div class="fullFlexContainer justify-content-center pad5">
-    <div class="col25 mar5">
+<div class="menuColumn centerX">
+        <div class="grapeLogo">
+            <object data="images/logo.svg" type="image/svg+xml" class="svgContainer" >
+                Wine Logo
+            </object>
+        </div>
         <h3>Login:</h3>
         <form method="post" action="/login">
             <fieldset>
@@ -37,7 +42,6 @@ lang="en-GB" xml:lang="en-GB">
             <p>Incorrect username/password combination, try again</p>
         </div>
         $endIfIncorrect
-    </div>
 
 </div>
 

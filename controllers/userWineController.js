@@ -19,3 +19,35 @@ async function handleAddToMyWines(request, response){
 }
 
 exports.handleAddToMyWines = handleAddToMyWines;
+
+async function handleStarRating(request, response){
+    var user = await userService.getUserFromRequest(request);
+    var urlparts = request.url.split("?");
+    var wineid = urlparts[1];
+    if (request.method == 'GET'){
+        userWineService.getUserWine(user.id, wineid, function(rating){
+            console.log(rating);
+            generalController.deliver(response, "text/plain", rating);
+        });
+    } else if (request.method == 'POST'){
+        var rating = urlparts[2];
+        console.log("rating = "+rating);
+        userWineService.setRating(user.id, wineid, rating, function(rating){
+            generalController.deliver(response, "text/plain", rating);
+        });
+    }
+}
+exports.handleStarRating = handleStarRating;
+
+async function getRating(request, response){
+    var user = await userService.getUserFromRequest(request);
+    var urlparts = request.url.split("?");
+    var wineid = urlparts[1];
+    if (request.method == 'GET'){
+        userWineService.getUserWine(user.id, wineid, function(rating){
+            console.log(rating);
+            generalController.deliver(response, "text/plain", (rating+''));
+        });
+    }
+}
+exports.getRating = getRating;

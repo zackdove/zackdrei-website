@@ -7,11 +7,17 @@ lang="en-GB" xml:lang="en-GB">
 
     <link rel="stylesheet" href="/style.css"/>
 
-
+    <link rel="icon" type="image/png" href="images/logo.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
     <div class="fullFlexContainer justify-content-center pad5">
         <div class="col25 mar5">
+            <div class="grapeLogo">
+                <object data="images/logo.svg" type="image/svg+xml" class="svgContainer" >
+                    Wine Logo
+                </object>
+            </div>
             <h3>Add User:</h3>
             <form method="post" action="/signup">
                 <fieldset>
@@ -25,6 +31,11 @@ lang="en-GB" xml:lang="en-GB">
                 <fieldset>
                     <input type="submit" value="Submit" class="btn2 btn-grape"/>
                 </fieldset>
+                $ifIncorrect
+                <div class="incorrectLogin">
+                    <p>User already signed up with that username. Try another or login.</p>
+                </div>
+                $endIfIncorrect
             </form>
         </div>
 
