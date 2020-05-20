@@ -135,6 +135,56 @@ async function signup(username, password, callback){
     })
 }
 
+ function getUsers(username, isAdmin, page, callback){
+    var statement = "SELECT * FROM users";
+    if (username || isAdmin){
+        statement += " WHERE ";
+        if (username){
+            statement += "username = '"+username + "' AND ";
+        }
+        if (isAdmin){
+            statement += " isAdmin = "+isAdmin ;
+        }
+        if (statement.endsWith("AND ")){
+            statement = statement.slice(0, statement.length-4);
+        }
+    }
+    var offset = page * 10;
+    statement += " ORDER BY username Limit 10 Offset "+(offset-10);
+    console.log(statement);
+    mysqlconnection.query(statement, function(err, users){
+        if(err) {
+            console.log(err);
+        }
+        // console.log(users);
+        callback(users);
+    });
+}
+exports.getUsers = getUsers;
+
+
+async function getNumOfUsers(username, isAdmin, callback){
+    var statement = "SELECT Count(id) FROM users";
+    if (username || isAdmin){
+        statement += " WHERE ";
+        if (username){
+            statement += "username = '"+username + "' AND ";
+        }
+        if (isAdmin){
+            statement += " isAdmin = "+isAdmin ;
+        }
+        if (statement.endsWith("AND ")){
+            statement = statement.slice(0, statement.length-4);
+        }
+    }
+    console.log(statement);
+    mysqlconnection.query(statement, function(err, count){
+        if(err) throw err;
+        console.log(count);
+        callback(count[0][ 'Count(id)' ]);
+    });
+}
+exports.getNumOfUsers = getNumOfUsers;
 
 
 exports.isAuthenticated = isAuthenticated;

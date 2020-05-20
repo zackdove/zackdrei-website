@@ -7,22 +7,25 @@ lang="en-GB" xml:lang="en-GB">
 
     <link rel="stylesheet" href="style.css"/>
 
-    <link rel="icon" type="image/png" href="images/logo.png"/>
+    <link rel="icon" type="image/png" href="/images/logo.png"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
-        <div class="wineCard">
-            <div class="wineCardHead bg-grape">
-                <div class="wineCardTitle">
+        <div class="card">
+            <div class="cardHead bg-grape">
+                <div class="closeButtonContainer">
+                        <a href="/users" class="closeButton">
+                            ←
+                        </a>
+
+
+                </div>
+                <div class="cardTitle">
                     User
                 </div>
-                <div class="closeButtonContainer">
-                    <button type="button" class="closeButton" onclick="window.close()">
-                        x
-                    </button>
-                </div>
+            
             </div>
-            <div class="wineCardBody">
+            <div class="cardBody">
                 <div class="table-responsive">
                     <table class="table table-borderless">
                         <tr>
@@ -39,10 +42,10 @@ lang="en-GB" xml:lang="en-GB">
                         </tr>
                     </table>
                 </div>
-                <form method="post" action="/toggleAdmin?=$id">
+                <form class="cardForm" method="post" action="/toggleAdmin?=$id">
                     <input type="submit" value="Toggle Admin" class="btn2 btn-grape"/>
                 </form>
-                <form method="post" action="/deleteUser?=$id">
+                <form class="cardForm" method="post" action="/deleteUser?=$id">
                     <input type="submit" value="Delete" class="btn2 btn-grape"/>
                 </form>
             </div>

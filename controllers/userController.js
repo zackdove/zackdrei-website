@@ -41,7 +41,11 @@ async function handleViewUser(request, response){
             user = rows[0];
             var page = template.replace(/\$id/gi, user.id);
             var page = page.replace(/\$username/gi, user.username);
-            var page = page.replace(/\$isAdmin/gi, user.isAdmin);
+            if (user.isAdmin){
+                var page = page.replace(/\$isAdmin/gi, "Yes");
+            } else {
+                var page = page.replace(/\$isAdmin/gi, "No");
+            }
             generalController.deliver(response, "application/xhtml+xml", page);
         });
     } else {
@@ -58,7 +62,7 @@ function handleToggleAdmin(request, response){
         var statement = "UPDATE users SET isAdmin = !isAdmin WHERE ID=" + mysqlconnection.escape(userid);
         mysqlconnection.query(statement, function(err){
             if (err) throw err;
-            generalController.redirect(response, "/menu");
+            generalController.redirect(response, "/user?="+userid);
         });
     } else {
         console.log("user must be authenticated");
@@ -172,43 +176,66 @@ async function getMenu(request, response){
 
 
 async function handleUserList(request, response){
+    var template = await fs.readFile(__basedir+"/resources/userList.html", "utf8");
+    var url = request.url;
     if (userService.isAuthenticated(request)){
         var username = "";
-        var isAdmin = "";
-        var statement = "SELECT * FROM users";
-        if (request.url.startsWith("/users/filter")){
+        var isAdmin = false;
+        if (request.url.includes("admin=on")){
+            isAdmin = true;
+        }
+        if (url.startsWith("/users/filter")){
             var urlparts = request.url.split("&");
             var username = urlparts[0].split("=")[1];
-            var isAdmin = urlparts[1].split("=")[1];
-            if (username != "" || isAdmin != ""){
-                var statement = "SELECT * FROM users WHERE ";
-                if (username!=""){
-                    statement+="Username='"+username+"' AND ";
-                }
-                if (isAdmin!=""){
-                    statement+="isAdmin='"+isAdmin+"' AND ";
-                }
-                if (statement.endsWith("AND ")){
-                    statement = statement.slice(0, statement.length-4);
-                }
-            }
         }
-        console.log(statement);
-        var template = await fs.readFile(__basedir+"/resources/userList.html", "utf8");
-        mysqlconnection.query(statement, function(err, users){
-            if(err) throw err;
-            //the +'' is needed to set template to a string
-            // parts = template.split("$");
+        var currentPString = /page=\d+/gi.exec(url) + '';
+        var currentPage = currentPString.split("=")[1];
+        if (!currentPage || currentPage <1){
+            currentPage = 1;
+        }
+        var users = userService.getUsers(username, isAdmin, currentPage, function(users){
             let insertion = " ";
             for(var i=0; i<users.length; i++){
                 var user = users[i];
-                insertion += "<tr><td>"+user.username+"</td><td>"+user.isAdmin+"</td><td><button type='button' class='btn2 btn-grape infoButton' onclick='document.location = `/user?="+user.id+"`'>ⓘ</button></td></tr>";
+                insertion += "<tr><td>"+user.username+"</td><td>"+user.isAdmin+"</td><td><button type='button' class='btn-grape infoButton' onclick='document.location = `/user?="+user.id+"`'>ⓘ</button></td></tr>";
             }
-            // var page = parts[0] + html + parts[1];
             var page = template.replace(/\$users/gi, insertion);
             var page = page.replace(/\$username/gi, username);
-            var page = page.replace(/\$isAdmin/gi, isAdmin);
-            generalController.deliver(response, "application/xhtml+xml", page);
+            if (isAdmin){
+                page = page.replace(/\$isAdmin/gi, "checked='checked'");
+            } else {
+                page = page.replace(/\$isAdmin/gi, "");
+            }
+            userService.getNumOfUsers(username, isAdmin, function(result){
+                pages = Math.ceil(result/10);
+                console.log(pages);
+                var paginationString = " ";
+                var i;
+                url = url.replace(/\&page=\d+/gi, "");
+                if (currentPage>1){
+                    below = Number(currentPage)-1;
+                    paginationString += "<a href='" + url + "&page="+(below) + "'>←</a>"
+                } else {
+                    paginationString += "<a href='#'>←</a>"
+                }
+                for (i = 1; i<=pages; i++){
+                    if (i == currentPage){
+                        paginationString +=  "<a class='active' href='" + url +"&page="+i+"'>"+i+"</a>";
+                    } else {
+                        paginationString +=  "<a href='" + url +"&page="+i+"'>"+i+"</a>";
+                    }
+                }
+                if (currentPage<pages){
+                    above = Number(currentPage)+1;
+                    paginationString += "<a href='" + url + "&page="+(above) + "'>→</a>"
+                } else {
+                    paginationString += "<a href='#'>→</a>"
+                }
+                page = page.replace(/\$pagination/gi, paginationString);
+                page = page.replace(/\&/gi, '&amp;');
+                generalController.deliver(response, "application/xhtml+xml", page);
+            });
+
         });
     } else {
         console.log("user must be authenticated");
@@ -227,7 +254,7 @@ async function handleDeleteUser(request, response){
             mysqlconnection.query(statement, function(err){
                 if (err) throw err;
                 console.log("deleting user with id: "+user.id);
-                generalController.redirect(response, "/users");
+                generalController.redirect(response, "/userdeleted");
             });
         } else {
             console.log("user must be admin to delete a user");
@@ -239,7 +266,11 @@ async function handleDeleteUser(request, response){
 }
 exports.handleDeleteUser = handleDeleteUser;
 
-
+async function handleDeleted(request, response){
+    var page = await fs.readFile(__basedir+"/resources/userdeleted.html", "utf8");
+    generalController.deliver(response, "application/xhtml+xml", page);
+}
+exports.handleDeleted = handleDeleted;
 
 
 exports.handleSignup = handleSignup;

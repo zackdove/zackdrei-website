@@ -7,13 +7,13 @@ lang="en-GB" xml:lang="en-GB">
 
 
     <link rel="stylesheet" href="/style.css"/>
-    <link rel="icon" type="image/png" href="images/logo.png"/>
+    <link rel="icon" type="image/png" href="/images/logo.png"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 </head>
 <body>
-    <div class="fullFlexContainer justify-content-center pad5">
-        <div class="col25 mar5">
+    <div class="fullFlexContainer pad5">
+        <div class="col25">
             <a href="/menu">
                 <div class="backContainer">
                     <span class="backArrow">
@@ -25,7 +25,7 @@ lang="en-GB" xml:lang="en-GB">
                 </div>
             </a>
             <h3>Filters:</h3>
-            <form method="get" action="/wines/filter">
+            <form class="optionsForm" method="get" action="/wines/filter">
                 <fieldset>
                     <label for="country">Country</label>
                     <input id="country" type="text" name="country" value="$country"/>
@@ -54,12 +54,13 @@ lang="en-GB" xml:lang="en-GB">
                 </fieldset>
                 <fieldset>
                     <input type="submit" value="Submit" class="btn2 btn-grape"/>
+                </fieldset>
+                <fieldset>
                     <button type="button" class="btn2 btn-grape" onclick="document.location = '/wines'">Clear</button>
-                    <button type="button" class="btn2 btn-grape">Refresh</button>
                 </fieldset>
             </form>
         </div>
-        <div id="eventListFragment" class="col70 mar5">
+        <div  class="col70 mar5">
             <div class="tableContainer">
                 <table class="listTable">
                     <thead>
@@ -77,24 +78,15 @@ lang="en-GB" xml:lang="en-GB">
                     </tbody>
                 </table>
             </div>
-            <!-- <div class="pagination">
-                <a href="#">←</a>
-                <a class="active" href="#">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#">5</a>
-                <a href="#">6</a>
-                <a href="#">→</a>
-            </div> -->
-            <div class="pagination">
 
-                $pagination
+        <div class="pagination">
 
-            </div>
+            $pagination
+
         </div>
-
     </div>
+
+</div>
 
 
 </body>

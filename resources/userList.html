@@ -8,30 +8,44 @@ lang="en-GB" xml:lang="en-GB">
 
     <link rel="stylesheet" href="/style.css"/>
 
-    <link rel="icon" type="image/png" href="images/logo.png"/>
+    <link rel="icon" type="image/png" href="/images/logo.png"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
-    <div class="fullFlexContainer justify-content-center pad5">
-        <div class="col25 mar5">
+    <div class="fullFlexContainer pad5">
+        <div class="col25">
+            <a href="/menu">
+                <div class="backContainer">
+                    <span class="backArrow">
+                        ←
+                    </span>
+                    <span class="backText">
+                        back to menu
+                    </span>
+                </div>
+            </a>
             <h3>Users:</h3>
-            <form method="get" action="/users/filter">
+            <form class="optionsForm" method="get" action="/users/filter">
                 <fieldset>
                     <label for="userame">Username</label>
                     <input id="username" type="text" name="username" value="$username"/>
                 </fieldset>
                 <fieldset>
-                    <label for="admin">Admin</label>
-                    <input id="admin" type="text" name="isAdmin" value="$isAdmin"/>
+                    <label for="admin" class="switchLabel">Admins Only?</label>
+                    <div class="checkContainer">
+                        <input id="admin" type="checkbox" name="admin" $isAdmin/>
+                    </div>
                 </fieldset>
                 <fieldset>
                     <input type="submit" value="Submit" class="btn2 btn-grape"/>
+                    </fieldset>
+                    <fieldset>
                     <button type="button" class="btn2 btn-grape" onclick="document.location = '/userlist'">Clear</button>
-                    <button type="button" class="btn2 btn-grape">Refresh</button>
                 </fieldset>
             </form>
         </div>
-        <div id="eventListFragment" class="tableContainer col70 mar5">
+        <div class="col70 mar5">
+            <div class="tableContainer">
             <table class="table">
                 <thead>
                     <tr>
@@ -45,6 +59,12 @@ lang="en-GB" xml:lang="en-GB">
                 </tbody>
             </table>
         </div>
+        <div class="pagination">
+
+            $pagination
+
+        </div>
+    </div>
     </div>
 
 </body>

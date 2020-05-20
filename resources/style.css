@@ -37,9 +37,7 @@ h1, h2, h3, h4, h5{
     font-weight: normal;
 }
 
-h1{
-    font-size: 4rem;
-}
+
 
 h4{
     font-size: 1.5rem;
@@ -128,6 +126,9 @@ a{
         box-shadow: 0 0 5vh 5vh #ffffff;
         text-align:center;
     }
+    h1{
+        font-size: 3rem;
+    }
 }
 
 @media only screen and (orientation: landscape) {
@@ -147,6 +148,9 @@ a{
         box-shadow: 0 0 5vh 5vh #ffffff;
         text-align:center;
     }
+    h1{
+        font-size: 4rem;
+    }
 }
 
 
@@ -159,18 +163,21 @@ a{
         display:flex;
         flex-direction: column;
         position:absolute;
-        width: 40vw;
-        margin-left: 30vw;
-        margin-right: 30vw;
-        height: 60vh;
-        margin-top: 20vh;
-        margin-bottom: 20vh;
+        width: 50vw;
+        margin-left: 25vw;
+        margin-right: 25vw;
+        height: 100vh;
+        /* margin-top: 5vh; */
+        /* margin-bottom: 20vh; */
         background-color: #ffffff;
         align-items: center;
         color: #421C52;
         background-color: #ffffff;
         box-shadow: 5vh 5vh 5vh 5vh #ffffff;
         text-align:center;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
     }
 }
 @media only screen and (orientation: portrait) {
@@ -181,15 +188,18 @@ a{
         width: 96vw;
         padding-left: 2vw;
         padding-right: 2vw;
-        height: 60vh;
-        margin-top: 5vh;
-        margin-bottom: 20vh;
+        height: 100vh;
+        /* margin-top: 5vh; */
+        /* margin-bottom: 20vh; */
         background-color: #ffffff;
         align-items: center;
         color: #421C52;
         background-color: #ffffff;
         box-shadow: 5vh 5vh 5vh 5vh #ffffff;
         text-align:center;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
     }
 }
 
@@ -251,6 +261,20 @@ iframe {
     overflow: hidden;
 }
 
+@media only screen and (orientation: portrait) {
+    iframe {
+        display:none;
+    }
+}
+@media only screen and (orientation: landscape) {
+    iframe {
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+        border-style: none;
+        overflow: hidden;
+    }
+}
 
 .fullScreen {
     width: 100vw;
@@ -318,18 +342,51 @@ iframe {
     font-size:1vh;
 }
 
-.fullFlexContainer{
-    display: flex;
-    flex-direction: right;
+
+
+
+
+@media only screen and (orientation: portrait) {
+    .col25{
+        display: flex;
+        /* flex: 1 1 100%; */
+        flex-direction: column;
+        align-items:center;
+        padding-top: 2rem;
+
+
+    }
+    .fullFlexContainer{
+        display: flex;
+        flex-direction: column;
+    }
+    .col70{
+        display: flex;
+        flex: 1 1 70%;
+        flex-direction: column;
+        padding-top: 1rem;
+        align-items:center;
+    }
+}
+@media only screen and (orientation: landscape) {
+    .col25{
+        display:flex;
+        flex: 1 1 23%;
+        flex-direction: column;
+    }
+    .fullFlexContainer{
+        display: flex;
+        flex-direction: row;
+    }
+    .col70{
+        display: flex;
+        flex: 1 1 70%;
+        flex-direction: column;
+        padding-left: 2%;
+    }
 }
 
-.col25{
-    flex: 0 0 23vw;
-}
 
-.col70{
-    flex: 0 0 70vw;
-}
 
 .pad5{
     padding: 1vw 1vw 1vw 1vw;
@@ -351,11 +408,81 @@ iframe {
     font-size:4em;
 }
 
-form{
-    padding: 0px;
-    margin: 0px;
-    width:23rem;
+@media only screen and (orientation: landscape) {
+    .optionsForm{
+        padding: 0px;
+        margin: 0px;
+        width:23rem;
+    }
+    .tableContainer{
+        height: 85vh;
+        overflow:auto;
+    }
+    table{
+        width:100%;
+        border-collapse: collapse;
+        font-size: 1.3rem;
+    }
+    thead{
+        border-bottom: 1px solid lightgrey;
+    }
+    th,td{
+        text-align:left;
+        height: 50px;
+    }
+    .infoButton{
+        /* width: 2em;
+        height:2em; */
+        /* min-width:4rem; */
+        height:1.8em;
+        width:1.8em;
+        margin-top: 10px;
+        border-radius: 4px;
+        font-size:inherit;
+    }
+    .cardForm{
+        padding: 0px;
+        margin: 0px;
+        width: 10rem;
+        text-align:center;
+        display:inline;
+    }
 }
+@media only screen and (orientation: portrait) {
+    .optionsForm{
+        padding: 0px;
+        margin: 0px;
+        width: 94%;
+    }
+    .tableContainer{
+        /* height: 85vh; */
+        /* overflow:auto; */
+        width:96%;
+    }
+    table{
+        width:100%;
+        border-collapse: collapse;
+        font-size: 0.7rem;
+    }
+    thead{
+        border-bottom: 1px solid lightgrey;
+    }
+    th,td{
+        text-align:left;
+        height: 2rem;
+    }
+    .infoButton{
+        /* width: 0.3rem!important;
+        height:1rem!important;
+        text-align:center; */
+        height:2.3em;
+        width:2.3em;
+        margin-top: 10px;
+        border-radius: 4px;
+        font-size:inherit;
+    }
+}
+
 
 fieldset{
     border-style: none;
@@ -363,7 +490,7 @@ fieldset{
     margin: 0px;
     height: 3rem;
     line-height:3rem;
-    width:23rem;
+    width:100%;
     position:relative;
     text-align:left;
 }
@@ -374,7 +501,7 @@ label{
     border-right-style: none;
     border-radius: 4px 0px 0px 4px;
     height:inherit;
-    width: 7rem;
+    width: 30%;
     position:absolute;
     background-color: #e9ecef;
     display: inline-block;
@@ -387,8 +514,8 @@ input[type=text]{
     border: 1px solid grey;
     border-radius: 0px 4px 4px 0px;
     height:inherit;
-    width:16rem;
-    left:7rem;
+    width:70%;
+    left:30%;
     position:absolute;
     padding: 0px;
     margin: 0px;
@@ -403,88 +530,138 @@ input[type=text]{
     border-radius: 4px;
     font-size:inherit;
     min-width: 10rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    /* padding-left: 1rem;
+    padding-right: 1rem; */
 }
 
-.tableContainer{
-    height: 85vh;
-    overflow:auto;
-}
 
-table{
-    width:100%;
-    border-collapse: collapse;
-    font-size: 1.3rem;
-}
-
-thead{
-    border-bottom: 1px solid lightgrey;
-}
-
-th,td{
-    text-align:left;
-    height: 50px;
-}
 
 
 .borderTop{
     border: 1px solid black;
 }
 
-.infoButton{
-    width: 2em;
-    height:2em;
-    min-width:4rem;;
+@media only screen and (orientation: portrait) {
+    .card{
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+        width:100%;
+        height:100vh;
+
+    }
+
+    .cardHead{
+        height:4rem;
+        line-height:4rem;
+        font-size:2em;
+        width:100%;
+        float:left;
+        position:relative;
+    }
+
+    .cardBody{
+        overflow:auto;
+        width:90%;
+        font-size:1rem;
+        padding-left: 5%;
+        padding-right: 5%;
+        margin-top: 8vh;
+    }
+
+    .cardTable{
+        font-size: 1rem;
+    }
+
+    .closeButton{
+        background-color:transparent;
+        color: white;
+        font-family: arial;
+        border: none;
+        font-size:1.7rem;
+    }
+
+    .cardTitle{
+        /* background-color:red; */
+        text-align:center;
+        position:absolute;
+        width:100%;
+    }
+
+    .closeButtonContainer{
+        width:6vw;
+        /* background-color:green; */
+        text-align:center;
+        position:absolute;
+        z-index: 999;
+        padding-left:0.5em;
+    }
+
 }
 
-.wineCard{
-    display:flex;
-    flex-direction: column;
-    align-items: center;
+@media only screen and (orientation: landscape) {
+    .card{
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content:center;
+        align-content:center;
+        height:100vh;
+    }
+
+    .cardHead{
+        height:4rem;
+        line-height:4rem;
+        font-size:2rem;
+        width:34rem;
+        border-top: 1px solid grey;
+        border-left: 1px solid grey;
+        border-right: 1px solid grey;
+        border-radius: 6px 6px 0px 0px;
+        float:left;
+        position:relative;
+    }
+
+    .cardBody{
+        padding: 1rem 2rem 1rem 2rem;
+        overflow:auto;
+        border-bottom: 1px solid grey;
+        border-left: 1px solid grey;
+        border-right: 1px solid grey;
+        border-radius: 4px;
+        border-radius: 0px 0px 6px 6px;
+        width:30rem;
+        text-align:center;
+
+    }
+
+    .closeButton{
+        background-color:transparent;
+        color: white;
+        font-family: arial;
+        border: none;
+        font-size:1.7rem;
+    }
+
+    .cardTitle{
+        /* background-color:red; */
+        text-align:center;
+        position:absolute;
+        width:100%;
+    }
+
+    .closeButtonContainer{
+        width:6vw;
+        /* background-color:green; */
+        text-align:center;
+        position:absolute;
+        z-index: 999;
+        padding-left:0.1em;
+    }
+
 }
 
-.wineCardHead{
-    height:4rem;
-    line-height:4rem;
-    font-size:2rem;
-    width:34rem;
-    border-top: 1px solid grey;
-    border-left: 1px solid grey;
-    border-right: 1px solid grey;
-    border-radius: 6px 6px 0px 0px;
-    float:left;
-}
 
-.wineCardBody{
-    padding: 1rem 2rem 1rem 2rem;
-    overflow:auto;
-    border-bottom: 1px solid grey;
-    border-left: 1px solid grey;
-    border-right: 1px solid grey;
-    border-radius: 4px;
-    border-radius: 0px 0px 6px 6px;
-    width:30rem;
-}
-
-.closeButton{
-    background-color:transparent;
-    color: white;
-    font-family: arial;
-    border: none;
-    font-size:1.7rem;
-}
-
-.wineCardTitle{
-    /* background-color:red; */
-    text-align:center;
-}
-
-.closeButtonContainer{
-    width:6vw;
-    /* background-color:green; */
-    text-align:center;
-}
 
 .backContainer{
     color: #000000;
@@ -532,11 +709,10 @@ th,td{
 
 
 .switchLabel{
-    width:60%;
+    width:80%;
     border-radius: 4px 4px 4px 4px;
     border-right-style: solid;
     position:absolute;
-    width:15rem;
 }
 
 .checkContainer{
@@ -544,8 +720,7 @@ th,td{
     margin: 0px;
     text-align:center;
     position:absolute;
-    width:8rem;
-    left:17.5rem;
+    right:0;
 }
 
 input[type="checkbox"]{
@@ -558,6 +733,7 @@ input[type="checkbox"]{
     background:#e9ecef;
     position:relative;
     border-radius: 4px 4px 4px 4px;
+    margin-right: 0;
 
 }
 input[type="checkbox"]:after {

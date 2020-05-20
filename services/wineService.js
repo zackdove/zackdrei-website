@@ -112,14 +112,6 @@ async function getNumOfWines(country, grape, vintage, colour, producer, user, ca
     }
     mysqlconnection.query(statement, function(err, count){
         if(err) throw err;
-        // console.log(Object.values(count));
-        // console.log(count);
-        // console.log(count[0]);
-        // console.log(Object.values(count[0]));
-        // console.log(Object.keys(count[0]));
-        // console.log(count[0][ 'COUNT(Country)' ])
-        // console.log(count[0][0]);
-        // console.log(count['COUNT(Country)']);
         callback(count[0][ 'COUNT(Country)' ]);
     });
 }

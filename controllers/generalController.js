@@ -43,6 +43,7 @@ async function handle(request, response) {
         else if (url == "/loggedout"){userController.handleLoggedOut(request,response);}
         else if (url == "/winedeleted"){wineController.handleDeleted(request, response);}
         else if (url == "/wineAdded"){wineController.handleWineAdded(request, response);}
+        else if (url == "/userdeleted"){userController.handleDeleted(request, response);}
         else if (url.startsWith("/scripts") || url.startsWith("/style") || url.startsWith("/images") || url=="/moving.html"){getFile(url, response);}
         else {handle404(response);}
     } catch(e){

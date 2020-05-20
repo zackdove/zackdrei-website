@@ -6,7 +6,7 @@ lang="en-GB" xml:lang="en-GB">
     <title>Grape</title>
 
     <link rel="stylesheet" href="style.css"/>
-    <link rel="icon" type="image/png" href="images/logo.png"/>
+    <link rel="icon" type="image/png" href="/images/logo.png"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
@@ -19,7 +19,7 @@ lang="en-GB" xml:lang="en-GB">
             </object>
         </div>
         <h3>Login:</h3>
-        <form method="post" action="/login">
+        <form class="optionsForm" method="post" action="/login">
             <fieldset>
                 <label for="username">Username</label>
                 <input id="username" type="text" name="username" required="true"/>
@@ -31,12 +31,13 @@ lang="en-GB" xml:lang="en-GB">
             <fieldset>
                 <input type="submit" value="Submit" class="btn2 btn-grape"/>
             </fieldset>
+            <fieldset>
+                <a href="/signup">
+                    <button value="Register" class="btn2 btn-grape">Register</button>
+                </a>
+            </fieldset>
         </form>
-        <fieldset>
-            <a href="/signup">
-                <button value="Register" class="btn2 btn-grape">Register</button>
-            </a>
-        </fieldset>
+
         $ifIncorrect
         <div class="incorrectLogin">
             <p>Incorrect username/password combination, try again</p>
