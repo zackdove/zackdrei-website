@@ -42,6 +42,12 @@ function starLeave(){
             var star = document.getElementById("star"+i);
             star.classList.remove("checked");
         }
+    } else {
+        for (i=1; i<=5; i++){
+            console.log("star");
+            var star = document.getElementById("star"+i);
+            star.classList.remove("checked");
+        }
     }
 
 

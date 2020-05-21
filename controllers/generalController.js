@@ -2,23 +2,18 @@ const userService = require(__basedir+"/services/userService.js");
 const userController = require(__basedir+"/controllers/userController.js");
 const wineController = require(__basedir+"/controllers/wineController.js");
 const userWineController = require(__basedir+"/controllers/userWineController.js");
+
 let fs = require("fs").promises;
 let root = __basedir+"/resources";
 console.log(root);
 let types = defineTypes();
 
-userPaths = ["/wines"]
-adminPaths = []
-
 async function handle(request, response) {
     try {
-        // console.log(request);
-        // console.log("response = "+response);
         var url = request.url;
         var method = request.method;
         console.log(method, url);
         var loggedIn = userService.isAuthenticated(request);
-
         if (url == "/signup"){ userController.handleSignup(request, response);}
         else if (url == "/login"){userController.handleLogin(request, response);}
         else if (url =="/about"){deliverAbout(response);}
@@ -64,22 +59,22 @@ async function errorHandler(code, response){
     switch (code){
         case 400:
         // bad url
-            var page = await fs.readFile(__basedir+"/resources/400.html", "utf8");
+        var page = await fs.readFile(__basedir+"/resources/400.html", "utf8");
         case 404:
         // page not found
-            var page = await fs.readFile(__basedir+"/resources/404.html", "utf8");
-            break;
+        var page = await fs.readFile(__basedir+"/resources/404.html", "utf8");
+        break;
         case 401:
         // unauthorised
-            var page = await fs.readFile(__basedir+"/resources/401.html", "utf8");
-            break;
+        var page = await fs.readFile(__basedir+"/resources/401.html", "utf8");
+        break;
         case 500:
         // internal server error
-            var page = await fs.readFile(__basedir+"/resources/500.html", "utf8");
-            break;
+        var page = await fs.readFile(__basedir+"/resources/500.html", "utf8");
+        break;
         default:
-            var page = await fs.readFile(__basedir+"/resources/500.html", "utf8");
-            break;
+        var page = await fs.readFile(__basedir+"/resources/500.html", "utf8");
+        break;
     }
     console.log("ERROR: " + code)
     response.writeHead(code, "application/xhtml+xml");

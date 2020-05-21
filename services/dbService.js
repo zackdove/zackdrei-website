@@ -1,8 +1,4 @@
-
 const server = require("../server.js");
-// function hello(a){
-//     console.log("HELLO");
-// }
 
 function initialiseDB(){
     console.log(server.config);
@@ -26,7 +22,7 @@ function initialiseDB(){
                 if (err) throw err;
                 mysqlconnection.query(statement4 , function(err){
                     if (err) throw err;
-                    console.log("database initialised");
+                    console.log("Database initialised");
                 });
             });
         });

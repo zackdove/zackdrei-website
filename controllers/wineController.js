@@ -16,10 +16,10 @@ function handleDeleteWine(request, response){
                 generalController.redirect(response, "/winedeleted");
             });
         } else {
-            console.log("method must be post");
+            console.log("Method must be post");
         }
     } else {
-        console.log("user must be authenticated");
+        console.log("User must be authenticated");
         generalController.errorHandler(401, response);
     }
 }
@@ -72,7 +72,6 @@ async function handleWineList(request, response){
             var page = page.replace(/\$vintage/gi, vintage);
             var page = page.replace(/\$colour/gi, colour);
             var page = page.replace(/\$producer/gi, producer);
-            console.log("my wines: "+mywines);
             if (mywines){
                 page = page.replace(/\$mywines/gi, "checked='checked'");
             } else {
@@ -81,18 +80,27 @@ async function handleWineList(request, response){
             var count = await wineService.getNumOfWines(country, grape, vintage, colour, producer, user, function(count){
                 if (count>0){
                     pages = Math.ceil(count/10);
-                    // '' needed to force to be a string
-
+                    // " " needed to force to be a string
                     var paginationString = " ";
                     var i;
                     url = url.replace(/\&page=\d+/gi, "");
                     if (currentPage>1){
-                        below = Number(currentPage)-1;
-                        paginationString += "<a href='" + url + "&page="+(below) + "'>←</a>"
+                        paginationString += "<a href='" + url + "&page="+(1) + "'>←</a>"
                     } else {
                         paginationString += "<a href='#'>←</a>"
                     }
-                    for (i = 1; i<=pages; i++){
+                    var lowerLimit = Number(currentPage)-2;
+
+                    var upperLimit = Number(currentPage)+2;
+                    if (lowerLimit<1){
+                        lowerLimit = 1;
+                        upperLimit = 5;
+                    }
+                    if (upperLimit > pages){
+                        upperLimit = pages;
+                        lowerLimit = pages-5;
+                    }
+                    for (i = lowerLimit; i<=upperLimit; i++){
                         if (i == currentPage){
                             paginationString +=  "<a class='active' href='" + url +"&page="+i+"'>"+i+"</a>";
                         } else {
@@ -100,8 +108,7 @@ async function handleWineList(request, response){
                         }
                     }
                     if (currentPage<pages){
-                        above = Number(currentPage)+1;
-                        paginationString += "<a href='" + url + "&page="+(above) + "'>→</a>"
+                        paginationString += "<a href='" + url + "&page="+pages + "'>→</a>"
                     } else {
                         paginationString += "<a href='#'>→</a>"
                     }
@@ -109,10 +116,9 @@ async function handleWineList(request, response){
                     page = page.replace(/\&/gi, '&amp;');
                     page = page.replace(/\$ifWines/gi, '');
                     page = page.replace(/\$endIfWines/gi, '');
-
                 } else {
                     // remove it all
-                    page = page.replace(/\$ifWines[^]+\$endIfWines/gi, 'There are no wines in the database');
+                    page = page.replace(/\$ifWines[^]+\$endIfWines/gi, 'No Wines Found.');
 
                 }
                 generalController.deliver(response, "application/xhtml+xml", page);
@@ -131,22 +137,28 @@ async function handleWine(request, response){
     if (userService.isAuthenticated(request)){
         var urlparts = request.url.split("=");
         var wineid = urlparts[1];
-        //mysql prevents escaping by default
+        //this version of mysql prevents escaping by default
         var template = await fs.readFile(__basedir+"/resources/wine.html", "utf8");
         var statement = "SELECT * FROM wines WHERE ID=" + mysqlconnection.escape(wineid);
         var user = await userService.getUserFromRequest(request);
-        mysqlconnection.query(statement, function(err, wine){
+        mysqlconnection.query(statement, async function(err, result){
             if (err) throw err;
-            var page = template.replace(/\$id/gi, wine[0].id);
-            var page = page.replace(/\$country/gi, wine[0].Country);
-            var page = page.replace(/\$grape/gi, wine[0].Grape);
-            var page = page.replace(/\$vintage/gi, wine[0].Vintage);
-            var page = page.replace(/\$colour/gi, wine[0].Colour);
-            var page = page.replace(/\$producer/gi, wine[0].Producer);
-            userWineService.getUserWine(user.id, wineid, function(result){
-                console.log(result);
-            });
-            generalController.deliver(response, "application/xhtml+xml", page);
+            if (result.length==1){
+                let wine = result[0];
+                var page = template.replace(/\$id/gi, wine.id);
+                var page = page.replace(/\$country/gi, wine.Country);
+                var page = page.replace(/\$grape/gi, wine.Grape);
+                var page = page.replace(/\$vintage/gi, wine.Vintage);
+                var page = page.replace(/\$colour/gi, wine.Colour);
+                var page = page.replace(/\$producer/gi, wine.Producer);
+                userWineService.getUserWine(user.id, wineid, function(result){
+                    console.log(result);
+                });
+                generalController.deliver(response, "application/xhtml+xml", page);
+            } else {
+                var page = await fs.readFile(__basedir+"/resources/winenotfound.html", "utf8");
+                generalController.deliver(response, "application/xhtml+xml", page);
+            }
         });
     } else {
         console.log("User must be authenticated");
@@ -166,7 +178,6 @@ async function handleAddWine(request, response){
                 data += dataPart;
             })
             request.on('end', ()=>{
-                //Do stuff with data
                 data = parse(data);
                 wineService.addWine(data.country, data.grape, data.vintage, data.colour, data.producer);
                 generalController.redirect(response, "/wineAdded");

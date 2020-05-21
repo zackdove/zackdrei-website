@@ -1,6 +1,4 @@
-
 function addWine(country, grape, vintage, colour, producer){
-    // this method auto escapes
     mysqlconnection.query("INSERT INTO wines (country, grape, vintage, colour, producer) VALUES (?, ?, ?, ?, ?)", [country, grape, vintage, colour, producer] , function(err){
         if (err) throw err;
         console.log("adding wine");
@@ -12,12 +10,9 @@ async function getRandomWine(){
     try {
         const statement = "SELECT * FROM wines ORDER BY RAND() LIMIT 1";
         const wines = await mysqlconnection.query(statement);
-        // console.log(wines[0][0]);
-        // console.log(wines[0][0].Grape);
         return wines[0][0];
     } catch (err){
         console.log("error");
-        //handle it
     }
 }
 exports.getRandomWine = getRandomWine;
@@ -25,7 +20,15 @@ exports.getRandomWine = getRandomWine;
 async function getRandomWineName(){
     let wine = await getRandomWine();
     if (wine){
-        return wine.Grape;
+        let r = Math.random();
+        if (r>0.45){
+            return wine.Grape;
+        } else if (r>0.10){
+            return wine.Producer;
+        } else {
+            return wine.Country;
+        }
+
     } else {
         return "";
     }
@@ -45,7 +48,6 @@ exports.getRandomWineID = getRandomWineID;
 async function getWines(country, grape, vintage, colour, producer, user, page, callback){
     var statement = "SELECT * FROM wines";
     if (user){
-        console.log("my wine true");
         statement = statement + " LEFT JOIN userWines ON wines.id = userWines.wineID WHERE userWines.userID="+user.id;
     }
     if (country != "" || grape != "" || vintage!=""||colour!=""||producer!=""){
@@ -74,8 +76,7 @@ async function getWines(country, grape, vintage, colour, producer, user, page, c
         }
     }
     var offset = page * 10;
-    statement += " ORDER BY Grape Limit 10 Offset "+(offset-10);
-    console.log(statement);
+    statement += " ORDER BY id Limit 10 Offset "+(offset-10);
     mysqlconnection.query(statement, function(err, wines){
         if(err) {
             console.log(err);
@@ -88,7 +89,6 @@ exports.getWines = getWines;
 async function getNumOfWines(country, grape, vintage, colour, producer, user, callback){
     var statement = "SELECT COUNT(Country) FROM wines";
     if (user){
-        console.log("my wine true");
         statement = statement + " LEFT JOIN userWines ON wines.id = userWines.wineID WHERE userWines.userID="+user.id;
     }
     if (country != "" || grape != "" || vintage!=""||colour!=""||producer!=""){
@@ -122,3 +122,33 @@ async function getNumOfWines(country, grape, vintage, colour, producer, user, ca
     });
 }
 exports.getNumOfWines = getNumOfWines;
+
+function addLotsOfWines(){
+    // addWine(country, grape, vintage, colour, producer)
+    addWine("Argentina", "Merlot", 2016, "Red", "006");
+    addWine("Argentina", "Pinot Noir", 2016, "Red", "006");
+    addWine("Italy", "Montefalco Rosso", 2015, "Red", "Adanti");
+    addWine("Chile", "Merlot", 2017, "Red", "Adobe Reserva");
+    addWine("Italy", "Barbera d’Asti Bricco Blina", 2016, "Red", "Agostino Pavia and Figli");
+    addWine("Italy", "Barrua", 2014, "Red", "Agricola Punica");
+    addWine("Romania", "Feteasca Regala", 2016, "White", "Alamina");
+    addWine("Italy", "Barbera", 2018, "Red", "Alasia");
+    addWine("Italy", "Rosso di Rocca", 2018, "Red", "Langhe Nebbiolo");
+    addWine("Australia", "Semillon Viognier", 2016, "White", "Alpha Box and Dice");
+    addWine("Italy", "Icona Cabernet Sauvignon", 2015, "Red", "Alpha Box and Dice,");
+    addWine("Portugal", "Port", 2017, "Red", "Nieport");
+    addWine("Portugal", "Verdelho", 1992, "White", "Barbeito");
+    addWine("Italy", "Riserva", 1992, "Red", "Oddero, Barolo, Vignarionda");
+    addWine("France", "Glos des Goisses", 2013, "White", "Philiponnat");
+    addWine("Portugal", "Meao", 2012, "Red", "Quinta do Vale");
+
+
+}
+exports.addLotsOfWines = addLotsOfWines;
+
+
+
+
+
+
+//

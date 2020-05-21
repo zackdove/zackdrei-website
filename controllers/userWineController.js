@@ -22,11 +22,8 @@ async function handleAddToMyWines(request, response){
         generalController.errorHandler(401, response);
     }
 }
-
 exports.handleAddToMyWines = handleAddToMyWines;
 
-
-// NEED AUTHHENICATED
 async function handleStarRating(request, response){
     if (userService.isAuthenticated(request)){
         var user = await userService.getUserFromRequest(request);
@@ -34,12 +31,10 @@ async function handleStarRating(request, response){
         var wineid = urlparts[1];
         if (request.method == 'GET'){
             userWineService.getUserWine(user.id, wineid, function(rating){
-                console.log(rating);
                 generalController.deliver(response, "text/plain", rating);
             });
         } else if (request.method == 'POST'){
             var rating = urlparts[2];
-            console.log("rating = "+rating);
             userWineService.setRating(user.id, wineid, rating, function(rating){
                 generalController.deliver(response, "text/plain", rating);
             });
@@ -50,7 +45,6 @@ async function handleStarRating(request, response){
 }
 exports.handleStarRating = handleStarRating;
 
-// EED NAUTHENATICED
 async function getRating(request, response){
     if (userService.isAuthenticated(request)){
         var user = await userService.getUserFromRequest(request);
@@ -58,7 +52,6 @@ async function getRating(request, response){
         var wineid = urlparts[1];
         if (request.method == 'GET'){
             userWineService.getUserWine(user.id, wineid, function(rating){
-                console.log(rating);
                 generalController.deliver(response, "text/plain", (rating+''));
             });
         }

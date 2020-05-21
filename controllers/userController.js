@@ -5,10 +5,8 @@ const userService = require(__basedir+"/services/userService.js");
 
 function handleLogout(request, response){
     if (request.method == 'GET'){
-        //pass template and deliver
         generalController.errorHandler(400, response);
     } else if (request.method == 'POST'){
-        //check authenticated, then remove cookie
         if (userService.isAuthenticated(request)){
             var token = userService.generateLogoutToken();
             response.writeHead(301,{
@@ -31,34 +29,36 @@ exports.handleLoggedOut = handleLoggedOut;
 
 async function handleViewUser(request, response){
     var currentUser = await userService.getUserFromRequest(request);
-    if (currentUser.isAdmin && isAuthenticated(request)){
+    if (currentUser.isAdmin && userService.isAuthenticated(request)){
         var urlparts = request.url.split("=");
         var userid = urlparts[1];
-        //mysql prevents escaping by default
         var template = await fs.readFile(__basedir+"/resources/userTemplate.html", "utf8");
         var statement = "SELECT * FROM users WHERE ID=" + mysqlconnection.escape(userid);
-        // this should be in user service!
-
-        mysqlconnection.query(statement, function(err, rows){
+        mysqlconnection.query(statement, async function(err, rows){
             if (err) throw err;
-            user = rows[0];
-            var page = template.replace(/\$id/gi, user.id);
-            var page = page.replace(/\$username/gi, user.username);
-            if (user.isAdmin){
-                var page = page.replace(/\$isAdmin/gi, "Yes");
+            console.log(rows.length);
+            if (rows.length==1){
+                user = rows[0];
+                var page = template.replace(/\$id/gi, currentUser.id);
+                var page = page.replace(/\$username/gi, currentUser.username);
+                if (currentUser.isAdmin){
+                    var page = page.replace(/\$isAdmin/gi, "Yes");
+                } else {
+                    var page = page.replace(/\$isAdmin/gi, "No");
+                }
+                if (currentUser.id == currentUser.id){
+                    page = page.replace(/\$deleteUser/gi, "disabled='disabled' title='You cannot delete yourself.'");
+                } else {
+                    page = page.replace(/\$deleteUser/gi, '');
+                }
+                generalController.deliver(response, "application/xhtml+xml", page);
             } else {
-                var page = page.replace(/\$isAdmin/gi, "No");
+                var page = await fs.readFile(__basedir+"/resources/usernotfound.html", "utf8");
+                generalController.deliver(response, "application/xhtml+xml", page);
             }
-
-            if (currentUser.id == user.id){
-                page = page.replace(/\$deleteUser/gi, "disabled='disabled' title='You cannot delete yourself.'");
-            } else {
-                page = page.replace(/\$deleteUser/gi, '');
-            }
-            generalController.deliver(response, "application/xhtml+xml", page);
         });
     } else {
-        console.log("user is not authenticated");
+        console.log("User is not authenticated");
         generalController.errorHandler(401, response);
     }
 }
@@ -74,7 +74,7 @@ function handleToggleAdmin(request, response){
             generalController.redirect(response, "/user?="+userid);
         });
     } else {
-        console.log("user must be authenticated");
+        console.log("User must be authenticated");
         generalController.errorHandler(401, response);
     }
 }
@@ -92,7 +92,7 @@ async function handleSignup(request, response){
                 data = parse(data);
                 users = await userService.getUserByUsername(data.username)
                 if (users.length>0){
-                    console.log("user already exists");
+                    console.log("User already exists");
                     page = await fs.readFile(__basedir+"/resources/signup.html", "utf8");
                     page = page.replace(/\$ifIncorrect/gi, '');
                     page = page.replace(/\$endIfIncorrect/gi, '');
@@ -100,7 +100,6 @@ async function handleSignup(request, response){
                 } else {
                     userService.signup(data.username, data.password, function(){
                         page = page.replace(/\$username/gi, data.username);
-                        // console.log(page);
                         userService.login(data.username, data.password, function(token){
                             response.writeHead(301,{
                                 Location: "/registered",
@@ -127,7 +126,6 @@ async function handleSignup(request, response){
 async function handleRegistered(request, response){
     var page = await fs.readFile(__basedir+"/resources/registered.html", "utf8");
     var user = await userService.getUserFromRequest(request);
-    // console.log(user);
     page = page.replace(/\$username/gi, user.username);
     generalController.deliver(response, "application/xhtml+xml", page);
 }
@@ -177,17 +175,16 @@ async function getMenu(request, response){
         var user = await userService.getUserFromRequest(request);
         page = page.replace(/\$username/gi, user.username);
         if (user.isAdmin){
-            console.log("user is admin");
+            console.log("User is admin");
             page = page.replace(/\$adminsectionA/gi, '');
             page = page.replace(/\$adminsectionB/gi, '');
         } else {
-            console.log("user is not admin");
+            console.log("User is not admin");
             page = page.replace(/\$adminsectionA[^]+\$adminsectionB/gi, '');
-            // hide the bits using commenting or delete them?
         }
         generalController.deliver(response, "application/xhtml+xml", page);
     } else {
-        console.log("user is not authenticated");
+        console.log("User is not authenticated");
         generalController.errorHandler(401, response);
     }
 }
@@ -196,8 +193,8 @@ async function getMenu(request, response){
 async function handleUserList(request, response){
     var template = await fs.readFile(__basedir+"/resources/userList.html", "utf8");
     var url = request.url;
-    var currentUser = userService.getUserFromRequest(request);
-    if (currentUser.isAdmin && isAuthenticated(request)){
+    var currentUser = await userService.getUserFromRequest(request);
+    if (currentUser.isAdmin && userService.isAuthenticated(request)){
         var username = "";
         var isAdmin = false;
         if (request.url.includes("admin=on")){
@@ -227,7 +224,6 @@ async function handleUserList(request, response){
             }
             userService.getNumOfUsers(username, isAdmin, function(result){
                 pages = Math.ceil(result/10);
-                console.log(pages);
                 var paginationString = " ";
                 var i;
                 url = url.replace(/\&page=\d+/gi, "");
@@ -257,7 +253,7 @@ async function handleUserList(request, response){
 
         });
     } else {
-        console.log("user must be admin");
+        console.log("User must be admin");
         generalController.errorHandler(401, response);
     }
 }
@@ -267,28 +263,27 @@ async function handleDeleteUser(request, response){
     //check if admin && post
     if (request.method == "POST"){
         currentUser = await userService.getUserFromRequest(request);
-        if (currentUser.isAdmin && isAuthenticated(request)){
+        if (currentUser.isAdmin && userService.isAuthenticated(request)){
             var urlparts = request.url.split("=");
             var userid = urlparts[1];
-            if (userid == user.id){
+            if (userid == currentUser.id){
                 console.log("User tried to delete self");
-                generalController.errorHHandler(500, response);
+                generalController.errorHandler(500, response);
             } else {
                 var statement = "DELETE FROM users WHERE ID=" + mysqlconnection.escape(userid);
                 mysqlconnection.query(statement, function(err){
                     if (err) throw err;
-                    console.log("deleting user with id: "+user.id);
+                    console.log("Deleting user with id: "+currentUser.id);
                     generalController.redirect(response, "/userdeleted");
                 });
             }
         } else {
-            console.log("user must be admin to delete a user");
+            console.log("User must be admin to delete a user");
             generalController.errorHandler(401, response);
         }
     } else {
-        console.log("method must be post");
+        console.log("Method must be post");
         generalController.errorHandler(400, response);
-        // redirct to error
     }
 }
 exports.handleDeleteUser = handleDeleteUser;
@@ -302,8 +297,6 @@ async function handleDeleted(request, response){
     }
 }
 exports.handleDeleted = handleDeleted;
-
-
 exports.handleSignup = handleSignup;
 exports.handleLogout = handleLogout;
 exports.handleLogin = handleLogin;

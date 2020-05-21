@@ -5,7 +5,7 @@ require('dotenv').config();
 const generalController = require("./controllers/generalController.js");
 let fs = require("fs").promises;
 
-
+const wineService = require("./services/wineService.js");
 
 
 var mode;
@@ -46,12 +46,14 @@ async function start() {
             console.log("Server running at", address);
             //Redirect HTTP to HTTPS
             const hostname = 'grapewebtech.me';
+
             const httpServer = http.createServer((req, res) => {
                 let redirectUrl = "https://"+hostname;
                 res.writeHead(301,{Location: redirectUrl});
                 res.end();
             }).listen(8080);
         }
+        wineService.addLotsOfWines();
     }
     catch (err) { console.log(err); process.exit(1); }
 }
