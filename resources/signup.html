@@ -11,35 +11,46 @@ lang="en-GB" xml:lang="en-GB">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
-    <div class="fullFlexContainer justify-content-center pad5">
-        <div class="col25 mar5">
+    <div class="menuColumn centerX">
             <div class="grapeLogo">
                 <object data="images/logo.svg" type="image/svg+xml" class="svgContainer" >
                     Wine Logo
                 </object>
             </div>
             <h3>Add User:</h3>
-            <form class="optionsForm" method="post" action="/signup">
-                <fieldset>
-                    <label for="username">Username</label>
-                    <input id="username" type="text" name="username"/>
-                </fieldset>
-                <fieldset>
-                    <label for="password">Password</label>
-                    <input id="password" type="text" name="password"/>
-                </fieldset>
-                <fieldset>
-                    <input type="submit" value="Submit" class="btn2 btn-grape"/>
-                </fieldset>
-                $ifIncorrect
-                <div class="incorrectLogin">
-                    <p>User already signed up with that username. Try another or login.</p>
+            <div class="formContainer">
+                <form method="post" action="/signup">
+                    <fieldset>
+                        <label for="username">Username</label>
+                        <input id="username" type="text" name="username" required="true"/>
+                    </fieldset>
+                    <fieldset>
+                        <label for="password">Password</label>
+                        <input id="password" type="password" name="password" required="true" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?])[A-Za-z\d@$!%*#?]{8,}$" title="Minimum eight characters, at least one letter, one number and one special character (.@$!%*#?)"/>
+                    </fieldset>
+                    <fieldset>
+                        <input type="submit" value="Submit" class="btn2 btn-grape"/>
+                    </fieldset>
+                    $ifIncorrect
+                    <div class="incorrectMessage">
+                        <p>User already signed up with that username. Try another or login.</p>
+                    </div>
+                    $endIfIncorrect
+                </form>
+
+            </div>
+            <a href="/menu">
+                <div class="backContainer">
+                    <span class="backArrow">
+                        ←
+                    </span>
+                    <span class="backText">
+                        back to menu
+                    </span>
                 </div>
-                $endIfIncorrect
-            </form>
+            </a>
         </div>
 
-    </div>
 
 </body>
 </html>

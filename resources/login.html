@@ -19,6 +19,7 @@ lang="en-GB" xml:lang="en-GB">
             </object>
         </div>
         <h3>Login:</h3>
+        <div class="formContainer">
         <form class="optionsForm" method="post" action="/login">
             <fieldset>
                 <label for="username">Username</label>
@@ -26,20 +27,22 @@ lang="en-GB" xml:lang="en-GB">
             </fieldset>
             <fieldset>
                 <label for="password">Password</label>
-                <input id="password" type="text" name="password" require="true"/>
+                <input id="password" type="password" name="password" require="true"/>
             </fieldset>
             <fieldset>
                 <input type="submit" value="Submit" class="btn2 btn-grape"/>
             </fieldset>
-            <fieldset>
-                <a href="/signup">
-                    <button value="Register" class="btn2 btn-grape">Register</button>
-                </a>
-            </fieldset>
+
         </form>
+        <fieldset>
+            <a href="/signup">
+                <button value="Register" class="btn2 btn-grape">Register</button>
+            </a>
+        </fieldset>
+    </div>
 
         $ifIncorrect
-        <div class="incorrectLogin">
+        <div class="incorrectMessage">
             <p>Incorrect username/password combination, try again</p>
         </div>
         $endIfIncorrect

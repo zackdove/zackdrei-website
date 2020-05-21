@@ -12,12 +12,15 @@
 <div class="menuColumn centerX">
     <h2>You are already logged in as $username</h2>
     <h2>Please continue to menu or sign out of this account</h2>
-    <a href="/menu">
-        <button class="btn2 btn-grape" > Menu</button>
-    </a>
+
+    <div class="formContainer">
     <form method="post" action="/logout">
+        <a href="/menu">
+            <button class="btn2 btn-grape" > Menu</button>
+        </a>
         <button type="submit" value="logout" class="btn2 btn-grape">Logout</button>
     </form>
+</div>
 </div>
 
 

@@ -1,12 +1,15 @@
 global.__basedir = __dirname;
 let https = require("https");
 const http = require('http');
-
+require('dotenv').config();
 const generalController = require("./controllers/generalController.js");
 let fs = require("fs").promises;
 
+
+
+
 var mode;
-const jwtSecret = 'supersecret';
+const jwtSecret = process.env.jwtSecret;
 const userService = require("./services/userService.js");
 if (process.argv[2] == undefined){
     mode = "dev";

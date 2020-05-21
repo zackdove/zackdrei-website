@@ -20,6 +20,7 @@ function handleDeleteWine(request, response){
         }
     } else {
         console.log("user must be authenticated");
+        generalController.errorHandler(401, response);
     }
 }
 exports.handleDeleteWine = handleDeleteWine;
@@ -78,33 +79,42 @@ async function handleWineList(request, response){
                 page = page.replace(/\$mywines/gi, "");
             }
             var count = await wineService.getNumOfWines(country, grape, vintage, colour, producer, user, function(count){
-                pages = Math.ceil(count/10);
-                // '' needed to force to be a string
+                if (count>0){
+                    pages = Math.ceil(count/10);
+                    // '' needed to force to be a string
 
-                var paginationString = " ";
-                var i;
-                url = url.replace(/\&page=\d+/gi, "");
-                if (currentPage>1){
-                    below = Number(currentPage)-1;
-                    paginationString += "<a href='" + url + "&page="+(below) + "'>←</a>"
-                } else {
-                    paginationString += "<a href='#'>←</a>"
-                }
-                for (i = 1; i<=pages; i++){
-                    if (i == currentPage){
-                        paginationString +=  "<a class='active' href='" + url +"&page="+i+"'>"+i+"</a>";
+                    var paginationString = " ";
+                    var i;
+                    url = url.replace(/\&page=\d+/gi, "");
+                    if (currentPage>1){
+                        below = Number(currentPage)-1;
+                        paginationString += "<a href='" + url + "&page="+(below) + "'>←</a>"
                     } else {
-                        paginationString +=  "<a href='" + url +"&page="+i+"'>"+i+"</a>";
+                        paginationString += "<a href='#'>←</a>"
                     }
-                }
-                if (currentPage<pages){
-                    above = Number(currentPage)+1;
-                    paginationString += "<a href='" + url + "&page="+(above) + "'>→</a>"
+                    for (i = 1; i<=pages; i++){
+                        if (i == currentPage){
+                            paginationString +=  "<a class='active' href='" + url +"&page="+i+"'>"+i+"</a>";
+                        } else {
+                            paginationString +=  "<a href='" + url +"&page="+i+"'>"+i+"</a>";
+                        }
+                    }
+                    if (currentPage<pages){
+                        above = Number(currentPage)+1;
+                        paginationString += "<a href='" + url + "&page="+(above) + "'>→</a>"
+                    } else {
+                        paginationString += "<a href='#'>→</a>"
+                    }
+                    page = page.replace(/\$pagination/gi, paginationString);
+                    page = page.replace(/\&/gi, '&amp;');
+                    page = page.replace(/\$ifWines/gi, '');
+                    page = page.replace(/\$endIfWines/gi, '');
+
                 } else {
-                    paginationString += "<a href='#'>→</a>"
+                    // remove it all
+                    page = page.replace(/\$ifWines[^]+\$endIfWines/gi, 'There are no wines in the database');
+
                 }
-                page = page.replace(/\$pagination/gi, paginationString);
-                page = page.replace(/\&/gi, '&amp;');
                 generalController.deliver(response, "application/xhtml+xml", page);
             });
 
@@ -112,7 +122,7 @@ async function handleWineList(request, response){
 
     } else {
         console.log("User must be authenticated");
-        // redirect to error page
+        generalController.errorHandler(401, response);
     }
 }
 exports.handleWineList = handleWineList;
@@ -133,14 +143,6 @@ async function handleWine(request, response){
             var page = page.replace(/\$vintage/gi, wine[0].Vintage);
             var page = page.replace(/\$colour/gi, wine[0].Colour);
             var page = page.replace(/\$producer/gi, wine[0].Producer);
-            if (wine[0].NOTES){
-                page = page.replace(/\$ifNotes/gi, '');
-                page = page.replace(/\$notes/gi, wine[0].NOTES);
-                page = page.replace(/\$endIfNotes/gi, '');
-            } else {
-                console.log("no notes");
-                page = page.replace(/\$ifNotes[^]+\$endIfNotes/gi, '');
-            }
             userWineService.getUserWine(user.id, wineid, function(result){
                 console.log(result);
             });
@@ -148,7 +150,7 @@ async function handleWine(request, response){
         });
     } else {
         console.log("User must be authenticated");
-        // redirect to error
+        generalController.errorHandler(401, response);
     }
 }
 exports.handleWine = handleWine;
@@ -172,7 +174,7 @@ async function handleAddWine(request, response){
         }
     } else {
         console.log("User must be authenticated");
-        // redirect to error
+        generalController.errorHandler(401, response);
     }
 }
 exports.handleAddWine = handleAddWine;
@@ -186,9 +188,12 @@ exports.handleGetRandomWineName = handleGetRandomWineName;
 
 async function handleRecommendation(request, response){
     let id = await wineService.getRandomWineID();
-    console.log(id);
-    console.log("????"+id);
-    generalController.redirect(response, "/wine?="+id);
+    if (id){
+        generalController.redirect(response, "/wine?="+id);
+    } else {
+        generalController.errorHandler(500, response);
+    }
+
 }
 exports.handleRecommendation = handleRecommendation;
 

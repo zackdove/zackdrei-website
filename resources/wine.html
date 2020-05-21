@@ -9,6 +9,7 @@ lang="en-GB" xml:lang="en-GB">
 
     <link rel="icon" type="image/png" href="/images/logo.png"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="scripts/starscript.js"/>
 </head>
 <body>
     <div class="card">
@@ -54,19 +55,14 @@ lang="en-GB" xml:lang="en-GB">
                         <th>Producer:</th>
                         <td>$producer</td>
                     </tr>
-                    $ifNotes
-                    <tr>
-                        <th>Notes:</th>
-                        <td>$notes</td>
-                    </tr>
-                    $endIfNotes
+
                 </table>
             </div>
             <div class="wineButtonContainer">
                 <div class="starGreaterContainer">
                     <div class="starHoverMessage" id="hovermessage">
                         <p>
-                            You haven't tried this wine yet. Hover here to leave a rating.
+                            You have not tried this wine yet. Hover here to leave a rating.
                         </p>
                     </div>
                     <div class="starContainer starContainerHover" id="starContainer" onmouseleave="starLeave()">
@@ -77,14 +73,14 @@ lang="en-GB" xml:lang="en-GB">
                         <span id="star5" class="star" onmouseover="starHover(5)" onclick="starClick(5)">★</span>
                     </div>
                 </div>
-                <form class="cardForm" method="post" action="/deletewine?=$id">
+                <form class="cardForm" method="post" action="/deletewine?=$id" onsubmit="return confirm('Are you sure? Deleting this wine cannot be undone.');">
                     <input type="submit" value="Delete Wine" class="btn2 btn-grape"/>
                 </form>
             </div>
         </div>
 
     </div>
-    <script src="scripts/starscript.js"/>
+
     </body>
 
 

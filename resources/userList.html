@@ -25,7 +25,8 @@ lang="en-GB" xml:lang="en-GB">
                 </div>
             </a>
             <h3>Users:</h3>
-            <form class="optionsForm" method="get" action="/users/filter">
+            <div class="formContainer">
+            <form method="get" action="/users/filter">
                 <fieldset>
                     <label for="userame">Username</label>
                     <input id="username" type="text" name="username" value="$username"/>
@@ -43,6 +44,7 @@ lang="en-GB" xml:lang="en-GB">
                     <button type="button" class="btn2 btn-grape" onclick="document.location = '/userlist'">Clear</button>
                 </fieldset>
             </form>
+        </div>
         </div>
         <div class="col70 mar5">
             <div class="tableContainer">

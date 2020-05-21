@@ -1,5 +1,5 @@
 
-function addWine(country, grape, vintage, colour, producer, notes){
+function addWine(country, grape, vintage, colour, producer){
     // this method auto escapes
     mysqlconnection.query("INSERT INTO wines (country, grape, vintage, colour, producer) VALUES (?, ?, ?, ?, ?)", [country, grape, vintage, colour, producer] , function(err){
         if (err) throw err;
@@ -24,15 +24,21 @@ exports.getRandomWine = getRandomWine;
 
 async function getRandomWineName(){
     let wine = await getRandomWine();
-    let name = wine.Grape;
-    return name;
+    if (wine){
+        return wine.Grape;
+    } else {
+        return "";
+    }
 }
 exports.getRandomWineName = getRandomWineName;
 
 async function getRandomWineID(){
     let wine = await getRandomWine();
-    let id = wine.id;
-    return id;
+    if (wine){
+        return wine.id;
+    } else {
+        return 0;
+    }
 }
 exports.getRandomWineID = getRandomWineID;
 

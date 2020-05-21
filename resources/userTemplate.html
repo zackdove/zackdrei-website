@@ -23,7 +23,7 @@ lang="en-GB" xml:lang="en-GB">
                 <div class="cardTitle">
                     User
                 </div>
-            
+
             </div>
             <div class="cardBody">
                 <div class="table-responsive">
@@ -45,8 +45,8 @@ lang="en-GB" xml:lang="en-GB">
                 <form class="cardForm" method="post" action="/toggleAdmin?=$id">
                     <input type="submit" value="Toggle Admin" class="btn2 btn-grape"/>
                 </form>
-                <form class="cardForm" method="post" action="/deleteUser?=$id">
-                    <input type="submit" value="Delete" class="btn2 btn-grape"/>
+                <form class="cardForm" method="post" action="/deleteUser?=$id"  onsubmit="return confirm('Are you sure? Deleting this user cannot be undone.');">
+                    <input type="submit" value="Delete" class="btn2 btn-grape" $deleteUser/>
                 </form>
             </div>
     </div>

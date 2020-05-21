@@ -1,4 +1,3 @@
-const jwtSecret = 'supersecret';
 let jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const userController = require(__basedir+"/controllers/userController.js");
@@ -8,7 +7,7 @@ function isAuthenticated(request){
     // console.log(cookie);
     var result = false;
     if (cookie){
-        jwt.verify(cookie, jwtSecret, (err, token) => {
+        jwt.verify(cookie, process.env.jwtSecret, (err, token) => {
             if (err) {
                 // console.log("token not valid");
                 result = false;
@@ -30,7 +29,7 @@ async function getUserFromRequest(request){
     let cookie = request.headers.cookie;
     var result;
     if (cookie){
-        await jwt.verify(cookie, jwtSecret, async (err, token) => {
+        await jwt.verify(cookie, process.env.jwtSecret, async (err, token) => {
             if (err) {
                 console.log("token not valid");
 
@@ -114,11 +113,11 @@ function generateToken(user){
         username : user.username
     }
     console.log(data);
-    return jwt.sign({ data}, jwtSecret, { expiresIn: '6h' });
+    return jwt.sign({ data}, process.env.jwtSecret, { expiresIn: '6h' });
 }
 
 function generateLogoutToken(){
-    return jwt.sign({}, jwtSecret, {expiresIn: '0h'});
+    return jwt.sign({}, process.env.jwtSecret, {expiresIn: '0h'});
 }
 
 async function signup(username, password, callback){

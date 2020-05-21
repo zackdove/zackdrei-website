@@ -167,8 +167,9 @@ a{
         margin-left: 25vw;
         margin-right: 25vw;
         height: 100vh;
+
         /* margin-top: 5vh; */
-        /* margin-bottom: 20vh; */
+        padding-bottom: 20vh;
         background-color: #ffffff;
         align-items: center;
         color: #421C52;
@@ -371,7 +372,7 @@ iframe {
 @media only screen and (orientation: landscape) {
     .col25{
         display:flex;
-        flex: 1 1 23%;
+        flex: 0 0 23%;
         flex-direction: column;
     }
     .fullFlexContainer{
@@ -408,11 +409,16 @@ iframe {
     font-size:4em;
 }
 
+form{
+    width:100%;
+}
+
 @media only screen and (orientation: landscape) {
-    .optionsForm{
+    .formContainer{
         padding: 0px;
         margin: 0px;
         width:23rem;
+        padding-bottom: 2rem;
     }
     .tableContainer{
         height: 85vh;
@@ -449,10 +455,11 @@ iframe {
     }
 }
 @media only screen and (orientation: portrait) {
-    .optionsForm{
+    .formContainer{
         padding: 0px;
         margin: 0px;
         width: 94%;
+        padding-bottom: 2rem;
     }
     .tableContainer{
         /* height: 85vh; */
@@ -510,7 +517,7 @@ label{
     font-size:inherit;
 }
 
-input[type=text]{
+input[type=text], input[type=password], input[type=number]{
     border: 1px solid grey;
     border-radius: 0px 4px 4px 0px;
     height:inherit;
@@ -532,6 +539,12 @@ input[type=text]{
     min-width: 10rem;
     /* padding-left: 1rem;
     padding-right: 1rem; */
+    cursor: pointer;
+    z-index: 999;
+}
+
+.btn2:disabled,.btn2[disabled]{
+    background-color: grey;
 }
 
 
@@ -679,10 +692,10 @@ input[type=text]{
     opacity:1;
 } */
 
-.incorrectLogin{
-    height:3rem;
+.incorrectMessage{
+
     width:100%;
-    margin-top: 10px;
+    margin-top: 3rem;
     border-radius: 4px;
     font-size:inherit;
     background-color: #EAEAEA;
@@ -695,6 +708,7 @@ input[type=text]{
 
 .svgContainer{
     height:100%;
+    z-index:0;
 }
 
 .centerChildrenXY{
@@ -836,6 +850,7 @@ input[type="checkbox"]:checked:after {
     transition:opacity 0.4s;
     transition-delay: 0.3s;
     cursor:default;
+    background-color: white;
 }
 
 .starGreaterContainer{
