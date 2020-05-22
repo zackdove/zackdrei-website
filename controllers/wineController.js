@@ -5,8 +5,9 @@ const userService = require(__basedir+"/services/userService.js");
 const wineService = require(__basedir+"/services/wineService.js");
 const userWineService = require(__basedir+"/services/userWineService.js");
 
-function handleDeleteWine(request, response){
-    if (userService.isAuthenticated(request)){
+async function handleDeleteWine(request, response){
+    var user = await userService.getUserFromRequest(request);
+    if (userService.isAuthenticated(request) && user.isAdmin){
         if (request.method == "POST"){
             var urlparts = request.url.split("=");
             var wineid = urlparts[1];
@@ -166,9 +167,14 @@ async function handleWine(request, response){
                 var page = page.replace(/\$vintage/gi, wine.Vintage);
                 var page = page.replace(/\$colour/gi, wine.Colour);
                 var page = page.replace(/\$producer/gi, wine.Producer);
-                userWineService.getUserWine(user.id, wineid, function(result){
-                    console.log(result);
-                });
+                if (user.isAdmin){
+                    console.log("User is admin");
+                    page = page.replace(/\$ifAdmin/gi, '');
+                    page = page.replace(/\$endIfAdmin/gi, '');
+                } else {
+                    console.log("User is not admin");
+                    page = page.replace(/\$ifAdmin[^]+\$endIfAdmin/gi, '');
+                }
                 generalController.deliver(response, "application/xhtml+xml", page);
             } else {
                 var page = await fs.readFile(__basedir+"/resources/winenotfound.html", "utf8");

@@ -65,9 +65,11 @@ lang="en-GB" xml:lang="en-GB">
                         <span id="star5" class="star" onmouseover="starHover(5)" onclick="starClick(5)">★</span>
                     </div>
                 </div>
+                $ifAdmin
                 <form class="cardForm" method="post" action="/deletewine?=$id" onsubmit="return confirm('Are you sure? Deleting this wine cannot be undone.');">
                     <input type="submit" value="Delete Wine" class="btn2 btn-grape"/>
                 </form>
+                $endIfAdmin
             </div>
         </div>
     </div>
