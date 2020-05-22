@@ -99,10 +99,15 @@ async function handleWineList(request, response){
                             var upperLimit = Number(currentPage)+2;
                             if (lowerLimit<1){
                                 lowerLimit = 1;
+                                if (pages <= 5) {
+                                    upperLimit = 5;
+                                }
                             }
                             if (upperLimit > pages){
                                 upperLimit = pages;
-
+                                if (if pages <= 5){
+                                    lowerLimit = 0;
+                                }
                             }
 
                             for (i = lowerLimit; i<=upperLimit; i++){
