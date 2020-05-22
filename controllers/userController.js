@@ -29,7 +29,7 @@ exports.handleLoggedOut = handleLoggedOut;
 
 async function handleViewUser(request, response){
     var currentUser = await userService.getUserFromRequest(request);
-    if (currentUser.isAdmin && userService.isAuthenticated(request)){
+    if (userService.isAuthenticated(request) && currentUser.isAdmin ){
         var urlparts = request.url.split("=");
         var userid = urlparts[1];
         var template = await fs.readFile(__basedir+"/resources/userTemplate.html", "utf8");
@@ -195,7 +195,7 @@ async function handleUserList(request, response){
     var template = await fs.readFile(__basedir+"/resources/userList.html", "utf8");
     var url = request.url;
     var currentUser = await userService.getUserFromRequest(request);
-    if (currentUser.isAdmin && userService.isAuthenticated(request)){
+    if (userService.isAuthenticated(request) && currentUser.isAdmin){
         var username = "";
         var isAdmin = false;
         if (request.url.includes("admin=on")){
@@ -264,7 +264,7 @@ async function handleDeleteUser(request, response){
     //check if admin && post
     if (request.method == "POST"){
         currentUser = await userService.getUserFromRequest(request);
-        if (currentUser.isAdmin && userService.isAuthenticated(request)){
+        if ( userService.isAuthenticated(request) && currentUser.isAdmin){
             var urlparts = request.url.split("=");
             var userid = urlparts[1];
             if (userid == currentUser.id){
