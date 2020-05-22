@@ -56,78 +56,83 @@ async function handleWineList(request, response){
         }
         var currentPString = /page=\d+/gi.exec(url) + '';
         var currentPage = currentPString.split("=")[1];
-        if (!currentPage || currentPage <1){
+        if (!currentPage){
             currentPage = 1;
         }
-        var wines = await wineService.getWines(country, grape, vintage, colour, producer, user, currentPage, async function(wines){
-            let insertion = " ";
-            for(var i=0; i<wines.length; i++){
-                var wine = wines[i];
-                insertion += "<tr><td>"+wine.Country+"</td><td>"+wine.Grape+"</td><td>"+wine.Vintage+"</td><td>"+wine.Colour+"</td><td>"+wine.Producer+"</td><td><button type='button' class='btn-grape infoButton' onclick='document.location = `/wine?="+wine.id+"`'>ⓘ</button></td></tr>";
-            }
-            // var page = parts[0] + html + parts[1];
-            var page = template.replace(/\$wines/gi, insertion);
-            var page = page.replace(/\$country/gi, country);
-            var page = page.replace(/\$grape/gi, grape);
-            var page = page.replace(/\$vintage/gi, vintage);
-            var page = page.replace(/\$colour/gi, colour);
-            var page = page.replace(/\$producer/gi, producer);
-            if (mywines){
-                page = page.replace(/\$mywines/gi, "checked='checked'");
-            } else {
-                page = page.replace(/\$mywines/gi, "");
-            }
-            var count = await wineService.getNumOfWines(country, grape, vintage, colour, producer, user, function(count){
-                if (count>0){
-                    pages = Math.ceil(count/10);
-                    // " " needed to force to be a string
-                    var paginationString = " ";
-                    var i;
-                    url = url.replace(/\&page=\d+/gi, "");
-                    if (currentPage>1){
-                        paginationString += "<a href='" + url + "&page="+(1) + "'>←</a>"
-                    } else {
-                        paginationString += "<a href='#'>←</a>"
-                    }
-
-                        var lowerLimit = Number(currentPage)-2;
-                        var upperLimit = Number(currentPage)+2;
-                        if (lowerLimit<1){
-                            lowerLimit = 1;
-                            upperLimit = 5;
-                        }
-                        else if (upperLimit > pages){
-                            upperLimit = pages;
-                            lowerLimit = pages-5;
-                        }
-                    
-
-                    for (i = lowerLimit; i<=upperLimit; i++){
-                        if (i == currentPage){
-                            paginationString +=  "<a class='active' href='" + url +"&page="+i+"'>"+i+"</a>";
-                        } else {
-                            paginationString +=  "<a href='" + url +"&page="+i+"'>"+i+"</a>";
-                        }
-                    }
-                    if (currentPage<pages){
-                        paginationString += "<a href='" + url + "&page="+pages + "'>→</a>"
-                    } else {
-                        paginationString += "<a href='#'>→</a>"
-                    }
-                    page = page.replace(/\$pagination/gi, paginationString);
-                    page = page.replace(/\&/gi, '&amp;');
-                    page = page.replace(/\$ifWines/gi, '');
-                    page = page.replace(/\$endIfWines/gi, '');
-                } else {
-                    // remove it all
-                    page = page.replace(/\$ifWines[^]+\$endIfWines/gi, 'No Wines Found.');
-
+        if (currentPage<1){
+            generalController.errorHandler(404, response);
+        } else {
+            var wines = await wineService.getWines(country, grape, vintage, colour, producer, user, currentPage, async function(wines){
+                let insertion = " ";
+                for(var i=0; i<wines.length; i++){
+                    var wine = wines[i];
+                    insertion += "<tr><td>"+wine.Country+"</td><td>"+wine.Grape+"</td><td>"+wine.Vintage+"</td><td>"+wine.Colour+"</td><td>"+wine.Producer+"</td><td><button type='button' class='btn-grape infoButton' onclick='document.location = `/wine?="+wine.id+"`'>ⓘ</button></td></tr>";
                 }
-                generalController.deliver(response, "application/xhtml+xml", page);
+                // var page = parts[0] + html + parts[1];
+                var page = template.replace(/\$wines/gi, insertion);
+                var page = page.replace(/\$country/gi, country);
+                var page = page.replace(/\$grape/gi, grape);
+                var page = page.replace(/\$vintage/gi, vintage);
+                var page = page.replace(/\$colour/gi, colour);
+                var page = page.replace(/\$producer/gi, producer);
+                if (mywines){
+                    page = page.replace(/\$mywines/gi, "checked='checked'");
+                } else {
+                    page = page.replace(/\$mywines/gi, "");
+                }
+                var count = await wineService.getNumOfWines(country, grape, vintage, colour, producer, user, function(count){
+                    if (count>0){
+                        pages = Math.ceil(count/10);
+                        if (currentPage > pages){
+                            generalController.errorHandler(404, response);
+                        } else {
+                            // " " needed to force to be a string
+                            var paginationString = " ";
+                            var i;
+                            url = url.replace(/\&page=\d+/gi, "");
+                            if (currentPage>1){
+                                paginationString += "<a href='" + url + "&page="+(1) + "'>←</a>"
+                            } else {
+                                paginationString += "<a href='#'>←</a>"
+                            }
+                            var lowerLimit = Number(currentPage)-2;
+                            var upperLimit = Number(currentPage)+2;
+                            if (lowerLimit<1){
+                                lowerLimit = 1;
+                                upperLimit = 5;
+                            }
+                            else if (upperLimit > pages){
+                                upperLimit = pages;
+                                lowerLimit = pages-5;
+                            }
+                            for (i = lowerLimit; i<=upperLimit; i++){
+                                if (i == currentPage){
+                                    paginationString +=  "<a class='active' href='" + url +"&page="+i+"'>"+i+"</a>";
+                                } else {
+                                    paginationString +=  "<a href='" + url +"&page="+i+"'>"+i+"</a>";
+                                }
+                            }
+                            if (currentPage<pages){
+                                paginationString += "<a href='" + url + "&page="+pages + "'>→</a>"
+                            } else {
+                                paginationString += "<a href='#'>→</a>"
+                            }
+                            page = page.replace(/\$pagination/gi, paginationString);
+                            page = page.replace(/\&/gi, '&amp;');
+                            page = page.replace(/\$ifWines/gi, '');
+                            page = page.replace(/\$endIfWines/gi, '');
+                            generalController.deliver(response, "application/xhtml+xml", page);
+                        }
+                    } else {
+                        // remove it all
+                        page = page.replace(/\$ifWines[^]+\$endIfWines/gi, 'No Wines Found.');
+                        generalController.deliver(response, "application/xhtml+xml", page);
+                    }
+
+                });
+
             });
-
-        });
-
+        }
     } else {
         console.log("User must be authenticated");
         generalController.errorHandler(401, response);
