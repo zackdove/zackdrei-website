@@ -31,7 +31,6 @@ async function handle(request, response) {
         else if (url.startsWith("/deleteUser?=")){userController.handleDeleteUser(request, response);}
         else if (url == "/getRandomWineName"){wineController.handleGetRandomWineName(request,response);}
         else if (url == "/recommendation"){wineController.handleRecommendation(request,response);}
-        else if (url == "/404"){handle404(request, response);}
         else if (url.startsWith("/setRating")){userWineController.handleStarRating(request, response);}
         else if (url.startsWith("/getRating")){userWineController.getRating(request, response);}
         else if (url == "/registered"){userController.handleRegistered(request,response);}
@@ -40,19 +39,13 @@ async function handle(request, response) {
         else if (url == "/wineAdded"){wineController.handleWineAdded(request, response);}
         else if (url == "/userdeleted"){userController.handleDeleted(request, response);}
         else if (url.startsWith("/scripts") || url.startsWith("/style") || url.startsWith("/images") || url=="/moving.html"){getFile(url, response);}
-        else {handle404(response);}
+        else {errorHandler(404, response);}
     } catch(e){
         console.log(e);
         errorHandler(500, response);
     }
 }
 
-async function handle404(response){
-    var page = await fs.readFile(__basedir+"/resources/404.html", "utf8");
-    response.writeHead(404, "application/xhtml+xml");
-    response.write(page);
-    response.end();
-}
 
 async function errorHandler(code, response){
     console.log("ERROR: " + code)

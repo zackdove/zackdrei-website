@@ -1,7 +1,4 @@
-// Get the id of the <path> element
-
 // Find scroll percentage on scroll (using cross-browser properties), and offset dash same amount as percentage scrolled
-// window.addEventListener("scroll", myFunction);
 // Took inspo from : https://css-tricks.com/scroll-drawing/ but heavily tweaked
 function myFunction() {
     var curve = document.getElementById("curve");

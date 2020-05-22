@@ -22,6 +22,7 @@ function starHover(x){
         star.classList.remove("checked");
     }
 }
+
 function starLeave(){
     if (original>0){
         var hovermessage = document.getElementById("hovermessage");
@@ -33,7 +34,6 @@ function starLeave(){
             starcontainer.classList.remove("starContainerHover");
         }
         for (i = 1; i <= original; i++) {
-            // console.log("star");
             var star = document.getElementById("star"+i);
             star.classList.add("checked");
         }
@@ -49,15 +49,11 @@ function starLeave(){
             star.classList.remove("checked");
         }
     }
-
-
 }
 
 function starClick(x){
     var wineid = document.getElementById("wineid").innerHTML;
     console.log(wineid);
-    // maybe dont do this bc the connection might go thru
-    // original = x;
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {

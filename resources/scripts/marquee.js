@@ -11,7 +11,6 @@ function addNewMovingElement() {
     };
     xhttp.open("GET", "/getRandomWineName", true);
     xhttp.send();
-
     var randomHeight = Math.floor(Math.random() * 91);
     text.style.top = randomHeight.toString() + "%";
     //Speed, size and opacity should all be correlated
