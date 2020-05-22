@@ -89,21 +89,18 @@ async function handleWineList(request, response){
                     } else {
                         paginationString += "<a href='#'>←</a>"
                     }
-                    if (pages >=5){
+
                         var lowerLimit = Number(currentPage)-2;
                         var upperLimit = Number(currentPage)+2;
                         if (lowerLimit<1){
                             lowerLimit = 1;
                             upperLimit = 5;
                         }
-                        if (upperLimit > pages){
+                        else if (upperLimit > pages){
                             upperLimit = pages;
                             lowerLimit = pages-5;
                         }
-                    } else {
-                        lowerLimit = 1;
-                        upperLimit = 5;
-                    }
+                    
 
                     for (i = lowerLimit; i<=upperLimit; i++){
                         if (i == currentPage){
