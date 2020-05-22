@@ -106,7 +106,7 @@ async function handleWineList(request, response){
                             if (upperLimit > pages){
                                 upperLimit = pages;
                                 if (pages <= 5){
-                                    lowerLimit = 0;
+                                    lowerLimit = 1;
                                 }
                             }
 
