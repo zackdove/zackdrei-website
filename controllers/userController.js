@@ -37,7 +37,6 @@ async function handleViewUser(request, response){
         console.log(statement);
         mysqlconnection.query(statement, async function(err, rows){
             if (err) throw err;
-            // console.log(rows.length);
             if (rows.length==1){
                 user = rows[0];
                 var page = template.replace(/\$id/gi, user.id);

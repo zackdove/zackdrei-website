@@ -2,7 +2,6 @@ const server = require("../server.js");
 const wineService = require("./wineService.js");
 
 function initialiseDB(){
-    console.log(server.config);
     const mysql = require('mysql2/promise');
 
     const mysqlconnection = mysql.createPool({

@@ -12,7 +12,6 @@ async function handleAddToMyWines(request, response){
             var wineid = urlparts[1];
             var type = urlparts[2];
             await userWineService.addToMyWines(user.id, wineid, 5);
-            console.log(urlparts);
             generalController.redirect(response, "/wines");
         } else {
             console.log("method must be post");

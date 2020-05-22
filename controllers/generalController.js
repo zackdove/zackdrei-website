@@ -5,7 +5,6 @@ const userWineController = require(__basedir+"/controllers/userWineController.js
 
 let fs = require("fs").promises;
 let root = __basedir+"/resources";
-console.log(root);
 let types = defineTypes();
 
 async function handle(request, response) {
@@ -48,7 +47,6 @@ async function handle(request, response) {
 
 
 async function errorHandler(code, response){
-    console.log("ERROR: " + code)
     switch (code){
         case 400:
         // bad url
