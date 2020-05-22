@@ -91,25 +91,28 @@ async function handleWineList(request, response){
                             var i;
                             url = url.replace(/\&page=\d+/gi, "");
                             if (currentPage>1){
-                                paginationString += "<a href='" + url + "&page="+(1) + "'>←</a>"
+                                paginationString += "<a href='" + url + "&page="+(1) + "'>←</a>";
                             } else {
-                                paginationString += "<a href='#'>←</a>"
+                                paginationString += "<a href='#'>←</a>";
                             }
-                            var lowerLimit = Number(currentPage)-2;
-                            var upperLimit = Number(currentPage)+2;
-                            if (lowerLimit<1){
+                            currentPage = Number(currentPage);
+                            var lowerLimit;
+                            var upperLimit;
+                            if (pages <= 5){
                                 lowerLimit = 1;
-                                if (pages <= 5) {
-                                    upperLimit = 5;
-                                }
-                            }
-                            if (upperLimit > pages){
                                 upperLimit = pages;
-                                if (pages <= 5){
+                            } else {
+                                if (currentPage<=2){
                                     lowerLimit = 1;
+                                    upperLimit = 5;
+                                } else if (currentPage >= pages-2){
+                                    lowerLimit = pages-4;
+                                    upperLimit = pages;
+                                } else {
+                                    lowerLimit = currentPage - 2;
+                                    upperLimit = currentPage + 2;
                                 }
                             }
-
                             for (i = lowerLimit; i<=upperLimit; i++){
                                 if (i == currentPage){
                                     paginationString +=  "<a class='active' href='" + url +"&page="+i+"'>"+i+"</a>";

@@ -53,7 +53,6 @@ async function start() {
                 res.end();
             }).listen(8080);
         }
-        wineService.addLotsOfWines();
     }
     catch (err) { console.log(err); process.exit(1); }
 }

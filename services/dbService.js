@@ -1,4 +1,5 @@
 const server = require("../server.js");
+const wineService = require("./wineService.js");
 
 function initialiseDB(){
     console.log(server.config);
@@ -22,6 +23,7 @@ function initialiseDB(){
                 if (err) throw err;
                 mysqlconnection.query(statement4 , function(err){
                     if (err) throw err;
+                    wineService.addLotsOfWines();
                     console.log("Database initialised");
                 });
             });
