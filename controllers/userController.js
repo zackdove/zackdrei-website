@@ -33,20 +33,21 @@ async function handleViewUser(request, response){
         var urlparts = request.url.split("=");
         var userid = urlparts[1];
         var template = await fs.readFile(__basedir+"/resources/userTemplate.html", "utf8");
-        var statement = "SELECT * FROM users WHERE ID=" + mysqlconnection.escape(userid);
+        var statement = "SELECT * FROM users WHERE ID=" + Number(userid);
+        console.log(statement);
         mysqlconnection.query(statement, async function(err, rows){
             if (err) throw err;
-            console.log(rows.length);
+            // console.log(rows.length);
             if (rows.length==1){
                 user = rows[0];
-                var page = template.replace(/\$id/gi, currentUser.id);
-                var page = page.replace(/\$username/gi, currentUser.username);
-                if (currentUser.isAdmin){
+                var page = template.replace(/\$id/gi, user.id);
+                var page = page.replace(/\$username/gi, user.username);
+                if (user.isAdmin){
                     var page = page.replace(/\$isAdmin/gi, "Yes");
                 } else {
                     var page = page.replace(/\$isAdmin/gi, "No");
                 }
-                if (currentUser.id == currentUser.id){
+                if (currentUser.id == user.id){
                     page = page.replace(/\$deleteUser/gi, "disabled='disabled' title='You cannot delete yourself.'");
                 } else {
                     page = page.replace(/\$deleteUser/gi, '');
