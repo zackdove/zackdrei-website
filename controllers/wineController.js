@@ -99,12 +99,12 @@ async function handleWineList(request, response){
                             var upperLimit = Number(currentPage)+2;
                             if (lowerLimit<1){
                                 lowerLimit = 1;
-                                upperLimit = 5;
                             }
-                            else if (upperLimit > pages){
+                            if (upperLimit > pages){
                                 upperLimit = pages;
-                                lowerLimit = pages-5;
+
                             }
+
                             for (i = lowerLimit; i<=upperLimit; i++){
                                 if (i == currentPage){
                                     paginationString +=  "<a class='active' href='" + url +"&page="+i+"'>"+i+"</a>";
